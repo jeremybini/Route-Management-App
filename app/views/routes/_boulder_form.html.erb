@@ -1,0 +1,42 @@
+<%= form_for([@wall, @route]) do |f| %>
+  <% if @route.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@route.errors.count, "error") %> prohibited this route from being saved:</h2>
+
+      <ul>
+      <% @route.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+<!--
+  <div class="field">
+    <%#= f.label :route_type %><br>
+    <%#= f.select :route_type, options_for_select([['Boulder', 'Boulder'], ['Route', 'Route']], @route.route_type) %>
+  </div>
+-->
+
+  <div class="field">
+    <%= f.label :color %><br>
+    <%= f.select :color, options_for_select([['Red', 'Red'], ['Green', 'Green'], ['Lime', 'Lime'], ['Blue', 'Blue'], ['Orange', 'Orange'], ['Yellow', 'Yellow'], ['Black', 'Black'], ['Purple', 'Purple'], ['Pink', 'Pink'], ['White', 'White'], ['Teal', 'Teal']], @route.color) %>
+  </div>
+  <div class="field">
+    <%= f.label :grade %><br>
+    <%= f.select :grade, options_for_select([['VB', 'VB'], ['V0', 'V0'], ['V1', 'V1'], ['V2', 'V2'], ['V3', 'V3'], ['V4', 'V4'], ['V5', 'V5'], ['V6', 'V6'], ['V7', 'V7'], ['V8', 'V8'], ['V9', 'V9'], ['V10', 'V10'], ['V11', 'V11'], ['V12', 'V12']], @route.grade) %>
+  </div>
+  <div class="field">
+    <%= f.label :setter %><br>
+    <%= f.text_field :setter %>
+  </div>
+
+  <% unless @wall===nil %>
+    <%= f.hidden_field :wall_id, :value => @wall.id  %><br>
+    <%= f.hidden_field :route_type, :value => @wall.wall_type  %>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

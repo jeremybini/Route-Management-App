@@ -1,0 +1,9 @@
+<h1>Editing Route</h1>
+
+<% if @route.route_type==='Boulder' %>
+ 	<%= render 'boulder_form' %>
+<% else %>
+	<%= render 'route_form' %>
+<% end %>
+
+<%= link_to 'Back', @route %>

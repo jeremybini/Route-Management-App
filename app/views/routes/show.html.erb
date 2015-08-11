@@ -1,0 +1,31 @@
+<div class="container">
+  <p id="notice"><%= notice %></p>
+
+  <p>
+    <strong>Route type:</strong>
+    <%= @route.route_type %>
+  </p>
+
+  <p>
+    <strong>Color:</strong>
+    <%= @route.color %>
+  </p>
+
+  <p>
+    <strong>Grade:</strong>
+    <%= @route.grade %>
+  </p>
+
+  <p>
+    <strong>Setter:</strong>
+    <%= @route.setter %>
+  </p>
+
+  <p>
+    <strong>Wall:</strong>
+    <%= @route.wall.try(:name) %>
+  </p>
+</div>
+
+<%= link_to 'Edit', edit_route_path(@route) %> |
+<%= link_to 'Back', wall_path(@wall) %>

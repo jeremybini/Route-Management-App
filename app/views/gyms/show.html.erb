@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+  <div class="wrapper">
+    <div class="row">
+      <div class="col-md-12">
+        <h2><%= @gym.name %></h2>
+        <p>Location: <%= @gym.location %></p>
+        <%= link_to 'Edit gym info', edit_gym_path(@gym) %>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <% @walls.each do |wall| %>
+        <div class="col-md-4">
+          <div class="thumbnail">
+          	<image src="#">
+            <div class="caption">
+              <h4><%= link_to wall.name.capitalize, wall %></h4>
+              <p><%= wall.routes.count %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%= link_to 'Back', gyms_path %>
+</div>

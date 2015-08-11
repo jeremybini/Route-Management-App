@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+  <div class="wrapper">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Gyms</h2>
+      </div>
+    </div>
+
+    <hr>
+    <div class="row">
+      <% @gyms.each do |gym| %>
+        <div class="col-md-4">
+          <div class="thumbnail">
+            <div class="caption">
+              <h3><%= link_to gym.name, gym %></h3>
+              <p><%= gym.location %></p>
+            </div>
+            <iframe frameborder="1" src="https://www.google.com/maps/embed/v1/place?q=575+Degraw+Street,+Brooklyn,+NY,+United+States&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<br>
+
+<%= link_to 'New Gym', new_gym_path %>
+
+</div>

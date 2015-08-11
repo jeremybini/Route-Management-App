@@ -1,0 +1,33 @@
+<!--
+<h1>Log In</h1>
+
+<%#= form_tag sessions_path do %>
+	<div class="field">
+		<%#= label_tag :email %><br>
+		<%#= text_field_tag :email, params[:email] %>
+	</div>
+	<div class="field">
+		<%#= label_tag :password %><br>
+		<%#= password_field_tag :password %>
+	</div>
+	<div class="actions"><%#= submit_tag "Log In" %></div>
+<%# end %>
+-->
+
+<div class="login">
+  <div class="container">
+	<div class="form">
+
+      <h1>Log in</h1>
+
+      <%= flash[:alert] %>
+
+      <%= form_for(:session, url: sessions_path) do |f| %> 
+        <%= f.email_field :email, :placeholder => "Email" %> 
+        <%= f.password_field :password, :placeholder => "Password" %> 
+        <%= f.submit "Log in", class: "btn-submit" %>
+      <% end %>
+		
+    </div>
+  </div>
+</div>

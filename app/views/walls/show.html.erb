@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+  <%= link_to '<Back', gym_path(@wall.gym) %>
+  <div class="wrapper">
+    <div class="row">
+      <div class="col-md-12">
+        <h2><%= @wall.name.capitalize %></h2>
+        <p>Current routes: <%= @wall.routes.count %></p>
+        <%= link_to 'RESET WALL', edit_wall_path(@wall) %>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <% @routes.each do |route| %>
+        <div class="col-md-12">
+          <div class="panel panel-default" style="border: 1px solid <%= route.color %>">
+            <div class="panel-heading">
+              <div class="row">
+                <%= link_to route.grade+" "+route.color.capitalize, route %>
+              </div>
+            </div>
+            <div class="panel body">
+                <p>Setter: <%= route.setter %></p>
+                <p>Type: <%= route.route_type %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<p>New Route</p>
+<%= link_to "NEW ROUTE!!", new_wall_route_path(@wall) %>
