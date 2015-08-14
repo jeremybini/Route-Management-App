@@ -38,9 +38,9 @@ Route.create(route_type: 'Route', grade: '5.13d', setter: 'HH', color: 'Teal', w
 Route.create(route_type: 'Route', grade: '5.9', setter: 'MB', color: 'Orange', wall: w5)
 #=end
 
-jeremy = User.create(full_name: 'Jeremy Bini', email: 'jeremybini@gmail.com', password: 'boulders1234', password_confirmation: 'boulders1234', role: 'admin')
-jbsetter = User.create(full_name: 'JB Setter', email: 'jbsetter@gmail.com', password: 'boulders1234', password_confirmation: 'boulders1234', role: 'routesetter')
-
+jeremy = User.create(full_name: "Jeremy Bini", email: "jeremybini@gmail.com", password: "boulders1234", password_confirmation:"boulders1234", auth_token:"123456789", role: "admin")
+jb = User.create(full_name: "JB Setter", email: "jbsetter@gmail.com", password: "boulders1234", password_confirmation:"boulders1234", auth_token:"223456789", role: "routesetter")
+jpb = User.create(full_name: "JB User", email: "jbuser@gmail.com", password: "boulders1234", password_confirmation:"boulders1234", auth_token:"323456789")
 
 
 

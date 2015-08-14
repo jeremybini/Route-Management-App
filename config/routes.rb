@@ -12,9 +12,13 @@ Rails.application.routes.draw do
 
   resources :users
   resources :sessions
+  resources :password_resets
 
-  resources :gyms
-  resources :walls do
+  resources :gyms do
+    resources :walls, only: [:index, :new, :create]
+  end
+
+  resources :walls, only: [:show, :edit, :update, :destroy] do
     resources :routes, shallow: true
   end
 

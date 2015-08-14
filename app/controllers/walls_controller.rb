@@ -17,6 +17,7 @@ class WallsController < ApplicationController
   # GET /walls/new
   def new
     @wall = Wall.new
+    @gym = Gym.find(params[:gym_id])
   end
 
   # GET /walls/1/edit
@@ -71,6 +72,6 @@ class WallsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def wall_params
-      params.require(:wall).permit(:name, :wall_image, :belongs_to)
+      params.require(:wall).permit(:name, :wall_image, :wall_type, :gym_id)
     end
 end

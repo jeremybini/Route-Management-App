@@ -12,6 +12,47 @@ class GymsController < ApplicationController
   # GET /gyms/1.json
   def show
     @walls = @gym.walls
+
+    @route_grades = Gym.all_route_grades
+    @boulder_grades= Gym.all_boulder_grades
+    
+    @boulder_grade_spread = []
+
+    @boulder_grades.each do |grade|
+      @boulder_grade_spread.push(@gym.routes.where("grade = '"+grade+"'").count)
+    end
+
+    @route_grade_spread = []
+
+    @route_grades.each do |grade|
+      @route_grade_spread.push(@gym.routes.where("grade = '"+grade+"'").count)
+    end
+
+    @chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "There are "+@gym.routes.count.to_s+" active climbs at "+@gym.name)
+      f.xAxis(:categories => @boulder_grades)
+      f.series(:name => "Current Grade Spread", :yAxis => 0, :data => @boulder_grade_spread)
+
+      f.yAxis [
+        {:title => {:text => "Total Climbs"} },
+      ]
+
+      f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+      f.chart({:defaultSeriesType=>"column"})
+    end
+    #boulder_grade_spread = Route.group("grade = "+@boulder_grades).count
+    
+    # @route_grade_spread = Route.where("route_type = 'Route'").group("grade").order("grade asc").count
+    # @route_grade_spread.each do |grade, count|
+    #   @route_grades.push(grade)
+    #   @route_grades_count.push(count)
+    # end
+
+    # @boulder_grade_spread = Route.where("route_type = 'Boulder'").group("grade").count
+    # @boulder_grade_spread.each do |grade, count|
+    #   @boulder_grades.push(grade)
+    #   @boulder_grades_count.push(count)
+    # end
   end
 
   # GET /gyms/new
@@ -71,6 +112,6 @@ class GymsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def gym_params
-      params.require(:gym).permit(:name, :location, :latitude, :longitude, :gym_image)
+      params.require(:gym).permit(:name, :location, :gym_image)
     end
 end

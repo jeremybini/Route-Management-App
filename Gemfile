@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+gem 'lazy_high_charts'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'

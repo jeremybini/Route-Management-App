@@ -1,4 +1,4 @@
-<%= form_for(@wall) do |f| %>
+<%= form_for([@gym, @wall]) do |f| %>
   <% if @wall.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@wall.errors.count, "error") %> prohibited this wall from being saved:</h2>
@@ -15,14 +15,17 @@
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
+    <div class="field">
+    <%= f.label :wall_type %><br>
+    <%= f.select :wall_type, options_for_select([['Boulder', 'Boulder'], ['Route', 'Route']]) %>
+  </div>
   <div class="field">
     <%= f.label :wall_image %><br>
     <%= f.text_field :wall_image %>
   </div>
-  <div class="field">
-    <%= f.label :gym %><br>
-    <%= f.text_field :gym %>
-  </div>
+  <% unless @gym===nil %>
+    <%= f.hidden_field :gym_id, :value => @gym.id  %><br>
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>

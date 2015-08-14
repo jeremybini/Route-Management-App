@@ -8,6 +8,7 @@
         <h2><%= @wall.name.capitalize %></h2>
         <p>Current routes: <%= @wall.routes.count %></p>
         <%= link_to 'RESET WALL', edit_wall_path(@wall) %>
+        <!--within reset ==> have a new climb button, and an add by setter (batch) option. add by setter produces a dropdown select for x number of climbs set, which generates a form with x number of inputs. date defaults to today. -->
       </div>
     </div>
 
@@ -35,3 +36,4 @@
 
 <p>New Route</p>
 <%= link_to "NEW ROUTE!!", new_wall_route_path(@wall) %>
+<%= link_to "Edit Wall Info", edit_wall_path(@wall) %>

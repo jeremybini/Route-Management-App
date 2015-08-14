@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811190110) do
+ActiveRecord::Schema.define(version: 20150811232056) do
 
   create_table "gyms", force: :cascade do |t|
     t.string   "name"
@@ -30,10 +30,12 @@ ActiveRecord::Schema.define(version: 20150811190110) do
     t.string   "setter"
     t.boolean  "active",     default: true
     t.integer  "wall_id"
+    t.integer  "gym_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end
 
+  add_index "routes", ["gym_id"], name: "index_routes_on_gym_id"
   add_index "routes", ["wall_id"], name: "index_routes_on_wall_id"
 
   create_table "users", force: :cascade do |t|
@@ -41,8 +43,11 @@ ActiveRecord::Schema.define(version: 20150811190110) do
     t.string   "email"
     t.string   "password_digest"
     t.string   "role"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "auth_token"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
   create_table "walls", force: :cascade do |t|
