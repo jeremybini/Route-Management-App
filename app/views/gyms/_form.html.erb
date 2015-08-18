@@ -1,4 +1,4 @@
-<%= form_for(@gym) do |f| %>
+<%= simple_form_for(@gym) do |f| %>
   <% if @gym.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@gym.errors.count, "error") %> prohibited this gym from being saved:</h2>
@@ -12,6 +12,11 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :image %><br>
+    <%= image_tag @gym.image.url(:thumb) if @gym.image.present? %>
+    <%= f.file_field :image %>
+  </div>
+  <div class="field">
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
@@ -19,11 +24,8 @@
     <%= f.label :location %><br>
     <%= f.text_field :location %>
   </div>
-  <div class="field">
-    <%= f.label :gym_image %><br>
-    <%= f.file_field :gym_image %>
-  </div>
+  <br>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit", class: "btn btn-success" %>
   </div>
 <% end %>

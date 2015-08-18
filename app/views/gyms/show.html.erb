@@ -1,39 +1,57 @@
-<p id="notice"><%= notice %></p>
-
-<h3>There are <%= @gym.routes.count %> active climbs at <%= @gym.name %></h3>
-
-<div id="chartz" style="width:100%; height:400px;"></div>
-
 <div class="container">
-  <div class="wrapper">
+  <p id="notice"><%= notice %></p>
     <div class="row">
       <div class="col-md-12">
+        <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
         <h2><%= @gym.name %></h2>
         <p>Location: <%= @gym.location %></p>
-        <%= link_to 'Edit gym info', edit_gym_path(@gym) %>
+        <hr>
+        <%= link_to 'Edit gym info', edit_gym_path(@gym), class: "btn btn-info" if current_user && current_user.routesetter? %>
+        <%= link_to "Create a New Wall", new_gym_wall_path(@gym), class: "btn btn-success" if current_user && current_user.admin? %>
+        <hr>
       </div>
     </div>
 
-    <hr>
+    <div id="boulder_chart" style="width:100%; height:400px;"></div>
+
+    <%#= image_tag @gym.image.url(:medium) if @gym.image.present? %>
 
     <div class="row">
-      <% @walls.each do |wall| %>
+      <% @boulder_walls.each do |wall| %>
         <div class="col-md-4">
           <div class="thumbnail">
-          	<image src="#">
+          	<%#= image_tag wall.image.url(:thumb) if wall.image.present? %>
             <div class="caption">
               <h4><%= link_to wall.name.capitalize, wall %></h4>
-              <p><%= wall.routes.count %></p>
+              <p><%= wall.routes.active.count %></p>
             </div>
           </div>
         </div>
       <% end %>
     </div>
-  </div>
-  <%= link_to 'Back', gyms_path %>
+    <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
 </div>
 
-<%= link_to "Create a New Wall", new_gym_wall_path(@gym) %>
+<%= high_chart("boulder_chart", @boulder_chart) %>
 
+<hr>
 
-<%= high_chart("chartz", @chart) %>
+<div class="container">
+  <div id="route_chart" style="width:100%; height:400px;"></div>
+
+  <div class="row">
+    <% @route_walls.each do |wall| %>
+      <div class="col-md-4">
+        <div class="thumbnail">
+          <%#= image_tag wall.image.url(:thumb) if wall.image.present? %>
+          <div class="caption">
+            <h4><%= link_to wall.name.capitalize, wall %></h4>
+            <p><%= wall.routes.active.count %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
+</div>
+<%= high_chart("route_chart", @route_chart) %>

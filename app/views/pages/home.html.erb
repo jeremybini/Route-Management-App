@@ -1,4 +1,9 @@
-<h1>Welcome!</h1>
+<div class="container">
+	<div class="col-md-6 col-md-offset-3 text-center">
+		<h1>Welcome!</h1>
+		<hr>
 
-<%=link_to "JOIN NOW", signup_path, class: 'btn btn-lg btn-header' %>
-<%= link_to "BROWSE ROUTES", gyms_path, class: 'btn btn-lg btn-header' %>
+		<%= link_to "Sign Up Now", signup_path, class: 'btn btn-lg btn-primary' %>
+		<%= link_to "Browse Routes", gyms_path, class: 'btn btn-lg btn-info' %>
+	</div>
+</div>

@@ -1,5 +1,9 @@
-<h1>New Wall</h1>
+<div class="container">
+	<h1>New Wall</h1>
+	<hr>
 
-<%= render 'form' %>
+	<%= render 'form' %>
 
-<%= link_to 'Back', gym_path(@gym) %>
+	<hr>
+	<%= link_to 'Back to Gym', gym_path(@gym), class: "btn btn-primary" %>
+</div>

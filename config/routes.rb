@@ -19,7 +19,14 @@ Rails.application.routes.draw do
   end
 
   resources :walls, only: [:show, :edit, :update, :destroy] do
-    resources :routes, shallow: true
+    member do
+        put 'archive'
+    end
+    resources :routes, shallow: true do
+      member do
+        put 'archive'
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

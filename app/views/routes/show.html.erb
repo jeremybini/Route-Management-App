@@ -1,31 +1,45 @@
 <div class="container">
-  <p id="notice"><%= notice %></p>
+  <div class="row">
+    <%= link_to 'Back to Wall', wall_path(@wall), class: "btn btn-primary" %>
+    <p id="notice"><%= notice %></p>
+    
+    <!-- MAKE LOOK NICER!!!!!! -->
 
-  <p>
-    <strong>Route type:</strong>
-    <%= @route.route_type %>
-  </p>
+    <%= image_tag @route.image.url(:large) if @route.image.present? %>
 
-  <p>
-    <strong>Color:</strong>
-    <%= @route.color %>
-  </p>
+    <p>
+      <strong>Route type:</strong>
+      <%= @route.route_type %>
+    </p>
 
-  <p>
-    <strong>Grade:</strong>
-    <%= @route.grade %>
-  </p>
+    <p>
+      <strong>Color:</strong>
+      <%= @route.color %>
+    </p>
 
-  <p>
-    <strong>Setter:</strong>
-    <%= @route.setter %>
-  </p>
+    <p>
+      <strong>Grade:</strong>
+      <%= @route.grade %>
+    </p>
 
-  <p>
-    <strong>Wall:</strong>
-    <%= @route.wall.try(:name) %>
-  </p>
+    <p>
+      <strong>Setter:</strong>
+      <%= @route.setter %>
+    </p>
+
+    <p>
+      <strong>Wall:</strong>
+      <%= @route.wall.try(:name) %>
+    </p>
+    <% if @route.active %>
+      <% if current_user && current_user.routesetter? %>
+        <%= link_to 'Edit', edit_route_path(@route), class: "btn btn-info" %>
+        <%= link_to 'Strip Route', archive_route_path(@route), method: :put, data: { confirm: 'Are you sure? This will archive the route.' }, class: "btn btn-warning" %>
+        <%= link_to 'Delete Route', route_path(@route), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
+      <% end %>
+    <% else %>
+      <h4>This climb has been archived.</h4>
+      <%= link_to "Reactivate Climb", archive_route_path(@route), method: :put, data: { confirm: 'Are you sure you want t reactivate this route?' }, class: "btn btn-warning" %>
+    <% end %>
+  </div>
 </div>
-
-<%= link_to 'Edit', edit_route_path(@route) %> |
-<%= link_to 'Back', wall_path(@wall) %>

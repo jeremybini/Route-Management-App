@@ -1,6 +1,7 @@
 class GymsController < ApplicationController
   before_action :set_gym, only: [:show, :edit, :update, :destroy]
-  before_action :require_admin, only: [:new, :edit, :create, :update, :destroy]
+  before_action :require_routesetter, only: [:edit, :update]
+  before_action :require_admin, only: [:new, :create, :destroy]
 
   # GET /gyms
   # GET /gyms.json
@@ -11,7 +12,8 @@ class GymsController < ApplicationController
   # GET /gyms/1
   # GET /gyms/1.json
   def show
-    @walls = @gym.walls
+    @boulder_walls = @gym.walls.boulder_wall.order("name")
+    @route_walls = @gym.walls.route_wall.order("name")
 
     @route_grades = Gym.all_route_grades
     @boulder_grades= Gym.all_boulder_grades
@@ -19,19 +21,32 @@ class GymsController < ApplicationController
     @boulder_grade_spread = []
 
     @boulder_grades.each do |grade|
-      @boulder_grade_spread.push(@gym.routes.where("grade = '"+grade+"'").count)
+      @boulder_grade_spread.push(@gym.routes.active.where("grade = '"+grade+"'").count)
     end
 
     @route_grade_spread = []
 
     @route_grades.each do |grade|
-      @route_grade_spread.push(@gym.routes.where("grade = '"+grade+"'").count)
+      @route_grade_spread.push(@gym.routes.active.where("grade = '"+grade+"'").count)
     end
 
-    @chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "There are "+@gym.routes.count.to_s+" active climbs at "+@gym.name)
+    @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "There are "+@gym.routes.active.boulder.count.to_s+" active boulders at "+@gym.name)
       f.xAxis(:categories => @boulder_grades)
-      f.series(:name => "Current Grade Spread", :yAxis => 0, :data => @boulder_grade_spread)
+      f.series(:name => "Current Amount", :yAxis => 0, :data => @boulder_grade_spread)
+
+      f.yAxis [
+        {:title => {:text => "Total Climbs"} },
+      ]
+
+      f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+      f.chart({:defaultSeriesType=>"column"})
+    end
+
+    @route_chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "There are "+@gym.routes.active.route.count.to_s+" active routes at "+@gym.name)
+      f.xAxis(:categories => @route_grades)
+      f.series(:name => "Current Amount", :yAxis => 0, :data => @route_grade_spread)
 
       f.yAxis [
         {:title => {:text => "Total Climbs"} },
@@ -112,6 +127,6 @@ class GymsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def gym_params
-      params.require(:gym).permit(:name, :location, :gym_image)
+      params.require(:gym).permit(:name, :location, :image)
     end
 end

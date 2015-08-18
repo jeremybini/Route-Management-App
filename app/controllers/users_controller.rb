@@ -1,4 +1,10 @@
 class UsersController < ApplicationController
+	before_action :require_admin, only: [:index, :edit, :update, :destroy]
+
+	def index
+		@users = User.all
+	end
+
 	def new
 		@user = User.new
 	end
@@ -10,6 +16,12 @@ class UsersController < ApplicationController
 		else
 			render "new"
 		end
+	end
+
+	def edit
+	end
+
+	def update
 	end
 
 	private

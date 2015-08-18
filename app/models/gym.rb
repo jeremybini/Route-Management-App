@@ -1,6 +1,11 @@
 class Gym < ActiveRecord::Base
 	has_many :walls
 	has_many :routes, through: :walls
+	has_one :ideal_route_spread
+	has_one :ideal_boulder_spread
+
+	has_attached_file :image, :styles => { large: "600x600>", medium: "300x300>", thumb: "150x150>" }
+  	validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
 	def self.all_boulder_grades
 		['VB', 'V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12']

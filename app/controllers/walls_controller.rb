@@ -1,7 +1,9 @@
 class WallsController < ApplicationController
-  before_action :set_wall, only: [:show, :edit, :update, :destroy]
-  before_action :require_admin, only: [:new, :edit, :create, :update, :destroy]
+  before_action :set_wall, only: [:show, :edit, :update, :archive, :destroy]
+  before_action :require_routesetter, only: [:archive, :edit, :create, :update]
+  before_action :require_admin, only: [:new, :destroy]
 
+  helper_method :sort_climbs
   # GET /walls
   # GET /walls.json
   def index
@@ -11,7 +13,38 @@ class WallsController < ApplicationController
   # GET /walls/1
   # GET /walls/1.json
   def show
-    @routes = @wall.routes
+    @routes = @wall.routes.active.order(sort_climbs)
+    @archived_routes = @wall.routes.archived
+
+    @wall_grades = []
+    if @wall.wall_type==='Route'
+      @wall_grades = Gym.all_route_grades
+    else
+      @wall_grades = Gym.all_boulder_grades
+    end
+
+    @ideal_grade_spread = []
+
+    if @wall.is_a?(Hash)
+      @wall.ideal_grade_spread.each do |grade, amount|
+        @ideal_grade_spread.push(amount)
+      end
+    end
+    
+    @current_grade_spread = []
+
+    @wall_grades.each do |grade|
+      @current_grade_spread.push(@routes.where("grade = '"+grade+"'").count)
+    end
+
+    @chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "There are "+@routes.count.to_s+" active climbs on the "+@wall.name)
+      f.xAxis(:categories => @wall_grades)
+      f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
+      f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+      f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+      f.chart({:defaultSeriesType=>"column"})
+    end
   end
 
   # GET /walls/new
@@ -22,6 +55,12 @@ class WallsController < ApplicationController
 
   # GET /walls/1/edit
   def edit
+    @wall_grades = []
+    if @wall.wall_type==='Route'
+      @wall_grades = Gym.all_route_grades
+    else
+      @wall_grades = Gym.all_boulder_grades
+    end
   end
 
   # POST /walls
@@ -54,6 +93,17 @@ class WallsController < ApplicationController
     end
   end
 
+  def archive
+    @routes = @wall.routes.active
+    @routes.each do |route|
+      route.update_attribute(:active, false)
+    end
+    respond_to do |format|
+      format.html { redirect_to wall_path(@wall), notice: 'Routes were successfully archived.' }
+      format.json { head :no_content }
+    end
+  end
+
   # DELETE /walls/1
   # DELETE /walls/1.json
   def destroy
@@ -72,6 +122,10 @@ class WallsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def wall_params
-      params.require(:wall).permit(:name, :wall_image, :wall_type, :gym_id)
+      params.require(:wall).permit(:name, :image, :wall_type, :gym_id)
+    end
+
+    def sort_climbs
+      params[:sort] ||= "grade"
     end
 end

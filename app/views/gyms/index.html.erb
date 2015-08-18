@@ -26,6 +26,8 @@
 
 <br>
 
-<%= link_to 'New Gym', new_gym_path %>
+
+<%= link_to 'New Gym', new_gym_path, class: "btn btn-primary" if current_user && current_user.admin? %>
+
 
 </div>
