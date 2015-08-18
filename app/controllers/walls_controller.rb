@@ -13,8 +13,8 @@ class WallsController < ApplicationController
   # GET /walls/1
   # GET /walls/1.json
   def show
-    @routes = @wall.routes.active.order(sort_climbs)
-    @archived_routes = @wall.routes.archived
+    @climbs = @wall.climbs.active.order(sort_climbs)
+    @archived_climbs = @wall.climbs.archived
 
     @wall_grades = []
     if @wall.wall_type==='Route'
@@ -34,11 +34,11 @@ class WallsController < ApplicationController
     @current_grade_spread = []
 
     @wall_grades.each do |grade|
-      @current_grade_spread.push(@routes.where("grade = '"+grade+"'").count)
+      @current_grade_spread.push(@climbs.where("grade = '"+grade+"'").count)
     end
 
     @chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "There are "+@routes.count.to_s+" active climbs on the "+@wall.name)
+      f.title(:text => "There are "+@climbs.count.to_s+" active climbs on the "+@wall.name)
       f.xAxis(:categories => @wall_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
       f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
@@ -94,12 +94,12 @@ class WallsController < ApplicationController
   end
 
   def archive
-    @routes = @wall.routes.active
-    @routes.each do |route|
-      route.update_attribute(:active, false)
+    @climbs = @wall.climbs.active
+    @climbs.each do |climb|
+      climb.update_attribute(:active, false)
     end
     respond_to do |format|
-      format.html { redirect_to wall_path(@wall), notice: 'Routes were successfully archived.' }
+      format.html { redirect_to wall_path(@wall), notice: 'Climbs were successfully archived.' }
       format.json { head :no_content }
     end
   end

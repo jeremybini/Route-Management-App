@@ -6,7 +6,7 @@
     <hr>
     <h2>Wall: <%= @wall.name.capitalize %></h2>
     <% if current_user && current_user.routesetter? %>
-      <%= link_to "Add New Routes", new_wall_route_path(@wall), class: "btn btn-success" %>
+      <%= link_to "Add New Routes", new_wall_climb_path(@wall), class: "btn btn-success" %>
       <%= link_to 'Reset Wall', archive_wall_path(@wall), method: :put, data: { confirm: 'Are you sure? This will archive all active routes on this wall.' }, class: "btn btn-danger" %>
     <% end %>
       <!--within reset ==> have a new climb button, and an add by setter (batch) option. add by setter produces a dropdown select for x number of climbs set, which generates a form with x number of inputs. date defaults to today. -->
@@ -28,17 +28,17 @@
       <%= link_to "Setter", :sort => "setter" %>
       <%= link_to "Color", :sort => "color" %>
   <div class="row">
-    <% @routes.each do |route| %>
+    <% @climbs.each do |climb| %>
       <div class="col-md-4">
-        <div class="panel panel-default" style="border: 1px solid <%= route.color %>">
+        <div class="panel panel-default" style="border: 1px solid <%= climb.color %>">
           <div class="panel-heading">
             <div class="row">
-              <%= link_to route.grade+" "+route.color.capitalize, route %>
+              <%= link_to climb.grade+" "+climb.color.capitalize, climb %>
             </div>
           </div>
           <div class="panel body">
-              <p>Setter: <%= route.setter %></p>
-              <p>Type: <%= route.route_type %></p>
+              <p>Setter: <%= climb.setter %></p>
+              <p>Type: <%= climb.climb_type %></p>
           </div>
         </div>
       </div>
@@ -53,18 +53,18 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h3>Archived Routes</h3>
-      <% @archived_routes.each do |route| %>
+      <h3>Archived Climbs</h3>
+      <% @archived_climbs.each do |climb| %>
         <div class="col-md-3">
-          <div class="panel panel-default" style="border: 1px solid <%= route.color %>">
+          <div class="panel panel-default" style="border: 1px solid <%= climb.color %>">
             <div class="panel-heading">
               <div class="row">
-                <%= link_to route.grade+" "+route.color.capitalize, route %>
+                <%= link_to climb.grade+" "+climb.color.capitalize, climb %>
               </div>
             </div>
             <div class="panel body">
-                <p>Setter: <%= route.setter %></p>
-                <p>Type: <%= route.route_type %></p>
+                <p>Setter: <%= climb.setter %></p>
+                <p>Type: <%= climb.climb_type %></p>
             </div>
           </div>
         </div>

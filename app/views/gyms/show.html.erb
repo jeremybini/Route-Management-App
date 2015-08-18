@@ -23,7 +23,7 @@
           	<%#= image_tag wall.image.url(:thumb) if wall.image.present? %>
             <div class="caption">
               <h4><%= link_to wall.name.capitalize, wall %></h4>
-              <p><%= wall.routes.active.count %></p>
+              <p><%= wall.climbs.active.count %></p>
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@
           <%#= image_tag wall.image.url(:thumb) if wall.image.present? %>
           <div class="caption">
             <h4><%= link_to wall.name.capitalize, wall %></h4>
-            <p><%= wall.routes.active.count %></p>
+            <p><%= wall.climbs.active.count %></p>
           </div>
         </div>
       </div>

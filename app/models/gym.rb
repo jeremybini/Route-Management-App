@@ -1,6 +1,6 @@
 class Gym < ActiveRecord::Base
 	has_many :walls
-	has_many :routes, through: :walls
+	has_many :climbs, through: :walls
 	has_one :ideal_route_spread
 	has_one :ideal_boulder_spread
 

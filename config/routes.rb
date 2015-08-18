@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     member do
         put 'archive'
     end
-    resources :routes, shallow: true do
+    resources :climbs, shallow: true do
       member do
         put 'archive'
       end

@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150816032117) do
+ActiveRecord::Schema.define(version: 20150818030223) do
+
+  create_table "climbs", force: :cascade do |t|
+    t.string   "climb_type"
+    t.string   "color"
+    t.integer  "grade"
+    t.string   "setter"
+    t.boolean  "active",             default: true
+    t.integer  "wall_id"
+    t.integer  "gym_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
+  add_index "climbs", ["gym_id"], name: "index_climbs_on_gym_id"
+  add_index "climbs", ["wall_id"], name: "index_climbs_on_wall_id"
 
   create_table "gyms", force: :cascade do |t|
     t.string   "name"
@@ -83,25 +102,6 @@ ActiveRecord::Schema.define(version: 20150816032117) do
   add_index "ideal_route_spreads", ["gym_id"], name: "index_ideal_route_spreads_on_gym_id"
   add_index "ideal_route_spreads", ["wall_id"], name: "index_ideal_route_spreads_on_wall_id"
 
-  create_table "routes", force: :cascade do |t|
-    t.string   "route_type"
-    t.string   "color"
-    t.string   "grade"
-    t.string   "setter"
-    t.boolean  "active",             default: true
-    t.integer  "wall_id"
-    t.integer  "gym_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-  end
-
-  add_index "routes", ["gym_id"], name: "index_routes_on_gym_id"
-  add_index "routes", ["wall_id"], name: "index_routes_on_wall_id"
-
   create_table "users", force: :cascade do |t|
     t.string   "full_name"
     t.string   "email"
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20150816032117) do
     t.string   "name"
     t.string   "wall_image"
     t.string   "wall_type"
+    t.text     "ideal_grade_spread"
     t.integer  "gym_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false

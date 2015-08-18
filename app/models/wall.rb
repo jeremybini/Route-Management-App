@@ -2,7 +2,7 @@ class Wall < ActiveRecord::Base
 	scope :boulder_wall, -> { where(wall_type: 'Boulder') }
   	scope :route_wall, -> { where(wall_type: 'Route') }
 
-	has_many :routes
+	has_many :climbs
 	belongs_to :gym
 	has_one :ideal_route_spread
 	has_one :ideal_boulder_spread

@@ -21,17 +21,17 @@ class GymsController < ApplicationController
     @boulder_grade_spread = []
 
     @boulder_grades.each do |grade|
-      @boulder_grade_spread.push(@gym.routes.active.where("grade = '"+grade+"'").count)
+      @boulder_grade_spread.push(@gym.climbs.active.where("grade = '"+grade+"'").count)
     end
 
     @route_grade_spread = []
 
     @route_grades.each do |grade|
-      @route_grade_spread.push(@gym.routes.active.where("grade = '"+grade+"'").count)
+      @route_grade_spread.push(@gym.climbs.active.where("grade = '"+grade+"'").count)
     end
 
     @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "There are "+@gym.routes.active.boulder.count.to_s+" active boulders at "+@gym.name)
+      f.title(:text => "There are "+@gym.climbs.active.boulder.count.to_s+" active boulders at "+@gym.name)
       f.xAxis(:categories => @boulder_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @boulder_grade_spread)
 
@@ -44,7 +44,7 @@ class GymsController < ApplicationController
     end
 
     @route_chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "There are "+@gym.routes.active.route.count.to_s+" active routes at "+@gym.name)
+      f.title(:text => "There are "+@gym.climbs.active.route.count.to_s+" active routes at "+@gym.name)
       f.xAxis(:categories => @route_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @route_grade_spread)
 
