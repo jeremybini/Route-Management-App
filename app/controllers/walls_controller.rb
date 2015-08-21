@@ -93,17 +93,17 @@ class WallsController < ApplicationController
   end
 
   def change_spread
-    @gym = Gym.find(params[:gym_id])
-    @walls = Gym.find
+    # @gym = Gym.find(params[:gym_id])
+    # @walls = Gym.find
 
-    @ideal_boulder_spread = []
-    @boulder_grades.each do |grade|
-      count = 0
-      @gym.walls.each do |wall|
-        count += wall.wall_spread[grade].to_i
-      end
-      @ideal_boulder_spread.push(count)
-    end
+    # @ideal_boulder_spread = []
+    # @boulder_grades.each do |grade|
+    #   count = 0
+    #   @gym.walls.each do |wall|
+    #     count += wall.wall_spread[grade].to_i
+    #   end
+    #   @ideal_boulder_spread.push(count)
+    # end
   end
 
   # DELETE /walls/1
