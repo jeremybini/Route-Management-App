@@ -1,27 +1,27 @@
 class WallsController < ApplicationController
   before_action :set_wall, only: [:show, :edit, :update, :archive, :destroy, :change_spread]
   before_action :wall_type, only: [:show, :edit, :change_spread]
-  before_action :require_routesetter, only: [:archive, :edit, :create, :update]
+  before_action :require_routesetter, only: [:archive, :edit, :create, :update, :change_spread]
   before_action :require_admin, only: [:new, :destroy]
 
   helper_method :sort_climbs
   # GET /walls
   # GET /walls.json
-  def index
-    @walls = Wall.all
-  end
+  # def index
+  #   @walls = Wall.all
+  # end
 
   # GET /walls/1
   # GET /walls/1.json
   def show
     @climbs = @wall.climbs.active.order(sort_climbs)
     @archived_climbs = @wall.climbs.archived
-
+    
     @ideal_grade_spread = []
     @wall_grades.each do |grade|
       @ideal_grade_spread.push(@wall.wall_spread[grade].to_i)
     end
-    
+
     @current_grade_spread = []
 
     @wall_grades.each do |grade|
@@ -30,11 +30,15 @@ class WallsController < ApplicationController
 
     @chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title({ :text => "There are "+@climbs.count.to_s+" active climbs on the "+@wall.name })
-      f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
+      
       f.xAxis(:categories => @wall_grades)
       f.yAxis(:allowDecimals => false)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
-      f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+      if current_user && current_user.routesetter?
+        f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+        f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
+      end
+      f.plotOptions({:series => {:dataLabels => {:enabled => true, :defer => true, :inside => true, :color => 'white', :style => { :textShadow => '0 0 3px black'}}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
       f.chart({:defaultSeriesType=>"column"})
     end
@@ -93,17 +97,18 @@ class WallsController < ApplicationController
   end
 
   def change_spread
-    # @gym = Gym.find(params[:gym_id])
-    # @walls = Gym.find
+    @walls = @wall.gym.walls.where(wall_type: @wall.wall_type)
 
-    # @ideal_boulder_spread = []
-    # @boulder_grades.each do |grade|
-    #   count = 0
-    #   @gym.walls.each do |wall|
-    #     count += wall.wall_spread[grade].to_i
-    #   end
-    #   @ideal_boulder_spread.push(count)
-    # end
+    @ideal_gym_spread = []
+    @wall_grades.each do |grade|
+      count = 0
+      @walls.each do |wall|
+        unless wall.id === @wall.id
+          count += wall.wall_spread[grade].to_i
+        end
+      end
+      @ideal_gym_spread.push(count)
+    end
   end
 
   # DELETE /walls/1

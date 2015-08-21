@@ -1,5 +1,8 @@
 <div class="container">
+  <h3 class="center-block">Edit Grade Spread: <%= @wall.name %></h3>
+  <hr>
   <div class= "row">
+
     <div class = "col-md-2 col-xs-1">
     	<%= form_for(@wall) do |f| %>
       	  <% @wall_grades.each do |grade| %>	
@@ -16,7 +19,7 @@
     </div>
     <div class="col-md-10 col-xs-9 pull-right">
       <div id="container" style="margin: 10px; height: 300px"></div>
-      
+      <br><hr><br>
       <div id="gym_container" style="height: 300px"></div>
     </div>
   </div>
@@ -24,35 +27,52 @@
     <button class="btn btn-warning" id="reset" >Reset to previous spread</button>
     <button class="btn btn-danger" id="clear">Clear all selections</button>
     <hr>
-    <%= link_to 'Back', :back, class: "btn btn-primary" %>
+    <%= link_to "Back", wall_path, class: "btn btn-primary" %>
 </div>
+
+<h2 id="test"></h2>
 
 <script>
 var grades = [];
-var count = [];
-var total = 0;
+var wallCount = [];
+var wallTotal = 0;
+var gymCount = [];
+var gymTotal = 0;
+var currentGymSpread = <%= @ideal_gym_spread %>
 
 function getValues() {
+  grades = [];
+  wallCount = [];
+  wallTotal = 0;
+  gymCount = [];
+  gymTotal = 0
   $('select').each(function() {
-    count.push(parseInt(this.value, 10));
-    total+=parseInt(this.value, 10)
+    wallCount.push(parseInt(this.value, 10));
+    wallTotal+=parseInt(this.value, 10)
   });
   $('label').each(function() {
     grades.push(this.innerHTML)
-  })
-
+  });
+  for(var i=0; i< grades.length; i++) {
+    gymCount.push(currentGymSpread[i]+wallCount[i]);
+  };
+  for (var i=gymCount.length; i--;) {
+     gymTotal+=gymCount[i];
+  }
 };
 
 function updateChart() {
-  grades = [];
-  count = [];
-  total = 0;
   getValues();
   var chart = $('#container').highcharts();
   chart.series[0].setVisible(false);
-  chart.series[0].setData(count);
+  chart.series[0].setData(wallCount);
   chart.series[0].setVisible(true, true);
-  chart.setTitle({text: total+" Climbs Total"})
+  chart.setTitle({text: "Target: "+wallTotal+" Climbs on Wall"})
+  var gymChart = $('#gym_container').highcharts();
+  gymChart.series[0].setVisible(false);
+  gymChart.series[0].setData(gymCount);
+  gymChart.series[0].setVisible(true, true);
+  gymChart.setTitle({text: "Target: "+gymTotal+" Climbs in Gym"})
 };
 
 $(document).ready(function() {
@@ -63,7 +83,7 @@ $(document).ready(function() {
         type: 'column'
       },
       title: {
-        text: total+" Climbs Total"
+        text: "Target: "+wallTotal+" Climbs on Wall"
       },
       legend: {
             enabled: false
@@ -76,8 +96,25 @@ $(document).ready(function() {
         minTickInterval: 1,
         title: false
       },
+      tooltip: {
+        formatter: function() {
+          return this.x +': '+ this.y
+        }
+      },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            enabled: true,
+            inside: true,
+            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+            style: {
+                textShadow: '0 0 3px black'
+            }
+          }
+        }
+      },
       series: [{
-        data: count
+        data: wallCount
       }],
     });
   });
@@ -88,7 +125,7 @@ $(document).ready(function() {
         type: 'column'
       },
       title: {
-        text: 'Gym Spread'
+        text: "Target: "+gymTotal+" Climbs in Gym"
       },
       legend: {
         enabled: false
@@ -101,8 +138,26 @@ $(document).ready(function() {
         minTickInterval: 1,
         title: false
       },
+      tooltip: {
+        formatter: function() {
+          return this.x +': '+ this.y
+        }
+      },
+      plotOptions: {
+        column: {
+          color: '#0d233a',
+          dataLabels: {
+            enabled: true,
+            inside: true,
+            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+            style: {
+                textShadow: '0 0 3px black'
+            }
+          }
+        }
+      },
       series: [{
-        data: count
+        data: gymCount
       }],
     });
   });

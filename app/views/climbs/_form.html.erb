@@ -24,7 +24,8 @@
   </div>
   <div class="field">
     <%= f.label :color %><br>
-    <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %>
+    <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %><br>
+    <%= f.text_field :color, disabled: true, id: "color_input", style: "display: none" %>
   </div>
   <% if (@wall.nil? && @climb.climb_type==='Boulder') || (!@wall.nil? && @wall.wall_type==='Boulder') %>
     <div class="field">
@@ -40,7 +41,8 @@
 
   <div class="field">
     <%= f.label :setter %><br>
-    <%= f.text_field :setter %>
+    <%= f.select :setter, options_for_select(@setters, @climb.setter) %><br>
+    <%= f.text_field :setter, id: "setter_input", disabled: true, style: "display: none" %>
   </div>
 
   <% unless @wall===nil %>
@@ -52,4 +54,24 @@
     <%= f.submit class: "btn btn-success"%>
   </div>
 <% end %>
+
+<script>
+$(document).ready(function(){
+  $( "#climb_color" ).change(function() {
+    if ($(this).val() == "Other") {
+      $("#color_input").prop("disabled", false).show()
+    } else {
+      $("#color_input").prop("disabled", true).hide()
+    };    
+  });
+
+  $( "#climb_setter" ).change(function() {
+    if ($(this).val() == "Other") {
+      $("#setter_input").prop("disabled", false).show()
+    } else {
+      $("#setter_input").prop("disabled", true).hide()
+    };    
+  });
+});
+</script>
 

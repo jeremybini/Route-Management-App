@@ -41,30 +41,34 @@ class GymsController < ApplicationController
 
     @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "There are "+@gym.climbs.active.boulder.count.to_s+" active boulders at "+@gym.name)
-      f.subtitle({ :text => "Ideal total: "+@ideal_boulder_spread.inject(:+).to_s })
+      f.chart({:defaultSeriesType=>"column"})
       f.xAxis(:categories => @boulder_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @boulder_grade_spread)
-      f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_boulder_spread)
+      if current_user && current_user.routesetter?
+        f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_boulder_spread)
+        f.subtitle({ :text => "Ideal total: "+@ideal_boulder_spread.inject(:+).to_s })
+      end
       f.yAxis [
         {:title => {:text => "Total Climbs"}, :allowDecimals => false },
       ]
-
+      f.plotOptions({:column => {:dataLabels => {:enabled => true, :defer => true, :inside => true, :color => 'white', :style => { :textShadow => '0 0 3px black'}}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
-      f.chart({:defaultSeriesType=>"column"})
     end
 
     @route_chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "There are "+@gym.climbs.active.route.count.to_s+" active routes at "+@gym.name)
-      f.subtitle({ :text => "Ideal total: "+@ideal_route_spread.inject(:+).to_s })
+      f.chart({:defaultSeriesType=>"column"})
       f.xAxis(:categories => @route_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @route_grade_spread)
-      f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_route_spread)
+      if current_user && current_user.routesetter?  
+        f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_route_spread)
+        f.subtitle({ :text => "Ideal total: "+@ideal_route_spread.inject(:+).to_s })
+      end
       f.yAxis [
         {:title => {:text => "Total Climbs"}, :allowDecimals => false },
       ]
-
+      f.plotOptions({:column => {:dataLabels => {:enabled => true, :inside => true, :color => 'white', :style => { :textShadow => '0 0 3px black'}}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
-      f.chart({:defaultSeriesType=>"column"})
     end
   end
 

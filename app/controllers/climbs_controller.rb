@@ -1,5 +1,6 @@
 class ClimbsController < ApplicationController
   before_action :set_climb, only: [:show, :edit, :update, :archive, :destroy]
+  before_action :find_setters, only: [:new, :create, :edit, :update]
   before_action :require_routesetter, only: [:new, :edit, :create, :update, :archive, :destroy]
 
   # GET wall/:id/routes
@@ -8,9 +9,9 @@ class ClimbsController < ApplicationController
   # which is better??
   # GET /routes.json
 
-  def index
-     @climbs = @wall.climbs.active
-  end
+  # def index
+  #    @climbs = @wall.climbs.active
+  # end
 
   # GET /routes/1
   # GET /routes/1.json
@@ -88,6 +89,14 @@ class ClimbsController < ApplicationController
       @climb = Climb.find(params[:id])
     end
 
+    def find_setters
+      @all_setters = User.where(role: ["routesetter", "admin"])
+      @setters = []
+      @all_setters.each do |setter|
+        @setters.push(setter.full_name)
+      end
+      @setters.push("Other")
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def climb_params
       params.require(:climb).permit(:climb_type, :color, :grade, :grade_enum, :setter, :wall_id, :image, :active)
