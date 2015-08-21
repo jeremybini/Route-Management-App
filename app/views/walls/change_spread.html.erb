@@ -1,0 +1,128 @@
+<div class="container">
+  <div class= "row">
+    <div class = "col-md-2 col-xs-1">
+    	<%= form_for(@wall) do |f| %>
+      	  <% @wall_grades.each do |grade| %>	
+    		    <div class="field">
+    	        <%= f.label grade, grade %><br>
+              <%= f.select grade, (0..10), class: "grade_select"%>
+      		  </div>
+      	  <% end %>
+      	  <br>
+      	  <div class="actions">
+        	  <%= f.submit class: "btn btn-success" %>
+      	  </div>
+    	<% end %>
+    </div>
+    <div class="col-md-10 col-xs-9 pull-right">
+      <div id="container" style="margin: 10px; height: 300px"></div>
+      
+      <div id="gym_container" style="height: 300px"></div>
+    </div>
+  </div>
+  <hr>
+    <button class="btn btn-warning" id="reset" >Reset to previous spread</button>
+    <button class="btn btn-danger" id="clear">Clear all selections</button>
+    <hr>
+    <%= link_to 'Back', :back, class: "btn btn-primary" %>
+</div>
+
+<script>
+var grades = [];
+var count = [];
+var total = 0;
+
+function getValues() {
+  $('select').each(function() {
+    count.push(parseInt(this.value, 10));
+    total+=parseInt(this.value, 10)
+  });
+  $('label').each(function() {
+    grades.push(this.innerHTML)
+  })
+
+};
+
+function updateChart() {
+  grades = [];
+  count = [];
+  total = 0;
+  getValues();
+  var chart = $('#container').highcharts();
+  chart.series[0].setVisible(false);
+  chart.series[0].setData(count);
+  chart.series[0].setVisible(true, true);
+  chart.setTitle({text: total+" Climbs Total"})
+};
+
+$(document).ready(function() {
+  getValues();
+  $(function () { 
+    $('#container').highcharts({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: total+" Climbs Total"
+      },
+      legend: {
+            enabled: false
+      },
+      xAxis: {
+        categories: grades
+      },
+      yAxis: {
+        allowDecimals: false,
+        minTickInterval: 1,
+        title: false
+      },
+      series: [{
+        data: count
+      }],
+    });
+  });
+
+  $(function () { 
+    $('#gym_container').highcharts({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Gym Spread'
+      },
+      legend: {
+        enabled: false
+      },
+      xAxis: {
+        categories: grades
+      },
+      yAxis: {
+        allowDecimals: false,
+        minTickInterval: 1,
+        title: false
+      },
+      series: [{
+        data: count
+      }],
+    });
+  });
+});
+
+$("#reset").on("click", function () {
+  $('.field option').prop('selected', function() {
+      return this.defaultSelected;
+  });
+  updateChart();
+});
+
+$("#clear").on("click", function () {
+  $('.field option').prop('selected', function() {
+    return 0;
+  });
+  updateChart();
+});
+
+$( "select" ).change(function() {
+  updateChart();
+});
+</script>

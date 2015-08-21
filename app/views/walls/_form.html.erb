@@ -1,7 +1,7 @@
-<%= simple_form_for([@gym, @wall]) do |f| %>
+<%= form_for([@gym, @wall]) do |f| %>
   <% if @wall.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@wall.errors.count, "error") %> prohibited this wall from being saved:</h2>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(@wall.errors.count, "error") %> prohibited this wall from being saved:</h4>
 
       <ul>
       <% @wall.errors.full_messages.each do |message| %>
@@ -21,13 +21,14 @@
   </div>
   <div class="field">
     <%= f.label :wall_type %><br>
-    <%= f.select :wall_type, options_for_select([['Boulder', 'Boulder'], ['Route', 'Route']], @wall.wall_type) %>
+    <%= f.select :wall_type, options_for_select(['Boulder', 'Route'], @wall.wall_type) %>
   </div>
 
   <% unless @gym===nil %>
     <%= f.hidden_field :gym_id, :value => @gym.id  %><br>
   <% end %>
   <br>
+
   <div class="actions">
     <%= f.submit class: "btn btn-success" %>
   </div>

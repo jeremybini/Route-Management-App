@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818030223) do
+ActiveRecord::Schema.define(version: 20150820165433) do
 
   create_table "climbs", force: :cascade do |t|
     t.string   "climb_type"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20150818030223) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.text     "wall_spread"
   end
 
   add_index "walls", ["gym_id"], name: "index_walls_on_gym_id"

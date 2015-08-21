@@ -24,21 +24,22 @@
   <hr>
   <div class="climb_sort">
   <h4>Sort by:</h4>
-      <%= link_to "Grade", :sort => "grade" %>
-      <%= link_to "Setter", :sort => "setter" %>
-      <%= link_to "Color", :sort => "color" %>
+    <%= link_to "Grade", :sort => "grade" %>
+    <%= link_to "Setter", :sort => "setter" %>
+    <%= link_to "Color", :sort => "color" %>
   <div class="row">
     <% @climbs.each do |climb| %>
       <div class="col-md-4">
-        <div class="panel panel-default" style="border: 1px solid <%= climb.color %>">
-          <div class="panel-heading">
-            <div class="row">
-              <%= link_to climb.grade+" "+climb.color.capitalize, climb %>
-            </div>
+        <div class="panel panel-default" style="border: 2px solid <%= climb.color %>">
+          <div class="panel-heading clearfix">
+              <h4 class="panel-title pull-left" style="padding-top: 7.5px;"><%= link_to climb.grade+" "+climb.color.capitalize, climb %></h4><%= link_to 'Edit Route', edit_climb_path(climb), class: "btn btn-info btn-sm pull-right" %>
           </div>
-          <div class="panel body">
+          <div class="panel body" style="margin-bottom: 0px; padding: 5px 12.5px">
+              <p class="pull-right">Type: <%= climb.climb_type %></p>
               <p>Setter: <%= climb.setter %></p>
-              <p>Type: <%= climb.climb_type %></p>
+              <p>Grade: <%= climb.grade %></p>
+              <%= link_to 'Strip Route', archive_climb_path(climb), method: :put, data: { confirm: 'Are you sure? This will archive the route.' }, class: "btn btn-warning btn-sm pull-right" %>
+              <p>Rating: </p>
           </div>
         </div>
       </div>
@@ -46,6 +47,7 @@
   </div>
 </div>
   <%= link_to "Edit Wall Info", edit_wall_path(@wall), class: "btn btn-info" if current_user && current_user.admin? %>
+  <%= link_to "Edit Preferred Grade Spread", change_spread_wall_path(@wall), class: "btn btn-primary" if current_user && current_user.admin? %>
 </div>
 
 <hr>

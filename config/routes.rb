@@ -15,12 +15,16 @@ Rails.application.routes.draw do
   resources :password_resets
 
   resources :gyms do
+    member do
+      get 'change_spread'
+    end
     resources :walls, only: [:index, :new, :create]
   end
 
   resources :walls, only: [:show, :edit, :update, :destroy] do
     member do
         put 'archive'
+        get 'change_spread'
     end
     resources :climbs, shallow: true do
       member do

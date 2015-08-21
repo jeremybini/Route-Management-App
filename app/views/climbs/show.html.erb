@@ -34,8 +34,8 @@
     <% if @climb.active %>
       <% if current_user && current_user.routesetter? %>
         <%= link_to 'Edit', edit_climb_path(@climb), class: "btn btn-info" %>
-        <%= link_to 'Strip Route', archive_climb_path(@climb), method: :put, data: { confirm: 'Are you sure? This will archive the route.' }, class: "btn btn-warning" %>
-        <%= link_to 'Delete Route', climb_path(@climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
+        <%= link_to 'Strip', archive_climb_path(@climb), method: :put, data: { confirm: 'Are you sure? This will archive the route.' }, class: "btn btn-warning" %>
+        <%= link_to 'Delete', climb_path(@climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
       <% end %>
     <% else %>
       <h4>This climb has been archived.</h4>

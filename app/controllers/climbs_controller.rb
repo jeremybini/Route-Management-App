@@ -35,9 +35,10 @@ class ClimbsController < ApplicationController
 
     respond_to do |format|
       if @climb.save
-        format.html { redirect_to new_wall_climb_path(@climb.wall), notice: 'Added: '+@climb.color+' '+@climb.grade+', set by '+@climb.setter+'.' }
+        format.html { redirect_to new_wall_climb_path(@climb.wall), notice: 'Added to '+@climb.wall.name+': '+@climb.color+' '+@climb.grade+', set by '+@climb.setter+'.' }
         format.json { render :show, status: :created, location: @climb }
       else
+        @wall = Wall.find(params[:wall_id])
         format.html { render :new }
         format.json { render json: @climb.errors, status: :unprocessable_entity }
       end
@@ -89,6 +90,6 @@ class ClimbsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def climb_params
-      params.require(:climb).permit(:climb_type, :color, :grade, :grade_rank, :setter, :wall_id, :image, :active)
+      params.require(:climb).permit(:climb_type, :color, :grade, :grade_enum, :setter, :wall_id, :image, :active)
     end
 end

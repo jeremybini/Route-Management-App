@@ -15,28 +15,38 @@ class GymsController < ApplicationController
     @boulder_walls = @gym.walls.boulder_wall.order("name")
     @route_walls = @gym.walls.route_wall.order("name")
 
-    @route_grades = Gym.all_route_grades
-    @boulder_grades= Gym.all_boulder_grades
-    
-    @boulder_grade_spread = []
+    @route_grades = Climb::ROUTE_GRADES
+    @boulder_grades = Climb::BOULDER_GRADES
 
+    @boulder_grade_spread = []
     @boulder_grades.each do |grade|
-      @boulder_grade_spread.push(@gym.climbs.active.where("grade = '"+grade+"'").count)
+      @boulder_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
+    end
+
+    @ideal_boulder_spread = []
+    @boulder_grades.each do |grade|
+      count = 0
+      @gym.walls.each do |wall|
+        count += wall.wall_spread[grade].to_i
+      end
+      @ideal_boulder_spread.push(count)
     end
 
     @route_grade_spread = []
-
     @route_grades.each do |grade|
-      @route_grade_spread.push(@gym.climbs.active.where("grade = '"+grade+"'").count)
+      @route_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
     end
+
+    @ideal_route_spread = []
 
     @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "There are "+@gym.climbs.active.boulder.count.to_s+" active boulders at "+@gym.name)
+      f.subtitle({ :text => "Ideal total: "+@ideal_boulder_spread.inject(:+).to_s })
       f.xAxis(:categories => @boulder_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @boulder_grade_spread)
-
+      f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_boulder_spread)
       f.yAxis [
-        {:title => {:text => "Total Climbs"} },
+        {:title => {:text => "Total Climbs"}, :allowDecimals => false },
       ]
 
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
@@ -45,29 +55,17 @@ class GymsController < ApplicationController
 
     @route_chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "There are "+@gym.climbs.active.route.count.to_s+" active routes at "+@gym.name)
+      f.subtitle({ :text => "Ideal total: "+@ideal_route_spread.inject(:+).to_s })
       f.xAxis(:categories => @route_grades)
       f.series(:name => "Current Amount", :yAxis => 0, :data => @route_grade_spread)
-
+      f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_route_spread)
       f.yAxis [
-        {:title => {:text => "Total Climbs"} },
+        {:title => {:text => "Total Climbs"}, :allowDecimals => false },
       ]
 
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
       f.chart({:defaultSeriesType=>"column"})
     end
-    #boulder_grade_spread = Route.group("grade = "+@boulder_grades).count
-    
-    # @route_grade_spread = Route.where("route_type = 'Route'").group("grade").order("grade asc").count
-    # @route_grade_spread.each do |grade, count|
-    #   @route_grades.push(grade)
-    #   @route_grades_count.push(count)
-    # end
-
-    # @boulder_grade_spread = Route.where("route_type = 'Boulder'").group("grade").count
-    # @boulder_grade_spread.each do |grade, count|
-    #   @boulder_grades.push(grade)
-    #   @boulder_grades_count.push(count)
-    # end
   end
 
   # GET /gyms/new

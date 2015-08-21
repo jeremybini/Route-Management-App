@@ -1,7 +1,7 @@
-<%= simple_form_for([@wall, @climb]) do |f| %>
+<%= form_for([@wall, @climb]) do |f| %>
   <% if @climb.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@climb.errors.count, "error") %> prohibited this route from being saved:</h2>
+    <div id="error_explanation" class="alert alert-danger" >
+      <h4><%= pluralize(@climb.errors.count, "error") %> prohibited this route from being saved:</h4>
 
       <ul>
       <% @climb.errors.full_messages.each do |message| %>
@@ -24,21 +24,17 @@
   </div>
   <div class="field">
     <%= f.label :color %><br>
-    <%= f.select :color, options_for_select([['Black', 'Black'], ['Blue', 'Blue'], ['Green', 'Green'], ['Lime', 'Lime'], ['Orange', 'Orange'], ['Pink', 'Pink'], ['Purple', 'Purple'], ['Red', 'Red'], ['Teal', 'Teal'], ['White', 'White'], ['Yellow', 'Yellow'], ['Other', 'some other color']], @climb.color) %>
+    <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %>
   </div>
   <% if (@wall.nil? && @climb.climb_type==='Boulder') || (!@wall.nil? && @wall.wall_type==='Boulder') %>
     <div class="field">
       <%= f.label :grade %><br>
-      <%= f.select :grade, options_for_select([['VB', 'VB'], ['V0', 'V0'], ['V1', 'V1'], ['V2', 'V2'], ['V3', 'V3'], ['V4', 'V4'], ['V5', 'V5'], ['V6', 'V6'], ['V7', 'V7'], ['V8', 'V8'], ['V9', 'V9'], ['V10', 'V10'], ['V11', 'V11'], ['V12', 'V12']], @climb.grade) %>
-    </div>
-    <div class="field">
-      <%= f.label "Grade alternate" %><br>
-      <%= f.select :grade_rank, Climb.grade_ranks.keys.to_a %>
+      <%= f.select :grade, options_for_select(Climb::BOULDER_GRADES, @climb.grade) %> 
     </div>
   <% else %>
     <div class="field">
       <%= f.label :grade %><br>
-      <%= f.select :grade, options_for_select([['5.5', '5.5'], ['5.6', '5.6'], ['5.7', '5.7'], ['5.8', '5.8'], ['5.9', '5.9'], ['5.10a', '5.10a'], ['5.10b', '5.10b'], ['5.10c', '5.10c'], ['5.10d', '5.10d'], ['5.11a', '5.11a'], ['5.11b', '5.11b'], ['5.11c', '5.11c'], ['5.11d', '5.11d'], ['5.12a', '5.12a'], ['5.12b', '5.12b'], ['5.12c', '5.12c'], ['5.12d', '5.12d'], ['5.13a', '5.13a'], ['5.13b', '5.13b'], ['5.13c', '5.13c'], ['5.13d', '5.13d']], @climb.grade) %>
+      <%= f.select :grade, options_for_select(Climb::ROUTE_GRADES, @climb.grade) %> 
     </div>
   <% end %>
 
@@ -49,7 +45,7 @@
 
   <% unless @wall===nil %>
     <%= f.hidden_field :wall_id, :value => @wall.id  %><br>
-    <%= f.hidden_field :route_type, :value => @wall.wall_type  %>
+    <%= f.hidden_field :climb_type, :value => @wall.wall_type  %>
   <% end %>
   <br>
   <div class="actions">

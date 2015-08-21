@@ -3,8 +3,7 @@ class CreateRoutes < ActiveRecord::Migration
     create_table :routes do |t|
       t.string :climb_type
       t.string :color
-      t.integer :boulder_grade
-      t.integer :route_grade
+      t.integer :grade, default: 0
       t.string :setter
       t.boolean :active, default: true
       t.belongs_to :wall, index: true, foreign_key: true
