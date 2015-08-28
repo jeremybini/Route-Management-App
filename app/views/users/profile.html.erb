@@ -1,0 +1,9 @@
+Profile
+
+<p>Name: <%= @user.full_name %></p>
+<p>Email: <%= @user.email %></p>
+<hr>
+<%= link_to "Edit Profile", edit_user_path %>
+<% if admin %>
+<%= link_to "Index", users_path %>
+<% end %>

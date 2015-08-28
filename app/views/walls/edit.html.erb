@@ -1,4 +1,6 @@
 <div class="container">
+  <div class="row">
+  	<div class="col-md-12">
 	<h1>Editing Wall</h1>
 	<hr>
 
@@ -6,6 +8,12 @@
 
 	<hr>
 
+	<%= link_to 'Delete Wall', wall_path(@wall), class: "btn btn-danger pull-lg-right pull-md-right pull-sm-right", method: :delete, data: { confirm: 'Are you sure? This will permanently this wall.' } if current_user && current_user.admin? %>
+	<span class="visible-xs hidden-sm"><hr></span>
 	<%= link_to 'Back to Gym', gym_path(@gym||=@wall.gym), class: "btn btn-primary" %>
 	<%= link_to "Edit Preferred Grade Spread", change_spread_wall_path(@wall), class: "btn btn-info" if current_user && current_user.admin? %>
+	
+	
+</div>
+  </div>
 </div>

@@ -11,6 +11,7 @@ class Climb < ActiveRecord::Base
 
   has_attached_file :image, :styles => { large: "600x600>", medium: "300x300>", thumb: "150x150>" }
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+  before_save :extract_dimensions
 
   #enum grade: { "VB": 0, "V0": 1, "V1": 2, "V2": 3, "V3": 4, "V4": 5, "V5": 6, "V6": 7, "V7": 8, "V8": 9, "V9": 10, "V10": 11, "V11": 12, "V12": 13, "V13": 14, "V14": 15, "V15": 16, "V16": 17, "V?": 18, "5.5": 19, "5.6": 20, "5.7": 21, "5.8": 22, "5.9": 23, "5.10a": 24, "5.10b": 25, "5.10c": 26, "5.10d": 27, "5.11a": 28, "5.11b": 29, "5.11c": 30, "5.11d": 31, "5.12a": 32, "5.12b": 33, "5.12c": 34, "5.12d": 35, "5.13a": 36, "5.13b": 37, "5.13c": 38, "5.13d": 39, "5.14a": 40, "5.14b": 41, "5.14c": 42, "5.14d": 43, "5.15a": 44, "5.15b": 45, "5.15c": 46, "5.?": 47 }
   
@@ -22,4 +23,18 @@ class Climb < ActiveRecord::Base
   ALL_GRADES = BOULDER_GRADES+ROUTE_GRADES
 
   COLORS = ['Black', 'Blue', 'Green', 'Lime', 'Orange', 'Pink', 'Purple', 'Red', 'Teal', 'White', 'Yellow', 'Other']
+
+  def extract_dimensions
+    return unless image?
+      tempfile = upload.queued_for_write[:original]
+    unless tempfile.nil?
+      geometry = Paperclip::Geometry.from_file(tempfile)
+      if geometry.width.to_i/geometry.height.to_i > 1
+        self.image_orientation = "Landscape"
+      else
+        self.image_orientation = "Portrait"
+      end
+    end
+  end
+  
 end

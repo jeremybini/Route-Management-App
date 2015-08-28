@@ -37,3 +37,128 @@ html {
 div.field_with_errors {
   display: inline;
 }
+
+/* main image on wall page, centers within div..should have one for portrait and one for landscape.. */
+
+#wall_display_image {
+    display: inline-block;
+    width: 100%;
+    height: 400px;
+    margin: 5px;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.walls_thumbnails {
+  display: inline-block;
+  max-width: 100%;
+  width: 100%;
+  height: 150px;
+  margin: 0px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+  }
+}
+
+/* below: new pull-size-direction classes for varying screen sizes */
+
+@media (max-width: $screen-xs-max) {
+    .pull-xs-left {
+        float: left;
+    }
+    .pull-xs-right {
+        float: right;
+    }
+    .pull-xs-center {
+        text-align: center;
+        margin: auto;
+    }
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+    .pull-sm-left {
+        float: left;
+    }
+    .pull-sm-right {
+        float: right;
+    }
+    .pull-sm-center {
+        text-align: center;
+        margin: auto;
+    }
+}
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+    .pull-md-left {
+        float: left;
+    }
+    .pull-md-right {
+        float: right;
+    }
+    .pull-md-center {
+        text-align: center;
+        margin: auto;
+    }
+}
+
+@media (min-width: $screen-lg-min) {
+    .pull-lg-left {
+        float: left;
+    }
+    .pull-lg-right {
+        float: right;
+    }
+    .pull-lg-center {
+        text-align: center;
+        margin: auto;
+    }
+}
+
+/*climb tags within wall page*/
+
+.panel-default {
+  border-radius: 5px;
+
+}
+
+.panel-color {
+  border-bottom: 1px solid #DDDDDD;
+  height: 13px;
+  opacity: .75;
+}
+
+.btn {
+  margin-bottom: 5px;
+}
+
+/* anchor markup to make full containing div clickable */
+
+a.climb-link {
+  text-decoration: none;
+  color: #232a2b;
+
+  .panel-heading {
+    background-color: #f4f4f4;
+  }
+}
+
+.btn-default {
+  background-color: #f4f4f4
+}
+
+btn-default:hover { 
+  background-color: #d4d4d4
+}
+
+
+
+
+
+

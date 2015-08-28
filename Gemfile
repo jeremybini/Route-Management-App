@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 gem 'lazy_high_charts'
+
 gem "paperclip", "~> 4.3"
+gem 'aws-sdk'
+
 gem 'simple_form'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'

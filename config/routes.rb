@@ -10,21 +10,30 @@ Rails.application.routes.draw do
   get '/about' => 'pages#about'
   get '/contact' => 'pages#contact'
 
-  resources :users
+  resources :users do
+    member do
+      get 'profile'
+      get 'admin'
+      get 'routesetter'
+    end
+  end
+
   resources :sessions
   resources :password_resets
 
   resources :gyms do
     member do
       get 'change_spread'
+      put 'remove_image'
     end
     resources :walls, only: [:index, :new, :create]
   end
 
   resources :walls, only: [:show, :edit, :update, :destroy] do
     member do
-        put 'archive'
         get 'change_spread'
+        put 'archive'
+        put 'remove_image'
     end
     resources :climbs, shallow: true do
       member do

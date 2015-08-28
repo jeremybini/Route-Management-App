@@ -18,10 +18,10 @@ class User < ActiveRecord::Base
 	end
 
 	def routesetter?
-		self.role === 'routesetter' || self.role === 'admin'
+		self.role === 'Routesetter' || self.role === 'Admin'
 	end
 
 	def admin?
-		self.role === 'admin'
+		self.role === 'Admin'
 	end
 end

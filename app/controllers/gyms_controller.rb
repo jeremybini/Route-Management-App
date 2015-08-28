@@ -1,7 +1,7 @@
 class GymsController < ApplicationController
-  before_action :set_gym, only: [:show, :edit, :update, :destroy]
+  before_action :set_gym, only: [:show, :edit, :update, :destroy, :remove_image]
   before_action :require_routesetter, only: [:edit, :update]
-  before_action :require_admin, only: [:new, :create, :destroy]
+  before_action :require_admin, only: [:new, :create, :destroy, :remove_image]
 
   # GET /gyms
   # GET /gyms.json
@@ -51,7 +51,7 @@ class GymsController < ApplicationController
       f.yAxis [
         {:title => {:text => "Total Climbs"}, :allowDecimals => false },
       ]
-      f.plotOptions({:column => {:dataLabels => {:enabled => true, :defer => true, :inside => true, :color => 'white', :style => { :textShadow => '0 0 3px black'}}}})
+      f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
     end
 
@@ -67,7 +67,7 @@ class GymsController < ApplicationController
       f.yAxis [
         {:title => {:text => "Total Climbs"}, :allowDecimals => false },
       ]
-      f.plotOptions({:column => {:dataLabels => {:enabled => true, :inside => true, :color => 'white', :style => { :textShadow => '0 0 3px black'}}}})
+      f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
     end
   end
@@ -97,12 +97,25 @@ class GymsController < ApplicationController
     end
   end
 
+  def remove_image
+    @gym.image = nil
+    respond_to do |format|
+      if @gym.save
+        format.html { redirect_to @gym, alert: 'Gym photo successfully deleted.' }
+        format.json { render :show, status: :created, location: @gym }
+      else
+        format.html { render :new }
+        format.json { render json: @gym.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PATCH/PUT /gyms/1
   # PATCH/PUT /gyms/1.json
   def update
     respond_to do |format|
       if @gym.update(gym_params)
-        format.html { redirect_to @gym, notice: 'Gym was successfully updated.' }
+        format.html { redirect_to @gym, info: 'Gym was successfully updated.' }
         format.json { render :show, status: :ok, location: @gym }
       else
         format.html { render :edit }
@@ -116,7 +129,7 @@ class GymsController < ApplicationController
   def destroy
     @gym.destroy
     respond_to do |format|
-      format.html { redirect_to gyms_url, notice: 'Gym was successfully destroyed.' }
+      format.html { redirect_to gyms_url, alert: 'Gym was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

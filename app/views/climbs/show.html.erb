@@ -1,7 +1,6 @@
 <div class="container">
   <div class="row">
     <%= link_to 'Back to Wall', wall_path(@wall), class: "btn btn-primary" %>
-    <p id="notice"><%= notice %></p>
     
     <!-- MAKE LOOK NICER!!!!!! -->
 
@@ -31,15 +30,15 @@
       <strong>Wall:</strong>
       <%= @climb.wall.try(:name) %>
     </p>
-    <% if @climb.active %>
-      <% if current_user && current_user.routesetter? %>
+    <% if routesetter %>
+      <% if @climb.active %>
         <%= link_to 'Edit', edit_climb_path(@climb), class: "btn btn-info" %>
         <%= link_to 'Strip', archive_climb_path(@climb), method: :put, data: { confirm: 'Are you sure? This will archive the route.' }, class: "btn btn-warning" %>
-        <%= link_to 'Delete', climb_path(@climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
+      <% else %>
+        <h4>This climb has been archived.</h4>
+        <%= link_to "Reactivate Climb", archive_climb_path(@climb), method: :put, data: { confirm: 'Are you sure you want to reactivate this route?' }, class: "btn btn-warning" %>
       <% end %>
-    <% else %>
-      <h4>This climb has been archived.</h4>
-      <%= link_to "Reactivate Climb", archive_climb_path(@climb), method: :put, data: { confirm: 'Are you sure you want to reactivate this route?' }, class: "btn btn-warning" %>
+      <%= link_to 'Delete', climb_path(@climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
     <% end %>
   </div>
 </div>

@@ -5,6 +5,6 @@
 	<%= render 'form' %>
 
 	<hr>
-	<%= link_to 'Back', :back, class: "btn btn-primary" %>
+	<%= link_to "Back to "+@climb.wall.name, wall_path(@climb.wall), class: "btn btn-primary" %>
 	<%= link_to 'Delete', climb_path(@climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
 </div>

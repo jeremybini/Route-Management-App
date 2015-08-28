@@ -1,35 +1,36 @@
 <div class="container">
-  <p id="notice"><%= notice %></p>
-    <div class="row">
-      <div class="col-md-12">
-        <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
-        <h2><%= @gym.name %></h2>
-        <p>Location: <%= @gym.location %></p>
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
+      <h2><%= @gym.name %></h2>
+      <p>Location: <%= @gym.location %></p>
+      <% if routesetter %>
         <hr>
-        <%= link_to 'Edit gym info', edit_gym_path(@gym), class: "btn btn-info" if current_user && current_user.routesetter? %>
-        <%= link_to "Create a New Wall", new_gym_wall_path(@gym), class: "btn btn-success" if current_user && current_user.admin? %>
-        <hr>
-      </div>
+        <%= link_to 'Edit gym info', edit_gym_path(@gym), class: "btn btn-info" %>
+      <% end %>
+      <%= link_to "Create a New Wall", new_gym_wall_path(@gym), class: "btn btn-success" if admin %>
+      <hr>
     </div>
+  </div>
 
-    <div id="boulder_chart" style="width:100%; height:400px;"></div>
+  <div id="boulder_chart" style="width:100%; height:400px;"></div>
 
-    <%#= image_tag @gym.image.url(:medium) if @gym.image.present? %>
-
-    <div class="row">
-      <% @boulder_walls.each do |wall| %>
-        <div class="col-md-4">
-          <div class="thumbnail">
-          	<%#= image_tag wall.image.url(:thumb) if wall.image.present? %>
-            <div class="caption">
-              <h4><%= link_to wall.name.capitalize, wall %></h4>
-              <p><%= wall.climbs.active.count %></p>
-            </div>
+  <div class="row">
+    <% @boulder_walls.each do |wall| %>
+      <div class="col-sm-3">
+        <div class="thumbnail">
+          <% if wall.image.present? %>
+          <div class="walls_thumbnails" style="background-image: url(<%=wall.image.url(:large) %>)"></div>
+          <% end %>
+          <div class="caption">
+            <h4><%= link_to wall.name.capitalize, wall %></h4>
+            <p>Climbs: <span class="pan badge" style="padding: 3px 8px 5px 8px; margin-bottom: 1px"><%= wall.climbs.active.count %><span></p>
           </div>
         </div>
-      <% end %>
-    </div>
-    <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
 </div>
 
 <%= high_chart("boulder_chart", @boulder_chart) %>

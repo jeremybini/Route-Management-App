@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150820165433) do
+ActiveRecord::Schema.define(version: 20150828224637) do
 
   create_table "climbs", force: :cascade do |t|
     t.string   "climb_type"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150820165433) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.string   "image_orientation"
   end
 
   add_index "climbs", ["gym_id"], name: "index_climbs_on_gym_id"
@@ -44,18 +45,23 @@ ActiveRecord::Schema.define(version: 20150820165433) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.string   "image_orientation"
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "full_name"
     t.string   "email"
     t.string   "password_digest"
-    t.string   "role"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "role",                   default: "User"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   create_table "walls", force: :cascade do |t|
@@ -70,6 +76,7 @@ ActiveRecord::Schema.define(version: 20150820165433) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.text     "wall_spread"
+    t.string   "image_orientation"
   end
 
   add_index "walls", ["gym_id"], name: "index_walls_on_gym_id"

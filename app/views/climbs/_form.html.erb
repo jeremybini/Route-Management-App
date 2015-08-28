@@ -22,10 +22,19 @@
     <%= image_tag @climb.image.url(:thumb) if @climb.image.present? %>
     <%= f.file_field :image %>
   </div>
+  <div class-"field">
+    <%= f.label "Date set:" %><br>
+    <%= f.date_select :created_at, :order => [:day, :month, :year] %>
+  </div>
   <div class="field">
     <%= f.label :color %><br>
-    <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %><br>
-    <%= f.text_field :color, disabled: true, id: "color_input", style: "display: none" %>
+    <% if @climb.color && !(Climb::COLORS.include?(@climb.color)) %>
+      <%= f.select :color, options_for_select(Climb::COLORS, "Other") %><br>
+      <%= f.text_field :color, id: "color_input"%>
+    <% else %>
+      <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %><br>
+      <%= f.text_field :color, id: "color_input", disabled: true, style: "display: none" %>
+    <% end %>
   </div>
   <% if (@wall.nil? && @climb.climb_type==='Boulder') || (!@wall.nil? && @wall.wall_type==='Boulder') %>
     <div class="field">
@@ -41,8 +50,13 @@
 
   <div class="field">
     <%= f.label :setter %><br>
-    <%= f.select :setter, options_for_select(@setters, @climb.setter) %><br>
-    <%= f.text_field :setter, id: "setter_input", disabled: true, style: "display: none" %>
+    <% if @climb.setter && !(@setters.include?(@climb.setter)) %>
+      <%= f.select :setter, options_for_select(@setters, "Other") %><br>
+      <%= f.text_field :setter, id: "setter_input" %>
+    <% else %>
+      <%= f.select :setter, options_for_select(@setters, @climb.setter||=current_user.full_name) %><br>
+      <%= f.text_field :setter, id: "setter_input", disabled: true, style: "display: none" %>
+    <% end %>
   </div>
 
   <% unless @wall===nil %>

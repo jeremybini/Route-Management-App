@@ -1,0 +1,36 @@
+<div class="container">
+  <h1>Edit User</h1>
+  <hr>
+  <%= simple_form_for(@user) do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger">
+        <h4><%= pluralize(@user.errors.count, "error") %> prevented this account from being updated:</h4>
+
+        <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :full_name %><br>
+      <%= f.text_field :full_name %>
+    </div>
+    <div class="field">
+      <%= f.label :email %><br>
+      <%= f.text_field :email %>
+    </div>
+    <% if admin %>
+    <div class="field">
+      <%= f.label :role %>
+      <%= f.select :role, options_for_select(["Admin", "Routesetter", "User"], @user.role) %>
+    </div>
+    <% end %>
+    <hr>
+    <div class="actions">
+      <%= f.submit "Update Profile", class: "btn btn-success"%>
+    </div>
+  <% end %>
+</div>

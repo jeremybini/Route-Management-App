@@ -51,7 +51,7 @@ class ClimbsController < ApplicationController
   def update
     respond_to do |format|
       if @climb.update(climb_params)
-        format.html { redirect_to @climb, notice: 'Climb was successfully updated.' }
+        format.html { redirect_to @climb.wall, notice: @climb.color+" "+@climb.grade+" was successfully updated." }
         format.json { render :show, status: :ok, location: @climb }
       else
         format.html { render :edit }
@@ -64,10 +64,10 @@ class ClimbsController < ApplicationController
     @climb.toggle!(:active)
     respond_to do |format|
       if @climb.active === false
-        format.html { redirect_to wall_path(@climb.wall), notice: 'Climb was successfully archived.' }
+        format.html { redirect_to @climb.wall, warning: @climb.color+" "+@climb.grade+" was successfully archived." }
         format.json { head :no_content }
       else
-        format.html { redirect_to wall_path(@climb.wall), notice: 'Climb was reactivated!' }
+        format.html { redirect_to @climb.wall, info: @climb.color+" "+@climb.grade+" was reactivated!" }
         format.json { head :no_content }
       end
     end
@@ -78,7 +78,7 @@ class ClimbsController < ApplicationController
   def destroy
     @climb.destroy
     respond_to do |format|
-      format.html { redirect_to wall_path(@climb.wall), notice: 'Climb was successfully destroyed.' }
+      format.html { redirect_to @climb.wall, alert: @climb.color+" "+@climb.grade+" was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -90,7 +90,7 @@ class ClimbsController < ApplicationController
     end
 
     def find_setters
-      @all_setters = User.where(role: ["routesetter", "admin"])
+      @all_setters = User.where(role: ["routesetter", "admin"]).order("full_name")
       @setters = []
       @all_setters.each do |setter|
         @setters.push(setter.full_name)
@@ -99,6 +99,6 @@ class ClimbsController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def climb_params
-      params.require(:climb).permit(:climb_type, :color, :grade, :grade_enum, :setter, :wall_id, :image, :active)
+      params.require(:climb).permit(:climb_type, :color, :grade, :grade_enum, :setter, :wall_id, :image, :active, :created_at)
     end
 end

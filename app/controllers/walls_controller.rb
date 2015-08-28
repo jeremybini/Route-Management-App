@@ -1,7 +1,7 @@
 class WallsController < ApplicationController
-  before_action :set_wall, only: [:show, :edit, :update, :archive, :destroy, :change_spread]
+  before_action :set_wall, only: [:show, :edit, :update, :archive, :destroy, :change_spread, :remove_image]
   before_action :wall_type, only: [:show, :edit, :change_spread]
-  before_action :require_routesetter, only: [:archive, :edit, :create, :update, :change_spread]
+  before_action :require_routesetter, only: [:archive, :edit, :create, :update, :change_spread, :remove_image]
   before_action :require_admin, only: [:new, :destroy]
 
   helper_method :sort_climbs
@@ -38,7 +38,7 @@ class WallsController < ApplicationController
         f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
         f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
       end
-      f.plotOptions({:series => {:dataLabels => {:enabled => true, :defer => true, :inside => true, :color => 'white', :style => { :textShadow => '0 0 3px black'}}}})
+      f.plotOptions({:series => {:dataLabels => {:enabled => true, :color => 'black'}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
       f.chart({:defaultSeriesType=>"column"})
     end
@@ -61,7 +61,7 @@ class WallsController < ApplicationController
 
     respond_to do |format|
       if @wall.save
-        format.html { redirect_to @wall, notice: 'Wall was successfully created.' }
+        format.html { redirect_to @wall, notice: "The "+@wall.name.titleize+" was successfully created." }
         format.json { render :show, status: :created, location: @wall }
       else
         @gym = Gym.find(params[:gym_id])
@@ -76,7 +76,7 @@ class WallsController < ApplicationController
   def update
     respond_to do |format|
       if @wall.update(wall_params)
-        format.html { redirect_to @wall, notice: 'Wall was successfully updated.' }
+        format.html { redirect_to @wall.gym, info: @wall.name.titleize+' was successfully updated.' }
         format.json { render :show, status: :ok, location: @wall }
       else
         format.html { render :edit }
@@ -91,8 +91,21 @@ class WallsController < ApplicationController
       climb.update_attribute(:active, false)
     end
     respond_to do |format|
-      format.html { redirect_to wall_path(@wall), notice: 'Climbs were successfully archived.' }
+      format.html { redirect_to wall_path(@wall), warning: 'Climbs on the '+@wall.name.titleize+' were successfully archived.' }
       format.json { head :no_content }
+    end
+  end
+
+  def remove_image
+    @wall.image = nil
+    respond_to do |format|
+      if @wall.save
+        format.html { redirect_to @wall, alert: 'Wall photo successfully deleted.' }
+        format.json { render :show, status: :created, location: @wall }
+      else
+        format.html { render :new }
+        format.json { render json: @wall.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -114,9 +127,10 @@ class WallsController < ApplicationController
   # DELETE /walls/1
   # DELETE /walls/1.json
   def destroy
+    @gym = @wall.gym
     @wall.destroy
     respond_to do |format|
-      format.html { redirect_to walls_url, notice: 'Wall was successfully destroyed.' }
+      format.html { redirect_to gym_path(@gym), alert: 'The '+@wall.name.titleize+' was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

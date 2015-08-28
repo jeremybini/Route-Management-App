@@ -1,5 +1,4 @@
 <div class="container">
-  <p id="notice"><%= notice %></p>	
   <h1>New Climb</h1>
   <hr>
 
@@ -8,6 +7,6 @@
   <%= render 'form' %>
 
   <hr>
-  <%= link_to "Back to Wall", wall_path(@wall), class: "btn btn-primary" %>
+  <%= link_to "Back to "+@wall.name, wall_path(@wall), class: "btn btn-primary" %>
 </div>
 
