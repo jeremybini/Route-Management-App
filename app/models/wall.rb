@@ -1,5 +1,5 @@
 class Wall < ActiveRecord::Base
-	has_many :climbs
+	has_many :climbs, dependent: :destroy
 	belongs_to :gym
 
 	store :wall_spread, accessors: Climb::ALL_GRADES

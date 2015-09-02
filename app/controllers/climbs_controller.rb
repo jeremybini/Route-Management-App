@@ -33,10 +33,10 @@ class ClimbsController < ApplicationController
   # POST /routes.json
   def create
     @climb = Climb.new(climb_params)
-
+    @climb.setter_name||=@climb.setter.full_name
     respond_to do |format|
       if @climb.save
-        format.html { redirect_to new_wall_climb_path(@climb.wall), notice: 'Added to '+@climb.wall.name+': '+@climb.color+' '+@climb.grade+', set by '+@climb.setter+'.' }
+        format.html { redirect_to new_wall_climb_path(@climb.wall), notice: 'Added to '+@climb.wall.name+': '+@climb.color+' '+@climb.grade+', set by '+@climb.setter_name+'.' }
         format.json { render :show, status: :created, location: @climb }
       else
         @wall = Wall.find(params[:wall_id])
@@ -90,15 +90,12 @@ class ClimbsController < ApplicationController
     end
 
     def find_setters
-      @all_setters = User.where(role: ["routesetter", "admin"]).order("full_name")
-      @setters = []
-      @all_setters.each do |setter|
-        @setters.push(setter.full_name)
-      end
-      @setters.push("Other")
+      @all_registered_setters = User.where(role: ["Routesetter", "Admin"]).order("full_name")
+      #@registered_setter_names = @all_registered_setters.collect{|u| u.full_name}
+      @setters = @all_registered_setters.map{|u| [ u.full_name, u.id ] }.push(["Other", "Other"])
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def climb_params
-      params.require(:climb).permit(:climb_type, :color, :grade, :grade_enum, :setter, :wall_id, :image, :active, :created_at)
+      params.require(:climb).permit(:climb_type, :color, :grade, :grade_enum, :setter_name, :wall_id, :gym_id, :image, :active, :created_at, :setter_id)
     end
 end

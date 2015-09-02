@@ -1,9 +1,67 @@
-Profile
+<div class="container">
+  <div class="row">
+	<h3>Profile</h3>
+	<hr>
 
-<p>Name: <%= @user.full_name %></p>
-<p>Email: <%= @user.email %></p>
-<hr>
-<%= link_to "Edit Profile", edit_user_path %>
-<% if admin %>
-<%= link_to "Index", users_path %>
-<% end %>
+	<h5>Name: <%= @user.full_name %></h5>
+	<h5>Email: <%= @user.email %></h5>
+	<%= link_to "Edit Profile", edit_user_path, class: "btn btn-sm btn-info" %>
+	<% if admin %>
+	  <%= link_to "Admin Dashboard", admin_user_path(@user), class: "btn btn-sm btn-primary" %>
+	<% elsif routesetter %>
+	  <%= link_to "Routesetter Dashboard", routesetter_user_path(@user), class: "btn btn-sm btn-primary" %>
+	<% end %>
+	
+	<hr>
+
+	<h4>Sends</h4>
+	<table class="table table-striped">
+	  <tr>
+	    <th>Wall</th>
+	    <th>Grade</th>
+	    <th>Color</th>
+	    <th>First Sent</th>
+	    <th>Most Recent Send</th>
+	    <th>Number of times climbed</th>
+	    <th></th>
+	  </tr>
+ 
+	<% @user.sends.each do |send| %>
+	  <tr>
+	    <td><%= link_to send.climb.wall.name, wall_path(send.climb.wall) %></td>
+	    <td><%= link_to send.climb.grade, climb_path(send.climb) %></td>
+	    <td><%= send.climb.color %></td>
+	    <td><%= send.created_at.strftime('%D') %></td>
+	    <td>-</td>
+	    <td>-</td>
+	    <td><%= link_to 'Delete Send', send_path(send), class: "btn btn-xs btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this send?' } %></td>
+	  </tr>
+	<% end %>
+	</table>
+
+	<hr>
+
+	<h4>Climbs Set</h4>
+	<h5>Total: <%= @user.set_climbs.count.to_s %></h5>
+	<table class="table table-striped">
+	  <tr>
+	    <th>Wall</th>
+	    <th>Grade</th>
+	    <th>Color</th>
+	    <th>Date Set</th>
+	    <th>Logged Sends</th>
+	  </tr>
+ 
+	<% @user.set_climbs.each do |climb| %>
+	  <tr>
+	    <td><%= link_to climb.wall.name, wall_path(climb.wall) %></td>
+	    <td><%= link_to climb.grade, climb_path(climb) %></td>
+	    <td><%= climb.color %></td>
+	    <td><%= climb.created_at.strftime('%D') %></td>
+	    <td><%= climb.sends.count.to_s %></td>
+	  </tr>
+	<% end %>
+	</table>
+	<hr>
+  </div>
+</div>

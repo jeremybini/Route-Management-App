@@ -2,7 +2,7 @@ module WallsHelper
 	def tape_color(color)
 	  case color
 		when 'Black'
-		  '#232a2b'
+		  '#000000'
 		when 'Blue'
 		  '#0612c5'
 		when 'Green'

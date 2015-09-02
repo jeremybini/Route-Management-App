@@ -58,15 +58,15 @@
             <div class="panel-heading clearfix">
               <h4 class="panel-title" style="padding-top: 7.5px;"><%= climb.grade %><span class="pull-right">Rating</span></h4>
             </div>
+            <div class="panel-color" style="background-color: <%= tape_color(climb.color) %>;"></div>
             <% end %>
-          <div class="panel-color" style="background-color: <%= tape_color(climb.color) %>;"></div>
           <div class="panel-body clearfix" style="margin-bottom: 0px; padding: 5px 12.5px">
             <p>Color: <%= climb.color %>
             <% if current_user %>
                 <br>
-                <%= link_to 'Tick Climb', "#", class: "btn btn-default btn-sm pull-right tick-button" %>
+                <%= link_to 'Tick Climb', sends_path(:user_id => current_user.id, :climb_id => climb.id), method: :post, data: { confirm: 'Tick this route?' }, class: "btn btn-default btn-sm pull-right tick-button" %>
             <% end %>
-            <p>Setter: <%= climb.setter %></p>
+            <p>Setter: <%= climb.setter_name||climb.setter.full_name %></p>
             <p>Date set: <%= climb.created_at.strftime('%D') %></p>
             <% if routesetter %>
               <%= link_to 'Edit Route', edit_climb_path(climb), class: "btn btn-info btn-sm pull-left" %>
@@ -94,7 +94,7 @@
             </div>
           </div>
           <div class="panel body">
-              <p>Setter: <%= climb.setter %></p>
+              <p>Setter: <%= climb.setter_name %></p>
               <p>Type: <%= climb.climb_type %></p>
           </div>
         </div>
@@ -108,8 +108,8 @@
 $(".panel").hover(
   function() {
     var color = $(this).find(".panel-color").css('background-color');
-    if (color === 'rgb(35, 42, 43)' || color ==='rgb(6, 18, 197)' || color ==='rgb(102, 0, 153)' || color ==='rgb(210, 10, 10)') {
-      $(this).find(".panel-heading").css('background-color', color).css('opacity', '.75').css('color', '#e7e7e7');
+    if (color === 'rgb(0, 0, 0)' || color ==='rgb(6, 18, 197)' || color ==='rgb(102, 0, 153)' || color ==='rgb(210, 10, 10)' || color === 'rgb(6, 99, 18)') {
+      $(this).find(".panel-heading").css('background-color', color).css('opacity', '.75').css('color', '#f6f6f6');
     } else {
       $(this).find(".panel-heading").css('background-color', color).css('opacity', '.75').css('color', '#000000')
     };
@@ -120,7 +120,7 @@ $(".panel").hover(
   },
   function() {
     var color = $(this).find(".panel-color").css('background-color');
-    $(this).find(".panel-heading").css('background-color', '#f4f4f4').css('color', '#232a2b')
+    $(this).find(".panel-heading").css('background-color', '#f4f4f4').css('color', '#000000').css('opacity', '1')
     $(this).find(".panel-color").css('opacity', '.75')
 });
 </script>

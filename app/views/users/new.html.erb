@@ -1,4 +1,5 @@
 <div class="container">
+  <div class="row">
   <h1>Create New User</h1>
   <hr>
   <%= simple_form_for(@user) do |f| %>
@@ -13,6 +14,8 @@
         </ul>
       </div>
     <% end %>
+
+
 
     <div class="field">
       <%= f.label :full_name %><br>
@@ -30,9 +33,16 @@
       <%= f.label :password_confirmation %><br>
       <%= f.password_field :password_confirmation %>
     </div>
+    <% if admin %>
+    <div class="field">
+      <%= f.label :role %><br>
+      <%= f.select :role, options_for_select(["Admin", "Routesetter", "User"]) %>
+    </div>
+    <% end %>
     <hr>
     <div class="actions">
       <%= f.submit "Create User", class: "btn btn-success"%>
     </div>
   <% end %>
+  </div>
 </div>

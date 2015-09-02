@@ -1,23 +1,57 @@
-<h1>Listing Users</h1>
- 
-<table class="table table-striped">
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Role</th>
-    <th></th>
-    <th></th>
-  </tr>
- 
-<% @users.each do |user| %>
-  <tr>
-    <td><%= user.full_name %></td>
-    <td><%= user.email %></td>
-    <td><%= user.role %></td>
-    <td><%= link_to "Edit", edit_user_path(user), class: "btn btn-info" %></td>
-    <td><%= link_to "Remove", user, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %></td>
-  </tr>
-<% end %>
-</table>
- 
-<br>
+<div class="container">
+  <div class="row">
+    <h3>User Management</h3>
+    <hr>
+    <%= link_to "<Back", admin_user_path(current_user), class: "btn btn-primary" %>
+    <%= link_to "Create New User", signup_path, class: 'btn btn-success' %>
+    <hr>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#employees">Employees</a></li>
+      <li><a data-toggle="tab" href="#users">Users</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <br>
+      <div id="employees" class="tab-pane fade in active">
+        <table class="table table-striped">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th></th>
+            <th></th>
+          </tr>
+     
+        <% @employees.each do |employee| %>
+          <tr>
+            <td><%= link_to employee.full_name, routesetter_user_path(employee) %></td>
+            <td><%= employee.email %></td>
+            <td><%= employee.role %></td>
+            <td><%= link_to "Edit Setter Info", edit_user_path(employee), class: "btn btn-sm btn-info" %></td>
+            <td><%= link_to "Delete Setter", employee, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+      <div id="users" class="tab-pane fade">
+        <table class="table table-striped">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+            <th></th>
+          </tr>
+         
+          <% @users.each do |user| %>
+          <tr>
+            <td><%= user.full_name %></td>
+            <td><%= user.email %></td>
+            <td><%= link_to "Edit User Info", edit_user_path(user), class: "btn btn-info" %></td>
+            <td><%= link_to "Delete User", user, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+before_action :require_admin, only: [:contact]
+
   def home
   end
 
@@ -6,5 +8,7 @@ class PagesController < ApplicationController
   end
 
   def contact
+  	@climbs = Climb.all
+  	@walls = Wall.all
   end
 end

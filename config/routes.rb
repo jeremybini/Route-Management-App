@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :sends
   resources :sessions
   resources :password_resets
 

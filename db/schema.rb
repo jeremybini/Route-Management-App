@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150828224637) do
+ActiveRecord::Schema.define(version: 20150829211901) do
 
   create_table "climbs", force: :cascade do |t|
     t.string   "climb_type"
     t.string   "color"
     t.integer  "grade",              default: 0
-    t.string   "setter"
+    t.string   "setter_name"
     t.boolean  "active",             default: true
     t.integer  "wall_id"
     t.integer  "gym_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150828224637) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "image_orientation"
+    t.integer  "setter_id"
   end
 
   add_index "climbs", ["gym_id"], name: "index_climbs_on_gym_id"
@@ -47,6 +48,16 @@ ActiveRecord::Schema.define(version: 20150828224637) do
     t.datetime "image_updated_at"
     t.string   "image_orientation"
   end
+
+  create_table "sends", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "climb_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sends", ["climb_id"], name: "index_sends_on_climb_id"
+  add_index "sends", ["user_id"], name: "index_sends_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "full_name"

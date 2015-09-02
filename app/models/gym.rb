@@ -1,6 +1,6 @@
 class Gym < ActiveRecord::Base
-	has_many :walls
-	has_many :climbs, through: :walls
+	has_many :walls, dependent: :destroy
+	has_many :climbs, through: :walls, dependent: :destroy
 
 	validates :name, :location, presence: true
 

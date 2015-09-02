@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row">
+  	<h3>Admin Dashboard</h3>
+  	<hr>
+  	<%= link_to "Manage Users", users_path, class: "btn btn-primary" %>
+  	<hr>
+  	<h4>Setters</h4>
+	<ul class="nav nav-tabs">
+      <% @setters.each_with_index do |setter, index| %>
+      	<% if index == 0 %>
+      		<li class="active"><a data-toggle="tab" href="#<%= setter.id %>"><%= setter.full_name %></a></li>
+      	<% else %>
+      		<li><a data-toggle="tab" href="#<%= setter.id %>"><%= setter.full_name %></a></li>
+      	<% end %>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <br>
+	  <% @setters.each_with_index do |setter, index| %>
+	  	<% if index == 0 %>
+	  	  <div id="<%= setter.id %>" class="tab-pane fade in active">
+	  	<% else %>
+	  	  <div id="<%= setter.id %>" class="tab-pane fade">
+	  	<% end %>
+	  	<%= link_to "Setter Profile>", routesetter_user_path(setter), class: "btn btn-sm btn-success" %>
+	  	<% gyms.each do |gym| %>
+	  	  <h4><%= link_to gym.name, gym_path(gym) %></h4>
+	      <h5>Total Climbs: <%= setter.set_climbs.active.where(gym_id: gym.id).count.to_s %></h5>
+		  <table class="table table-striped">
+		    <tr>
+		      <th>Wall</th>
+		      <th>Grade</th>
+		      <th>Color</th>
+		      <th>Date Set</th>
+		      <th>Logged Sends</th>
+		    </tr>
+	 
+		    <% setter.set_climbs.active.where(gym_id: gym.id).order("grade").each do |climb| %>
+		  	<tr>
+		      <td><%= link_to climb.wall.name, wall_path(climb.wall) %></td>
+		      <td><%= link_to climb.grade, climb_path(climb) %></td>
+		      <td><%= climb.color %></td>
+		      <td><%= climb.created_at.strftime('%D') %></td>
+		      <td><%= climb.sends.count.to_s %></td>
+		    </tr>
+		    <% end %>
+		  </table>
+		  <hr>
+		  <% end %>
+	  </div>
+	  <% end %>
+	</div>
+  </div>
+</div>

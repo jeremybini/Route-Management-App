@@ -5,7 +5,8 @@ class UsersController < ApplicationController
 
 
 	def index
-		@users = User.all
+		@employees = User.where(role: ["Routesetter", "Admin"]).order("role")
+		@users = User.where(role: "User").order("full_name")
 	end
 
 	def new
@@ -16,9 +17,11 @@ class UsersController < ApplicationController
 	end
 
 	def routesetter
+	  @routesetter = User.find(params[:id])
 	end
 
 	def admin
+      @setters = User.where(role: ["Routesetter", "Admin"]).order("full_name")
 	end
 
 	def create

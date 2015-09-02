@@ -1,13 +1,17 @@
 class Climb < ActiveRecord::Base
   belongs_to :wall
   belongs_to :gym
+  belongs_to :setter, class_name: "User"
+
+  has_many :sends
+  has_many :users, through: :sends
 
   scope :active, -> { where(active: true) }
   scope :archived, -> { where(active: false) }
   scope :boulder, -> { where(climb_type: 'Boulder') }
   scope :route, -> { where(climb_type: 'Route') }
 
-  validates :climb_type, :color, :grade, :setter, :wall_id, presence: true
+  validates :climb_type, :color, :grade, :setter_id, :setter_name, :wall_id, presence: true
 
   has_attached_file :image, :styles => { large: "600x600>", medium: "300x300>", thumb: "150x150>" }
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/

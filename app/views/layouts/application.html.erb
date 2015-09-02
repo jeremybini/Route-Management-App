@@ -3,7 +3,7 @@
 <head>
   <title>RouteApp</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -23,46 +23,87 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <%= link_to "BRAND", root_path, class: "navbar-brand" %>
+          <!-- <#% if routesetter %>
+            <p id="left-menubutton" class="navbar-brand"><span id="mgmt_icon" class="glyphicon glyphicon-list" style="top: 2px"></span> Route Management</p>
+          <%# else %> -->
+            <%= link_to "BKB", root_path, class: "navbar-brand" %>
+          <%# end %>
         </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
             <% if current_user %>
+              <li role="separator" class="divider"></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.full_name %><span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to "Profile", profile_user_path(current_user) %></li>
+                  <li><%= link_to profile_user_path(current_user) do %>
+                    <span class="glyphicon glyphicon-user"></span> Climber Profile
+                    <% end %>
+                  </li>
                   <% if admin %>
-                    <li><%= link_to "Admin Dashboard", '#' %></li>
+                    <li><%= link_to admin_user_path(current_user) do %>
+                      <span class="glyphicon glyphicon-cog"></span> Admin Dashboard
+                      <% end %>
+                    </li>
                   <% elsif routesetter %>
-                    <li><%= link_to "Setter Dashboard", '#' %></li>
+                    <li><%= link_to routesetter_user_path(current_user) do %>
+                      <span class="glyphicon glyphicon-cog"></span> Setter Dashboard
+                      <% end %>
+                    </li>
                   <% end %>
                   <li role="separator" class="divider"></li>
-                  <li><%= link_to "Log Out", logout_path, method: 'delete' %></li>
+                  <% gyms.each do |gym| %>
+                    <li><%= link_to gym.name, gym_path(gym) %></li> 
+                  <% end %>
+                  <li role="separator" class="divider"></li>
+                  <li><%= link_to logout_path, method: 'delete' do %>
+                    Logout<span class="pull-right glyphicon glyphicon-off"></span>
+                  <% end %>
+                  </li>
                 </ul>
             <% else %>
               <li><%= link_to "Log In", login_path %></li>
             <% end %>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other Stuff<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Home", home_path %></li>
-                <li><%= link_to "Gyms", gyms_path %></li> 
-                <li><%= link_to "About", about_path %></li>
-                <li><%= link_to "Contact", contact_path %></li>
-              </ul>
-            </li>
+            <li><%= link_to "Home", home_path %></li>
           </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
     </nav>
   </header>
-
+  
   <%= render partial: "layouts/flash_messages", flash: flash %>
   
-  <%= yield %>
+  <!-- <div id="left-navbar">
+    <div id="left-menu">
+      <ul>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gyms<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <%# gyms.each do |gym| %>
+              <li><%#= link_to gym.name, gym_path(gym) %></li>
+            <%# end %>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Setter Pages<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <%# setters.each do |setter| %>
+              <li><%#= link_to setter.full_name, routesetter_user_path(setter) %></li>
+            <%# end %>
+          </ul>
+        </li>
+        <li><%#= link_to "Home", home_path %></li>
+      </ul>
+    </div>
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+      <%= yield %>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="container">
@@ -72,3 +113,24 @@
   </footer>
 </body>
 </html>
+
+<script>
+  $("#left-menubutton").click(function() {
+    if ($("#left-navbar").hasClass("open")) {
+      $("#left-navbar").animate({ "left": "-220px" }, "fast" ).removeClass("open");
+      $("#mgmt_icon").removeClass("glyphicon glyphicon-remove-sign").addClass("glyphicon glyphicon-cog");
+    } else {
+      $("#left-navbar").animate({ "left": "0px" }, "fast" ).addClass("open");
+      $("#mgmt_icon").removeClass("glyphicon glyphicon-cog").addClass("glyphicon glyphicon-remove-sign");
+    };
+  });
+  
+  $(document).click(function(event) {
+    if (!$(event.target).closest("#left-menubutton, #left-navbar").length) {
+      if ($("#left-navbar").hasClass("open")) {
+        $("#left-navbar").animate({ "left": "-220px" }, "fast" ).removeClass("open");
+        $("#mgmt_icon").removeClass("glyphicon glyphicon-remove-sign").addClass("glyphicon glyphicon-cog");
+      };
+    };
+  });
+</script>

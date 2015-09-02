@@ -16,7 +16,7 @@
 @import "bootstrap";
 
 body {
-    padding-top: 60px;
+    padding-top: 70px;
     padding-bottom: 100px;
     margin-bottom: 20px;
 }
@@ -157,6 +157,45 @@ btn-default:hover {
   background-color: #d4d4d4
 }
 
+/*expandable nav bar on left*/
+
+#left-menubutton {
+  cursor: pointer;
+}
+
+#left-navbar {
+  z-index: 1;
+  overflow: hidden;
+  background: #373b3e;
+  position: fixed;
+  height: 150%;
+  left:-220px;
+  margin-bottom: -20px;
+  margin-top: -20px;
+  color: white;
+}
+
+#left-menu {
+  width:215px;
+  padding-top: 50px;
+}
+
+#left-menu a {
+  text-decoration: none;
+  color: #CCCDD1;
+}
+
+#left-menu ul {
+  list-style-type:none;
+  padding-left: 20px;
+}
+
+#left-menu li {
+  font-size: 20px;
+  margin-bottom: 75px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+}
 
 
 

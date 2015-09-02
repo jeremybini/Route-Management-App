@@ -2,8 +2,9 @@
 	<div class="col-md-6 col-md-offset-3 text-center">
 		<h1>Welcome!</h1>
 		<hr>
-
-		<%= link_to "Sign Up Now", signup_path, class: 'btn btn-lg btn-primary' %>
+		<% unless current_user %>
+		  <%= link_to "Sign Up Now", signup_path, class: 'btn btn-lg btn-primary' %>
+		<% end %>
 		<%= link_to "Browse Routes", gyms_path, class: 'btn btn-lg btn-info' %>
 	</div>
 </div>

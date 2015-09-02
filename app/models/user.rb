@@ -1,6 +1,11 @@
 class User < ActiveRecord::Base
 	has_secure_password
 
+	has_many :set_climbs, foreign_key: "setter_id", class_name: 'Climb'
+
+	has_many :sends, dependent: :destroy
+	has_many :climbs, through: :sends
+
 	validates_uniqueness_of :email, :on => :create, :message => 'This account already exists'
 	before_create { generate_token(:auth_token) }
 

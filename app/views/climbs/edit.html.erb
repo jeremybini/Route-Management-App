@@ -1,6 +1,8 @@
 <div class="container">
 	<h1>Editing Climb</h1>
 	<hr>
+	<h3><%= @climb.wall.name.capitalize+": "+@climb.color+" "+@climb.grade+", set by "+@climb.setter_name||=@climb.setter.full_name %></h3>
+	<hr>
 
 	<%= render 'form' %>
 

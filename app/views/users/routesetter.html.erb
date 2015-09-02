@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+	<h3><%= @routesetter.full_name %></h3>
+	<hr>
+	<% gyms.each do |gym| %>
+  	  <h4><%= link_to gym.name, gym_path(gym) %></h4>
+      <h5>Total Climbs: <%= @routesetter.set_climbs.active.where(gym_id: gym.id).count.to_s %></h5>
+	  <table class="table table-striped">
+	    <tr>
+	      <th>Wall</th>
+	      <th>Grade</th>
+	      <th>Color</th>
+	      <th>Date Set</th>
+	      <th>Logged Sends</th>
+	    </tr>
+ 
+	    <% @routesetter.set_climbs.active.where(gym_id: gym.id).order("grade").each do |climb| %>
+	  	<tr>
+	      <td><%= link_to climb.wall.name, wall_path(climb.wall) %></td>
+	      <td><%= link_to climb.grade, climb_path(climb) %></td>
+	      <td><%= climb.color %></td>
+	      <td><%= climb.created_at.strftime('%D') %></td>
+	      <td><%= climb.sends.count.to_s %></td>
+	    </tr>
+	    <% end %>
+	  </table>
+	  <hr>
+  	<% end %>	
+	<hr>
+	<%= link_to "<Back", :back, class: "btn btn-sm btn-primary" %>
+  </div>
+</div>
