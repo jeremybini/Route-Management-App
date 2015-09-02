@@ -15,10 +15,10 @@
 # Climb.create(climb_type: 'Boulder', grade: 'V5', setter: 'AT', color: 'Blue', wall: w1)
 # Climb.create(climb_type: 'Boulder', grade: 'V10', setter: 'GK', color: 'White', wall: w1)
 
-w2 = Wall.create(name: 'highball', wall_type: "Boulder", gym_id: 3)
- Climb.create(climb_type: 'Boulder', grade: 'V2', routesetter: 'JB', setter_id: 1, color: 'Blue', wall: w2)
- Climb.create(climb_type: 'Boulder', grade: 'V4', routesetter: 'AT', setter_id: 3, color: 'Green', wall: w2)
- Climb.create(climb_type: 'Boulder', grade: 'V6', routesetter: 'GK', setter_id: 2, color: 'Red', wall: w2)
+# w2 = Wall.create(name: 'highball', wall_type: "Boulder", gym_id: 3)
+#  Climb.create(climb_type: 'Boulder', grade: 'V2', routesetter: 'JB', setter_id: 1, color: 'Blue', wall: w2)
+#  Climb.create(climb_type: 'Boulder', grade: 'V4', routesetter: 'AT', setter_id: 3, color: 'Green', wall: w2)
+#  Climb.create(climb_type: 'Boulder', grade: 'V6', routesetter: 'GK', setter_id: 2, color: 'Red', wall: w2)
 
 #w3 = Wall.create(name: 'beast', wall_type: "Boulder", gym: g2)
 # Climb.create(climb_type: 'Boulder', grade: 'V7', setter: 'JB', color: 'Red', wall: w3)

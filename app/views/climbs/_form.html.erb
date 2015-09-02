@@ -97,7 +97,7 @@ $(document).ready(function(){
     if ($(this).val() == "Other") {
       $("#setter_name").show().focus().val("").attr("placeholder", "Enter setter name");
     } else {
-      $("#setter_name").hide.val($( "#climb_setter_id option:selected" ).text())
+      $("#setter_name").hide().val($( "#climb_setter_id option:selected" ).text())
     };    
   });
 });
