@@ -13,9 +13,6 @@ class GymsController < ApplicationController
   # GET /gyms/1.json
   def show
     @boulder_walls = @gym.walls.boulder_wall.order("name")
-    @route_walls = @gym.walls.route_wall.order("name")
-
-    @route_grades = Climb::ROUTE_GRADES
     @boulder_grades = Climb::BOULDER_GRADES
 
     @boulder_grade_spread = []
@@ -32,13 +29,6 @@ class GymsController < ApplicationController
       @ideal_boulder_spread.push(count)
     end
 
-    @route_grade_spread = []
-    @route_grades.each do |grade|
-      @route_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
-    end
-
-    @ideal_route_spread = []
-
     @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "There are "+@gym.climbs.active.boulder.count.to_s+" active boulders at "+@gym.name)
       f.chart({:defaultSeriesType=>"column"})
@@ -53,6 +43,23 @@ class GymsController < ApplicationController
       ]
       f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
       f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+    end
+
+    @route_walls = @gym.walls.route_wall.order("name")
+    @route_grades = Climb::ROUTE_GRADES
+
+    @route_grade_spread = []
+    @route_grades.each do |grade|
+      @route_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
+    end
+
+    @ideal_route_spread = []
+    @route_grades.each do |grade|
+      count = 0
+      @gym.walls.each do |wall|
+        count += wall.wall_spread[grade].to_i
+      end
+      @ideal_route_spread.push(count)
     end
 
     @route_chart = LazyHighCharts::HighChart.new('graph') do |f|

@@ -12,10 +12,11 @@
 <% end %>
 
 <h1>Walls</h1>
-<% @walls.each_with_index do |climb, index| %>
+<% @walls.each_with_index do |wall, index| %>
 <hr>
 <h5><%= index %></h5>
-<p>gym: <%= climb.try(:gym) %></p>
-<%= link_to 'Delete', wall_path(climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
+<p>wall: <%= wall.name %></p>
+<p>gym: <%= wall.try(:gym) %></p>
+<%= link_to 'Delete', wall_path(wall), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
 <hr>
 <% end %>
