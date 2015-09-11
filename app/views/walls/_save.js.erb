@@ -1,0 +1,19 @@
+$("ul.wall-errors").html("")
+$("#error-explanation").removeClass("alert alert-danger")
+<% if @wall.errors.any? %>
+  $("#error_explanation").addClass("alert alert-danger")
+  <% @wall.errors.full_messages.each do |message| %>
+    $("ul.wall-errors").append($("<li />").html("<%= message.html_safe %>"))
+  <% end %>
+<% else %>
+  <% if @new %>
+  	<% if @wall.wall_type === "Boulder" %>
+  		$(".boulder-index").html("<%=j (render partial: 'gyms/wall_index', locals: { walls: @updated_walls }) %>")
+  	<% else %>
+  		$(".route-index").html("<%=j (render partial: 'gyms/wall_index', locals: { walls: @updated_walls }) %>")
+  	<% end %>
+  <% else %>
+  	$("#wall-jumbotron").html("<%=j (render partial: 'walls/jumbotron', locals: { wall: @wall }) %>")
+  <% end %>
+  $("#modal").modal("hide");
+<% end %>

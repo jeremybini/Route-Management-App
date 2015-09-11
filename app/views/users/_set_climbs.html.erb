@@ -1,0 +1,24 @@
+<h4>Climbs Set</h4>
+<h5>Total: <%= user.set_climbs.count.to_s %></h5>
+<table class="table table-striped">
+  <tr>
+    <th>Wall</th>
+    <th>Grade</th>
+    <th>Color</th>
+    <th>Date Set</th>
+    <th>Logged Sends</th>
+  </tr>
+
+<% user.set_climbs.each do |climb| %>
+  <% if climb %>
+  <tr>
+    <td><%= link_to climb.wall.name, wall_path(climb.wall) %></td>
+    <td><%= link_to climb.grade, climb_path(climb) %></td>
+    <td><%= climb.color %></td>
+    <td><%= climb.created_at.strftime('%D') %></td>
+    <td><%= climb.sends.count.to_s %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+<hr>

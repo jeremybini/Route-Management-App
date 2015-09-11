@@ -1,0 +1,15 @@
+$("ul.climb-errors").html("")
+$("#error-explanation").removeClass("alert alert-danger")
+<% if @climb.errors.any? %>
+  $("#error_explanation").addClass("alert alert-danger")
+  <% @climb.errors.full_messages.each do |message| %>
+    $("ul.climb-errors").append($("<li />").html("<%= message.html_safe %>"))
+  <% end %>
+<% else %>
+  $(".climb-index").html("<%=j (render partial: 'walls/climb_index', locals: { climbs: @climbs }) %>")
+  <% if @new %>
+  	$("#inner-modal").html("<%= escape_javascript(render 'climbs/new') %>")
+  <% else %>
+  	$("#modal").modal("hide");
+  <% end %>
+<% end %>

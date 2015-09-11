@@ -1,0 +1,13 @@
+<% walls.each do |wall| %>
+  <div class="col-sm-3">
+    <div class="thumbnail">
+      <% if wall.image.present? %>
+      <div class="walls_thumbnails" style="background-image: url(<%=wall.image.url(:large) %>)"></div>
+      <% end %>
+      <div class="caption">
+        <h4><%= link_to wall.name.capitalize, wall %></h4>
+        <p>Climbs: <span class="pan badge" style="padding: 3px 8px 5px 8px; margin-bottom: 1px"><%= wall.climbs.active.count %><span></p>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,18 @@
+<h2><%= wall.name.capitalize %></h2>
+<% if routesetter %>
+  <div class="btn-group">
+    <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i>
+      Edit Wall <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><%= link_to "<i class='fa fa-pencil fa-fw'></i> Edit Wall Info".html_safe, edit_wall_path(wall), remote: true %></li>
+      <% if admin %>
+        <li><%= link_to "<i class='fa fa-bar-chart'></i> Ideal Grade Spread".html_safe, change_spread_wall_path(wall) %></li>
+      <% end %>
+      <li class="divider"></li>
+      <li><%= link_to "<i class='fa fa-refresh'></i> Reset Wall".html_safe, archive_wall_path(wall), method: :put, data: { confirm: 'Are you sure? This will archive all active routes on this wall.', title: 'Reset Wall?', button: 'btn-warning' }, remote: true %></li>
+      <li class="divider"></li>
+      <li><%= link_to "<i class='fa fa-plus'></i> Add New Routes".html_safe, new_wall_climb_path(wall), remote: true %></li>
+    </ul>
+  </div>
+<% end %>

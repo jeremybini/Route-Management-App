@@ -12,11 +12,14 @@
  *
  */
 
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
 body {
-    padding-top: 70px;
+    padding-top: 50px;
     padding-bottom: 100px;
     margin-bottom: 20px;
 }
@@ -43,7 +46,7 @@ div.field_with_errors {
 #wall_display_image {
     display: inline-block;
     width: 100%;
-    height: 400px;
+    height: 250px;
     margin: 5px;
     background-position: center center;
     background-size: contain;
@@ -157,47 +160,50 @@ btn-default:hover {
   background-color: #d4d4d4
 }
 
-/*expandable nav bar on left*/
-
-#left-menubutton {
-  cursor: pointer;
-}
-
-#left-navbar {
-  z-index: 1;
-  overflow: hidden;
-  background: #373b3e;
+#main-flash {
   position: fixed;
-  height: 150%;
-  left:-220px;
-  margin-bottom: -20px;
-  margin-top: -20px;
-  color: white;
+  z-index: 1039;
+  top: 60px;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
 }
 
-#left-menu {
-  width:215px;
-  padding-top: 50px;
+#new-climb-flash {
+  height: 40px;
+  #flash-messages {
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 90%
+  }
 }
 
-#left-menu a {
-  text-decoration: none;
-  color: #CCCDD1;
+.jumbotron {
+    background: url(asset-path('9920706004_31900953fa_o-1000x400.jpg')) center center;
+    color: white;
+    background-size: 100% 100%;
 }
 
-#left-menu ul {
-  list-style-type:none;
-  padding-left: 20px;
+/* font awesome color styling */
+
+.fa-plus {
+  color: green;
 }
 
-#left-menu li {
-  font-size: 20px;
-  margin-bottom: 75px;
-  font-family: 'Raleway', sans-serif;
-  font-weight: 100;
+.fa-trash {
+  color: red;
 }
 
+.fa-bar-chart {
+  color: #0044cc;
+}
 
-
+.fa-refresh {
+  color: orange;
+}
 
 

@@ -9,7 +9,7 @@ class Wall < ActiveRecord::Base
 
   	validates :name, :gym_id, :wall_type, presence: true
 
-	has_attached_file :image, :styles => { large: "800x800>", medium: "400x400>", thumbnail: "150x150>" }
+	has_attached_file :image, :styles => { extra_large: "2000x2000", large: "800x800>", medium: "400x400>", thumbnail: "150x150>" }
   	validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
   	after_post_process :extract_dimensions
 

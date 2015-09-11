@@ -1,0 +1,3 @@
+<%= render partial: 'climbs/save' %>
+$("#flash").html('<%= j render partial: "layouts/flash_messages" %>');
+$(".archive-index").html("<%=j (render partial: 'walls/archived_climbs', locals: {archived_climbs: @archived_climbs}) %>")

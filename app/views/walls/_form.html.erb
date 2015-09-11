@@ -1,41 +1,55 @@
-<%= form_for([@gym, @wall]) do |f| %>
-  <% if @wall.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger">
-      <h4><%= pluralize(@wall.errors.count, "error") %> prohibited this wall from being saved:</h4>
-
-      <ul>
-      <% @wall.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<%= form_for [@gym, @wall], :remote => true do |f| %>
+  <div class="modal-body">
+    <div id="error_explanation">
+      <ul class="wall-errors"></ul>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :image %><br>
-    <%= f.file_field :image %>
-    <% if @wall.image.present? %>
+    <div class="control-group">
+      <%= f.label :image, class: "control-label" %><br>
+      <%= image_tag @wall.image.url(:thumb) if @wall.image.present? %>
+      <div class="controls">
+        <%= f.file_field :image %>
+      </div>
+      <% if @wall.image.present? %>
       <%= image_tag @wall.image.url(:thumb) %><br><br>
       <% if routesetter %>
-        <%= link_to "Delete attached image", remove_image_wall_path(@wall), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.' } %><br>
+        <%= link_to "Delete attached image", remove_image_wall_path(@wall), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.', title: "Delete Wall Image", button: "btn-danger" }, remote: true %><br>
       <% end %>
     <% end %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :wall_type %><br>
-    <%= f.select :wall_type, options_for_select(['Boulder', 'Route'], @wall.wall_type) %>
-  </div>
+    </div>
 
-  <% unless @gym===nil %>
-    <%= f.hidden_field :gym_id, :value => @gym.id  %><br>
-  <% end %>
-  <br>
+    <div class="control-group">
+      <%= f.label :name %><br>
+      <div class="controls">
+        <%= f.text_field :name %>
+      </div>
+    </div>
 
-  <div class="actions">
-    <%= f.submit class: "btn btn-success" %>
+    <div class="control-group">
+      <%= f.label :wall_type %><br>
+      <div class="controls">
+        <%= f.select :wall_type, options_for_select(['Boulder', 'Route'], @wall.wall_type) %>
+      </div>
+    </div>
+
+    <% unless @gym===nil %>
+      <%= f.hidden_field :gym_id, :value => @gym.id  %><br>
+    <% end %>
+    <br>
+
+    <% if @wall.name %>
+    <div class="modal-footer">
+      <%= f.button "Update Wall", class: "btn btn-success pull-left", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Updating wall..."} %>
+      <%= link_to "Cancel", "#", class: "btn btn-default pull-right", data: {dismiss: "modal"} %>
+      <% if admin %>
+        <%= link_to '<i class="fa fa-trash-o"></i> Delete'.html_safe, wall_path(@wall), method: :delete, data: { confirm: 'Are you sure? This will permanently delete this wall.', title: 'Delete Wall?', button: 'btn-danger'}, class: "btn btn-danger pull-right" %>
+      <% end %>
+    </div>
+    <% else %>
+    <div class="modal-footer">
+      <%= f.button "Create Wall", class: "btn btn-success pull-left", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Creating wall..."} %>
+      <%= link_to "Cancel", "#", class: "btn btn-default pull-right", data: {dismiss: "modal"} %>
+    </div>
+    <% end %>
   </div>
 <% end %>

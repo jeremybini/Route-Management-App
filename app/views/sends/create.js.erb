@@ -1,0 +1,4 @@
+$('#climb-<%= @send.climb.id %>-tick-button').removeClass('btn-default').addClass('btn-success').blur();
+$( document ).ajaxComplete(function() {
+	$('#climb-<%= @send.climb.id %>-tick-button').text("Repeat climb?");
+});

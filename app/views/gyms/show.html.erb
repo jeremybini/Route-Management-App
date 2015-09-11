@@ -1,58 +1,56 @@
+<div class="jumbotron">
+  <div class="container">
+    <h2><%= @gym.name %></h2>
+    <p>Location: <%= @gym.location %></p>
+    <% if routesetter %>
+    <br>
+    <div class="btn-group">
+      <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i>
+        Edit Gym <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><%= link_to "<i class='fa fa-pencil fa-fw'></i> Edit Gym Info".html_safe, edit_gym_path(@gym), remote: true %></li>
+        <% if admin %>
+          <li><%= link_to "<i class='fa fa-plus'></i> Create Wall".html_safe, new_gym_wall_path(@gym), remote: true %></li>
+        <% end %>        
+      </ul>
+    </div>
+    <% else %>
+    <h2>Wall: <%= @wall.name.capitalize %></h2>
+    <% end %>
+  </div>
+</div>
+
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
-      <h2><%= @gym.name %></h2>
-      <p>Location: <%= @gym.location %></p>
-      <% if routesetter %>
-        <hr>
-        <%= link_to 'Edit gym info', edit_gym_path(@gym), class: "btn btn-info" %>
-      <% end %>
-      <%= link_to "Create a New Wall", new_gym_wall_path(@gym), class: "btn btn-success" if admin %>
-      <hr>
+  <div id="modal" class="modal fade">
+    <div class="modal-dialog">
+      <div id="inner-modal" class="modal-content"></div>
     </div>
   </div>
-
-  <div id="boulder_chart" style="width:100%; height:400px;"></div>
-
-  <div class="row">
-    <% @boulder_walls.each do |wall| %>
-      <div class="col-sm-3">
-        <div class="thumbnail">
-          <% if wall.image.present? %>
-          <div class="walls_thumbnails" style="background-image: url(<%=wall.image.url(:large) %>)"></div>
-          <% end %>
-          <div class="caption">
-            <h4><%= link_to wall.name.capitalize, wall %></h4>
-            <p>Climbs: <span class="pan badge" style="padding: 3px 8px 5px 8px; margin-bottom: 1px"><%= wall.climbs.active.count %><span></p>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-  <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#bouldering">Bouldering Walls</a></li>
+    <li><a data-toggle="tab" href="#routes">Route Walls</a></li>
+  </ul>
 </div>
-
-<%= high_chart("boulder_chart", @boulder_chart) %>
-
-<hr>
 
 <div class="container">
-  <div id="route_chart" style="width:100%; height:400px;"></div>
+  <div class="tab-content">
 
-  <div class="row">
-    <% @route_walls.each do |wall| %>
-      <div class="col-md-4">
-        <div class="thumbnail">
-          <%#= image_tag wall.image.url(:thumb) if wall.image.present? %>
-          <div class="caption">
-            <h4><%= link_to wall.name.capitalize, wall %></h4>
-            <p><%= wall.climbs.active.count %></p>
-          </div>
-        </div>
+    <div id="bouldering" class="tab-pane fade in active">
+      <div class="row">
+        <div id="boulder_chart" style="width:100%; height:400px;"></div>
+        <div class="boulder-index"><%= render partial: 'wall_index', locals: { walls: @boulder_walls } %></div>
+        <%= high_chart("boulder_chart", @boulder_chart) %>
       </div>
-    <% end %>
+    </div>
+
+    <div id="routes" class="tab-pane fade">
+      <div class="row">
+        <div id="route_chart" style="width:100%; height:400px;"></div>
+        <div class="route-index"><%= render partial: 'wall_index', locals: { walls: @route_walls } %></div>
+        <%= high_chart("route_chart", @route_chart) %>
+      </div>
+    </div>
+
   </div>
-  <%= link_to 'Back to Gym List', gyms_path, class: "btn btn-primary" %>
 </div>
-<%= high_chart("route_chart", @route_chart) %>

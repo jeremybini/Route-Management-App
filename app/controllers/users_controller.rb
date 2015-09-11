@@ -2,8 +2,7 @@ class UsersController < ApplicationController
 	before_action :require_admin, only: [:index, :destroy]
 	before_action :require_user, only: [:profile, :edit, :update]
 	before_action :set_user, only: [:edit, :update, :profile, :destroy]
-
-
+  
 	def index
 		@employees = User.where(role: ["Routesetter", "Admin"]).order("role")
 		@users = User.where(role: "User").order("full_name")

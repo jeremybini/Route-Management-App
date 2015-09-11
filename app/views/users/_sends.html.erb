@@ -1,0 +1,26 @@
+<h4>Sends</h4>
+<table class="table table-striped">
+  <tr>
+    <th>Wall</th>
+    <th>Grade</th>
+    <th>Color</th>
+    <th>First Sent</th>
+    <th>Most Recent Send</th>
+    <th>Number of times climbed</th>
+    <th></th>
+  </tr>
+
+<% user.sends.each do |send| %>
+  <% if send.climb %>
+  <tr>
+    <td><%= link_to send.climb.wall.name, wall_path(send.climb.wall) %></td>
+    <td><%= link_to send.climb.grade, climb_path(send.climb) %></td>
+    <td><%= send.climb.color %></td>
+    <td><%= send.created_at.strftime('%D') %></td>
+    <td>-</td>
+    <td>-</td>
+    <td><%= link_to 'Delete Send', send_path(send), class: "btn btn-xs btn-danger", method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this send?' } %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>

@@ -1,85 +1,104 @@
-<%= form_for([@wall, @climb]) do |f| %>
-  <% if @climb.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger" >
-      <h4><%= pluralize(@climb.errors.count, "error") %> prohibited this route from being saved:</h4>
+<%= form_for [@wall, @climb], :remote => true do |f| %>
+  <div class="modal-body">
+    <div id="error_explanation">
+      <ul class="climb-errors"></ul>
+    </div>
+    
+    <div class="control-group">
+      <%= f.label :image, class: "control-label" %><br>
+      <%= image_tag @climb.image.url(:thumb) if @climb.image.present? %>
+      <div class="controls">
+        <%= f.file_field :image %>
+      </div>
+    </div>
 
-      <ul>
-      <% @climb.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    <div class="control-group">
+      <%= f.label "Date set:", class: "control-label" %><br>
+      <div class="controls">
+        <%= f.date_select :created_at, :order => [:day, :month, :year] %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :color, class: "control-label" %><br>
+      <% if @climb.color && !(Climb::COLORS.include?(@climb.color)) %>
+        <div class="controls">
+          <%= f.select :color, options_for_select(Climb::COLORS, "Other") %><br>
+          <%= f.text_field :color, id: "color_input"%>
+        </div>
+      <% else %>
+        <div class="controls">
+          <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %><br>
+          <%= f.text_field :color, id: "color_input", disabled: true, style: "display: none" %>
+        </div>
       <% end %>
-      </ul>
     </div>
-  <% end %>
-  
-  <div class="field">
-    <%= f.label :image %><br>
-    <%= image_tag @climb.image.url(:thumb) if @climb.image.present? %>
-    <%= f.file_field :image %>
-  </div>
 
-  <div class-"field">
-    <%= f.label "Date set:" %><br>
-    <%= f.date_select :created_at, :order => [:day, :month, :year] %>
-  </div>
+    <div class="control-group">
+      <%= f.label :grade, class: "control-label" %><br>
+      <% if (@wall.nil? && @climb.climb_type==='Boulder') || (!@wall.nil? && @wall.wall_type==='Boulder') %>
+        <div class="controls">
+          <%= f.select :grade, options_for_select(Climb::BOULDER_GRADES, @climb.grade) %>
+        </div> 
+      <% else %>
+        <div class="controls">
+          <%= f.select :grade, options_for_select(Climb::ROUTE_GRADES, @climb.grade) %>
+        </div>
+      <% end %>
+    </div>
 
-  <div class="field">
-    <%= f.label :color %><br>
-    <% if @climb.color && !(Climb::COLORS.include?(@climb.color)) %>
-      <%= f.select :color, options_for_select(Climb::COLORS, "Other") %><br>
-      <%= f.text_field :color, id: "color_input"%>
+    <!-- <div class="field">
+      <%#= f.label :setter_id %><br>
+      <%# if @climb.setter_name && !(@registered_setter_names.include?(@climb.setter_name)) %>
+        <%#= f.select :setter_id, options_for_select(@setters, "Other") %><br>
+        <%#= f.text_field :setter_name, id: "setter_name" %>
+      <%# else %>
+        <%#= f.select :setter_id, options_for_select(@setters, @climb.setter_name) %><br>
+        <%#= f.text_field :setter_name, id: "setter_name", disabled: true, style: "display: none" %>
+      <%# end %>
+    </div> -->
+    
+    <div class="control-group">
+      <%= f.label :setter_id %><br>
+      <% if @climb.setter %>
+        <div class="controls">
+          <%= f.select :setter_id, options_for_select(@setters, @climb.setter.id) %><br>
+          <%= f.text_field :setter_name, id: "setter_name", style: "display: none" %>
+        </div>
+      <% elsif @climb.setter_name %>
+        <div class="controls">
+          <%= f.select :setter_id, options_for_select(@setters, "Other") %><br>
+          <%= f.text_field :setter_name, id: "setter_name" %>
+        </div>
+      <% else %>
+        <div class="controls">
+          <%= f.select :setter_id, options_for_select(@setters, @current_user.id) %><br>
+          <%= f.text_field :setter_name, id: "setter_name", style: "display: none", value: @current_user.full_name %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if @wall %>
+      <%= f.hidden_field :wall_id, :value => @wall.id  %><br>
+      <%= f.hidden_field :gym_id, :value => @wall.gym.id  %><br>
+      <%= f.hidden_field :climb_type, :value => @wall.wall_type  %>
     <% else %>
-      <%= f.select :color, options_for_select(Climb::COLORS, @climb.color) %><br>
-      <%= f.text_field :color, id: "color_input", disabled: true, style: "display: none" %>
+      <%= f.hidden_field :wall_id, :value => @climb.wall.id %><br>
+      <%= f.hidden_field :gym_id, :value => @climb.wall.gym.id  %><br>
     <% end %>
-  </div>
-
-  <% if (@wall.nil? && @climb.climb_type==='Boulder') || (!@wall.nil? && @wall.wall_type==='Boulder') %>
-    <div class="field">
-      <%= f.label :grade %><br>
-      <%= f.select :grade, options_for_select(Climb::BOULDER_GRADES, @climb.grade) %> 
+    <br>
+    <% if @climb.wall %>
+    <div class="modal-footer">
+      <%= f.button "Edit Climb", class: "btn btn-success pull-left", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Editing climb..."} %>
+      <%= link_to "Cancel", "#", class: "btn btn-default pull-right", data: {dismiss: "modal"} %>
+      <%= link_to '<i class="fa fa-trash-o"></i> Delete'.html_safe, climb_path(@climb), method: :delete, data: { confirm: 'Are you sure? This will permanently delete this climb.', title: 'Delete Climb', button: 'btn-danger'}, remote: true, class: "btn btn-danger pull-right" %>
     </div>
-  <% else %>
-    <div class="field">
-      <%= f.label :grade %><br>
-      <%= f.select :grade, options_for_select(Climb::ROUTE_GRADES, @climb.grade) %> 
-    </div>
-  <% end %>
-
-  <!-- <div class="field">
-    <%#= f.label :setter_id %><br>
-    <%# if @climb.setter_name && !(@registered_setter_names.include?(@climb.setter_name)) %>
-      <%#= f.select :setter_id, options_for_select(@setters, "Other") %><br>
-      <%#= f.text_field :setter_name, id: "setter_name" %>
-    <%# else %>
-      <%#= f.select :setter_id, options_for_select(@setters, @climb.setter_name) %><br>
-      <%#= f.text_field :setter_name, id: "setter_name", disabled: true, style: "display: none" %>
-    <%# end %>
-  </div> -->
-  
-  <div class="field">
-    <%= f.label :setter_id %><br>
-    <% if @climb.setter %>
-      <%= f.select :setter_id, options_for_select(@setters, @climb.setter.id) %><br>
-      <%= f.text_field :setter_name, id: "setter_name", style: "display: none" %>
-    <% elsif @climb.setter_name %>
-      <%= f.select :setter_id, options_for_select(@setters, "Other") %><br>
-      <%= f.text_field :setter_name, id: "setter_name" %>
     <% else %>
-      <%= f.select :setter_id, options_for_select(@setters, @current_user.id) %><br>
-      <%= f.text_field :setter_name, id: "setter_name", style: "display: none", value: @current_user.full_name %>
+    <div class="modal-footer">
+      <%= f.button "Create Climb", class: "btn btn-success pull-left", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Creating climb..."} %>
+      <%= link_to "Finished Adding", "#", class: "btn btn-default pull-right", data: {dismiss: "modal"} %>
+    </div>
     <% end %>
-  </div>
-
-  <% if @wall %>
-    <%= f.hidden_field :wall_id, :value => @wall.id  %><br>
-    <%= f.hidden_field :gym_id, :value => @wall.gym.id  %><br>
-    <%= f.hidden_field :climb_type, :value => @wall.wall_type  %>
-  <% else %>
-    <%= f.hidden_field :gym_id, :value => @climb.wall.gym.id  %><br>
-  <% end %>
-  <br>
-  <div class="actions">
-    <%= f.submit class: "btn btn-success"%>
   </div>
 <% end %>
 

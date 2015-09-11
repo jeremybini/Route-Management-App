@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     end
     resources :climbs, shallow: true do
       member do
+        get 'confirm'
         put 'archive'
       end
     end

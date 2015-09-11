@@ -1,0 +1,30 @@
+<% climbs.each do |climb| %>
+  <div class="col-sm-6 col-md-4">
+    <div class="panel panel-default">
+        <%= link_to climb_path(climb), class: "climb-link" do %>
+        <div class="panel-heading clearfix">
+          <h4 class="panel-title" style="padding-top: 7.5px;"><%= climb.grade %><span class="pull-right">Rating</span></h4>
+        </div>
+        <div class="panel-color" style="background-color: <%= tape_color(climb.color) %>;"></div>
+        <% end %>
+      <div class="panel-body clearfix" id="climb-<%= climb.id %>" style="margin-bottom: 0px; padding: 5px 12.5px">
+        <p>Color: <%= climb.color %>
+        <% if current_user %>
+        <br>
+          <% if current_user.sends.includes(:climb_id).where(climb_id: climb.id).any? %>
+            <%= link_to 'Repeat climb?', sends_path(:user_id => current_user.id, :climb_id => climb.id), method: :post, remote: true, class: "btn btn-success btn-sm pull-right tick-button", id: "climb-"+climb.id.to_s+"-tick-button", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Recording send..." } %>
+          <% else %>
+            <%= link_to 'Tick Climb', sends_path(:user_id => current_user.id, :climb_id => climb.id), method: :post, remote: true, class: "btn btn-default btn-sm pull-right tick-button", id: "climb-"+climb.id.to_s+"-tick-button", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Recording send..." } %>
+          <% end %>
+        <% end %>
+        <p>Setter: <%= climb.setter_name||climb.setter.full_name %></p>
+        <p>Date set: <%= climb.created_at.strftime('%D') %></p>
+        <hr>
+        <% if routesetter %>
+          <%= link_to 'Edit Route', edit_climb_path(climb), remote: true, class: "btn btn-info btn-sm pull-left" %>
+          <%= link_to 'Strip Route', archive_climb_path(climb), method: :put, remote: true, data: { confirm: 'Are you sure? This will archive the route.', title: 'Archive Climb', button: 'btn-warning'}, class: "btn btn-warning btn-sm pull-right" %>
+        <% end %>   
+      </div>
+    </div>
+  </div>
+<% end %>

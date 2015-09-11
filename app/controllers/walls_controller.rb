@@ -3,7 +3,7 @@ class WallsController < ApplicationController
   before_action :wall_type, only: [:show, :edit, :change_spread]
   before_action :require_routesetter, only: [:archive, :edit, :create, :update, :change_spread, :remove_image]
   before_action :require_admin, only: [:new, :destroy]
-
+  
   helper_method :sort_climbs
   # GET /walls
   # GET /walls.json
@@ -58,15 +58,18 @@ class WallsController < ApplicationController
   # POST /walls.json
   def create
     @wall = Wall.new(wall_params)
-
+    @new = true
+    @updated_walls = @wall.gym.walls.where(wall_type: @wall.wall_type)
     respond_to do |format|
       if @wall.save
         format.html { redirect_to @wall, notice: "The "+@wall.name.titleize+" was successfully created." }
         format.json { render :show, status: :created, location: @wall }
+        format.js { flash.now[:notice] = "The "+@wall.name+" was successfully created." }
       else
         @gym = Gym.find(params[:gym_id])
         format.html { render :new }
         format.json { render json: @wall.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -78,9 +81,11 @@ class WallsController < ApplicationController
       if @wall.update(wall_params)
         format.html { redirect_to @wall.gym, info: @wall.name.titleize+' was successfully updated.' }
         format.json { render :show, status: :ok, location: @wall }
+        format.js { flash.now[:notice] = @wall.name+' was successfully updated.' }
       else
         format.html { render :edit }
         format.json { render json: @wall.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -93,6 +98,7 @@ class WallsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to wall_path(@wall), warning: 'Climbs on the '+@wall.name.titleize+' were successfully archived.' }
       format.json { head :no_content }
+      format.js { flash.now[:warning] = 'All climbs on the '+@wall.name.titleize+' were successfully archived.' }
     end
   end
 
@@ -130,7 +136,7 @@ class WallsController < ApplicationController
     @gym = @wall.gym
     @wall.destroy
     respond_to do |format|
-      format.html { redirect_to gym_path(@gym), alert: 'The '+@wall.name.titleize+' was successfully destroyed.' }
+      format.html { redirect_to gym_path(@gym), alert: 'The '+@wall.name+' was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
