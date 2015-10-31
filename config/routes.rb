@@ -18,9 +18,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :sends
   resources :sessions
   resources :password_resets
+
+  resources :sends do
+    member do
+      put 'remove_climb'
+    end
+  end
 
   resources :gyms do
     member do

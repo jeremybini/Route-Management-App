@@ -1,3 +1,5 @@
+<% provide(:title, "The "+@wall.name) %>
+
 <div class="jumbotron">
   <div class="container">
     <div id="wall-jumbotron"><%= render partial: 'jumbotron', locals: { wall: @wall } %></div>
@@ -32,7 +34,7 @@
     <% else %>
       <div id="chart_div" class="col-md-12">
     <% end %> 
-        <div id="chart" style="width: 100%; height:300px;"></div>
+        <%= render partial: 'climb_chart', locals: { chart: @chart } %>
       </div>
   </div>
   <br>
@@ -72,8 +74,6 @@
     </div>
   </div>
 </div>
-
-<%= high_chart("chart", @chart) %>
 
 <script>
 var panelHover = function() {

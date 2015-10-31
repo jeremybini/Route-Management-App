@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>RouteApp</title>
+  <title><%= full_title(yield(:title)) %></title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -93,30 +93,6 @@
   <div id="main-flash">
     <%= render partial: "layouts/flash_messages", flash: flash %>
   </div>
-  
-  <!-- <div id="left-navbar">
-    <div id="left-menu">
-      <ul>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gyms<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <%# gyms.each do |gym| %>
-              <li><%#= link_to gym.name, gym_path(gym) %></li>
-            <%# end %>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Setter Pages<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <%# setters.each do |setter| %>
-              <li><%#= link_to setter.full_name, routesetter_user_path(setter) %></li>
-            <%# end %>
-          </ul>
-        </li>
-        <li><%#= link_to "Home", home_path %></li>
-      </ul>
-    </div>
-  </div> -->
 
   <%= yield %>
 

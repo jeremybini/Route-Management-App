@@ -46,4 +46,6 @@
 # om = User.create(full_name: "Oliver Miska", email: "olivermiska@gmail.com", password: "boulders1234", password_confirmation:"boulders1234", auth_token:"223456789", role: "Routesetter")
 #hh = User.create(full_name: "JB User", email: "jbuser@gmail.com", password: "boulders1234", password_confirmation:"boulders1234", auth_token:"323456789")
 
+manager = User.create(full_name: "Boss Person", email: "manager@email.com", password: "manager1234", password_confirmation:"manager1234", auth_token:"123456789", role: "Admin")
+user = User.create(full_name: "Regular Ol' User", email: "user@email.com", password: "user1234", password_confirmation:"user1234", auth_token:"323456789")
 

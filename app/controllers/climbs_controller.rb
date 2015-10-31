@@ -39,8 +39,41 @@ class ClimbsController < ApplicationController
     @wall = @new_climb.wall
     @climbs = @wall.climbs.active.order(sort_climbs)
     @new = true
+
     respond_to do |format|
       if @new_climb.save
+        @wall_grades = []
+        if @wall.wall_type==='Route'
+          @wall_grades = Climb::ROUTE_GRADES
+        else
+          @wall_grades = Climb::BOULDER_GRADES
+        end
+        
+        @ideal_grade_spread = []
+        @wall_grades.each do |grade|
+          @ideal_grade_spread.push(@wall.wall_spread[grade].to_i)
+        end
+
+        @current_grade_spread = []
+
+        @wall_grades.each do |grade|
+          @current_grade_spread.push(@climbs.active.where(grade: Climb.grades[grade]).count)
+        end
+
+        @chart = LazyHighCharts::HighChart.new('graph') do |f|
+          f.title({ :text => "There are "+@climbs.count.to_s+" active climbs on the "+@wall.name })
+          
+          f.xAxis(:categories => @wall_grades)
+          f.yAxis(:allowDecimals => false)
+          f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
+          if current_user && current_user.routesetter?
+            f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+            f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
+          end
+          f.plotOptions({:series => {:dataLabels => {:enabled => true, :color => 'black'}}})
+          f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+          f.chart({:defaultSeriesType=>"column"})
+        end
         format.html { redirect_to new_wall_climb_path(@new_climb.wall), notice: 'Added to '+@new_climb.wall.name+': '+@new_climb.color+' '+@new_climb.grade+', set by '+@new_climb.setter_name+'.' }
         format.json { render :show, status: :created, location: @new_climb }
         format.js { flash.now[:notice] = 'Added: '+@new_climb.color+' '+@new_climb.grade+', set by '+@new_climb.setter_name+'.' }
@@ -61,6 +94,38 @@ class ClimbsController < ApplicationController
     @climbs = @wall.climbs.active.order(sort_climbs)
     respond_to do |format|
       if @climb.update(climb_params)
+        wall_grades = []
+        if @wall.wall_type==='Route'
+          @wall_grades = Climb::ROUTE_GRADES
+        else
+          @wall_grades = Climb::BOULDER_GRADES
+        end
+        
+        @ideal_grade_spread = []
+        @wall_grades.each do |grade|
+          @ideal_grade_spread.push(@wall.wall_spread[grade].to_i)
+        end
+
+        @current_grade_spread = []
+
+        @wall_grades.each do |grade|
+          @current_grade_spread.push(@climbs.active.where(grade: Climb.grades[grade]).count)
+        end
+
+        @chart = LazyHighCharts::HighChart.new('graph') do |f|
+          f.title({ :text => "There are "+@climbs.count.to_s+" active climbs on the "+@wall.name })
+          
+          f.xAxis(:categories => @wall_grades)
+          f.yAxis(:allowDecimals => false)
+          f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
+          if current_user && current_user.routesetter?
+            f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+            f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
+          end
+          f.plotOptions({:series => {:dataLabels => {:enabled => true, :color => 'black'}}})
+          f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+          f.chart({:defaultSeriesType=>"column"})
+        end
         format.html { redirect_to @climb.wall, notice: @climb.color+" "+@climb.grade+" was successfully updated." }
         format.json { render :show, status: :ok, location: @climb }
         format.js { flash.now[:notice] = @climb.color+" "+@climb.grade+" was successfully updated." }
@@ -92,9 +157,43 @@ class ClimbsController < ApplicationController
   # DELETE /routes/1
   # DELETE /routes/1.json
   def destroy
+    @wall = @climb.wall
     @climb.destroy
-    @climbs = @climb.wall.climbs.active.order(sort_climbs)
+    @climbs = @wall.climbs.active.order(sort_climbs)
+
     respond_to do |format|
+      @wall_grades = []
+      if @wall.wall_type==='Route'
+        @wall_grades = Climb::ROUTE_GRADES
+      else
+        @wall_grades = Climb::BOULDER_GRADES
+      end
+      
+      @ideal_grade_spread = []
+      @wall_grades.each do |grade|
+        @ideal_grade_spread.push(@wall.wall_spread[grade].to_i)
+      end
+
+      @current_grade_spread = []
+
+      @wall_grades.each do |grade|
+        @current_grade_spread.push(@climbs.active.where(grade: Climb.grades[grade]).count)
+      end
+
+      @chart = LazyHighCharts::HighChart.new('graph') do |f|
+        f.title({ :text => "There are "+@climbs.count.to_s+" active climbs on the "+@wall.name })
+        
+        f.xAxis(:categories => @wall_grades)
+        f.yAxis(:allowDecimals => false)
+        f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
+        if current_user && current_user.routesetter?
+          f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+          f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
+        end
+        f.plotOptions({:series => {:dataLabels => {:enabled => true, :color => 'black'}}})
+        f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+        f.chart({:defaultSeriesType=>"column"})
+      end
       format.html { redirect_to @climb.wall, alert: @climb.color+" "+@climb.grade+" was successfully destroyed." }
       format.json { head :no_content }
       format.js { flash.now[:alert] = @climb.color+" "+@climb.grade+" was successfully deleted." }

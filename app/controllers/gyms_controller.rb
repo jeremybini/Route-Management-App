@@ -2,6 +2,8 @@ class GymsController < ApplicationController
   before_action :set_gym, only: [:show, :edit, :update, :destroy, :remove_image]
   before_action :require_routesetter, only: [:edit, :update]
   before_action :require_admin, only: [:new, :create, :destroy, :remove_image]
+  before_action :route_chart, only: [:show, :update]
+  before_action :boulder_chart, only: [:show, :update]
 
   # GET /gyms
   # GET /gyms.json
@@ -12,71 +14,6 @@ class GymsController < ApplicationController
   # GET /gyms/1
   # GET /gyms/1.json
   def show
-    @boulder_walls = @gym.walls.boulder_wall.order("name")
-    @boulder_grades = Climb::BOULDER_GRADES
-
-    @boulder_grade_spread = []
-    @boulder_grades.each do |grade|
-      @boulder_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
-    end
-
-    @ideal_boulder_spread = []
-    @boulder_grades.each do |grade|
-      count = 0
-      @gym.walls.each do |wall|
-        count += wall.wall_spread[grade].to_i
-      end
-      @ideal_boulder_spread.push(count)
-    end
-
-    @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "There are "+@gym.climbs.active.boulder.count.to_s+" active boulders at "+@gym.name)
-      f.chart({:defaultSeriesType=>"column"})
-      f.xAxis(:categories => @boulder_grades)
-      f.series(:name => "Current Amount", :yAxis => 0, :data => @boulder_grade_spread)
-      if current_user && current_user.routesetter?
-        f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_boulder_spread)
-        f.subtitle({ :text => "Ideal total: "+@ideal_boulder_spread.inject(:+).to_s })
-      end
-      f.yAxis [
-        {:title => {:text => "Total Climbs"}, :allowDecimals => false },
-      ]
-      f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
-      f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
-    end
-
-    @route_walls = @gym.walls.route_wall.order("name")
-    @route_grades = Climb::ROUTE_GRADES
-
-    @route_grade_spread = []
-    @route_grades.each do |grade|
-      @route_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
-    end
-
-    @ideal_route_spread = []
-    @route_grades.each do |grade|
-      count = 0
-      @gym.walls.each do |wall|
-        count += wall.wall_spread[grade].to_i
-      end
-      @ideal_route_spread.push(count)
-    end
-
-    @route_chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "There are "+@gym.climbs.active.route.count.to_s+" active routes at "+@gym.name)
-      f.chart({:defaultSeriesType=>"column"})
-      f.xAxis(:categories => @route_grades)
-      f.series(:name => "Current Amount", :yAxis => 0, :data => @route_grade_spread)
-      if current_user && current_user.routesetter?  
-        f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_route_spread)
-        f.subtitle({ :text => "Ideal total: "+@ideal_route_spread.inject(:+).to_s })
-      end
-      f.yAxis [
-        {:title => {:text => "Total Climbs"}, :allowDecimals => false },
-      ]
-      f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
-      f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
-    end
   end
 
   # GET /gyms/new
@@ -150,5 +87,75 @@ class GymsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def gym_params
       params.require(:gym).permit(:name, :location, :image)
+    end
+
+    def route_chart
+      @route_walls = @gym.walls.route_wall.order("name")
+      @route_grades = Climb::ROUTE_GRADES
+
+      @route_grade_spread = []
+      @route_grades.each do |grade|
+        @route_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
+      end
+
+      @ideal_route_spread = []
+      @route_grades.each do |grade|
+        count = 0
+        @gym.walls.each do |wall|
+          count += wall.wall_spread[grade].to_i
+        end
+        @ideal_route_spread.push(count)
+      end
+
+      @route_chart = LazyHighCharts::HighChart.new('graph') do |f|
+        f.title(:text => "There are "+@gym.climbs.active.route.count.to_s+" active routes at "+@gym.name)
+        f.chart({:defaultSeriesType=>"column"})
+        f.xAxis(:categories => @route_grades)
+        f.series(:name => "Current Amount", :yAxis => 0, :data => @route_grade_spread)
+        if current_user && current_user.routesetter?  
+          f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_route_spread)
+          f.subtitle({ :text => "Ideal total: "+@ideal_route_spread.inject(:+).to_s })
+        end
+        f.yAxis [
+          {:title => {:text => "Total Climbs"}, :allowDecimals => false },
+        ]
+        f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
+        f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+      end
+    end
+
+    def boulder_chart
+      @boulder_walls = @gym.walls.boulder_wall.order("name")
+      @boulder_grades = Climb::BOULDER_GRADES
+
+      @boulder_grade_spread = []
+      @boulder_grades.each do |grade|
+        @boulder_grade_spread.push(@gym.climbs.active.where(grade: Climb.grades[grade]).count)
+      end
+
+      @ideal_boulder_spread = []
+      @boulder_grades.each do |grade|
+        count = 0
+        @gym.walls.each do |wall|
+          count += wall.wall_spread[grade].to_i
+        end
+        @ideal_boulder_spread.push(count)
+      end
+
+      @boulder_chart = LazyHighCharts::HighChart.new('graph') do |f|
+        f.title(:text => "There are "+@gym.climbs.active.boulder.count.to_s+" active boulders at "+@gym.name)
+        f.chart({:defaultSeriesType=>"column"})
+        f.xAxis(:categories => @boulder_grades)
+        f.series(:name => "Current Amount", :yAxis => 0, :data => @boulder_grade_spread)
+        if current_user && current_user.routesetter?
+          f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_boulder_spread)
+          f.subtitle({ :text => "Ideal total: "+@ideal_boulder_spread.inject(:+).to_s })
+        end
+        f.yAxis [
+          {:title => {:text => "Total Climbs"}, :allowDecimals => false },
+        ]
+        f.plotOptions({:column => {:dataLabels => {:enabled => true, :color => 'black'}}})
+        f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+      end
     end
 end

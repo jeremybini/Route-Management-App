@@ -1,3 +1,5 @@
+<% provide(:title, @gym.name) %>
+
 <div class="jumbotron">
   <div class="container">
     <h2><%= @gym.name %></h2>
@@ -15,8 +17,6 @@
         <% end %>        
       </ul>
     </div>
-    <% else %>
-    <h2>Wall: <%= @wall.name.capitalize %></h2>
     <% end %>
   </div>
 </div>

@@ -1,5 +1,5 @@
 class SendsController < ApplicationController
-  before_action :set_send, only: (:destroy)
+  before_action :set_send, only: [:destroy, :remove_climb]
   
   def new
   	#function to log previously sent routes..maybe should be directed here from the climb#show view, with an option to "Add previous sends"
@@ -26,6 +26,17 @@ class SendsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to profile_user_path(current_user), alert: "Send removed." }
       format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def remove_climb
+    @climb = @send.climb
+    @user = @send.user
+
+    @sends = Send.all.where(:climb_id => @climb.id).where(:user_id => @user)
+    @sends.destroy_all
+    respond_to do |format|
       format.js
     end
   end

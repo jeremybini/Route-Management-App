@@ -7,6 +7,8 @@ $("#error-explanation").removeClass("alert alert-danger")
   <% end %>
 <% else %>
   $(".climb-index").html("<%=j (render partial: 'walls/climb_index', locals: { climbs: @climbs }) %>")
+  $("#chart_div").html("")
+  $("#chart_div").html("<%=j (render partial: 'walls/climb_chart', locals: { chart: @chart }) %>")
   <% if @new %>
   	$("#inner-modal").html("<%= escape_javascript(render 'climbs/new') %>")
   <% else %>

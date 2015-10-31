@@ -23,4 +23,12 @@ module ApplicationHelper
     current_user && current_user.admin?
   end
 
+  def full_title(page_title = '')
+    base_title = "Climbing Route Database"
+    if page_title.empty?
+      base_title
+    else
+      page_title + " | " + base_title
+    end
+  end
 end

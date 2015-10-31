@@ -23,23 +23,23 @@ $.rails.allowAction = (element) ->
 
   # Create the modal box with the message
   modal_html = """
-               <div id="confirmModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div id="confirmModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">                
                     <div class="modal-header">
-                   <a class="close" data-dismiss="modal">×</a>
-                   <h3>#{ title }</h3>
-                 </div>
-                 <div class="modal-body">
-                   <p>#{ message }</p>
-                 </div>
-                 <div class="modal-footer">
-                   <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                 </div>
-               </div>
-              </div>
-             </div>  
-               """
+                      <a class="close" data-dismiss="modal">×</a>
+                      <h3>#{ title }</h3>
+                    </div>
+                    <div class="modal-body">
+                      <p>#{ message }</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+              """
   $modal_html = $(modal_html)
   # Add the new button to the modal box
   $modal_html.find('.modal-footer').append($link)
