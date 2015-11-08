@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	before_action :require_admin, only: [:index, :destroy]
 	before_action :require_user, only: [:profile, :edit, :update]
+	before_action :require_correct_user, only: [:edit, :update]
 	before_action :set_user, only: [:edit, :update, :profile, :destroy]
   
 	def index
@@ -60,6 +61,11 @@ class UsersController < ApplicationController
 	  def set_user
 	  	@user = User.find(params[:id])
 	  end
+
+	  def require_correct_user
+	  	@user = User.find(params[:id])
+  		redirect_to(root_url) unless @user == current_user || current_user.admin?
+  	  end
 
 	  def user_params
 		params.require(:user).permit(:full_name, :email, :password_digest, :password, :password_confirmation, :role)

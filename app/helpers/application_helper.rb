@@ -23,6 +23,10 @@ module ApplicationHelper
     current_user && current_user.admin?
   end
 
+  def correct_current_user(user_id = nil)
+    User.find_by(:id=>user_id) == current_user || current_user.admin?
+  end
+
   def full_title(page_title = '')
     base_title = "Climbing Route Database"
     if page_title.empty?

@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
       else
         cookies[:auth_token] = user.auth_token
       end
+      session[:user_id] = user.id
   		redirect_to gyms_path, success: "Welcome back!"
   	else
   		flash[:alert] = "Email or password is invalid"
@@ -19,6 +20,7 @@ class SessionsController < ApplicationController
 
   def destroy
     cookies.delete(:auth_token)
+    session[:user_id] = nil
     redirect_to root_path, notice: "Logged Out"
   end
 end

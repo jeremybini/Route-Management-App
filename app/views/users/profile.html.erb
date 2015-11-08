@@ -13,10 +13,12 @@
 
 	<h5>Name: <%= @user.full_name %></h5>
 	<h5>Email: <%= @user.email %></h5>
-	<%= link_to "Edit Profile", edit_user_path, class: "btn btn-sm btn-info" %>
-	<% if admin %>
+	<% if correct_current_user(@user.id) %>
+		<%= link_to "Edit Profile", edit_user_path, class: "btn btn-sm btn-info" %>
+	<% end %>
+	<% if @user.admin? && admin %>
 	  <%= link_to "Admin Dashboard", admin_user_path(@user), class: "btn btn-sm btn-primary" %>
-	<% elsif routesetter %>
+	<% elsif @user.admin? && routesetter %>
 	  <%= link_to "Routesetter Dashboard", routesetter_user_path(@user), class: "btn btn-sm btn-primary" %>
 	<% end %>
 	

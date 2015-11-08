@@ -6,8 +6,10 @@
     <th>Color</th>
     <th>Date Last Climbed</th>
     <th>Number of times climbed</th>
-    <th></th>
-    <th></th>
+    <% if correct_current_user %>
+      <th></th>
+      <th></th>
+    <% end %>
   </tr>
 
 <% user.sends.group(:climb_id).each do |send| %>
@@ -17,8 +19,10 @@
     <td><%= send.climb.color %></td>
     <td><%= send.created_at.strftime('%D') %></td>
     <td><%= user.sends.where(:climb_id => send.climb).count %></td>
-    <td><%= link_to 'Delete most recent send', send_path(send), class: "btn btn-xs btn-warning", method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete Most Recent Send?', button: 'btn-warning' } %></td>
-    <td><%= link_to 'Delete All Sends', remove_climb_send_path(send), class: "btn btn-xs btn-danger", method: :put, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete All Sends of This Climb', button: 'btn-danger' } %></td>
+    <% if correct_current_user %>
+      <td><%= link_to 'Delete most recent send', send_path(send), class: "btn btn-xs btn-warning", method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete Most Recent Send?', button: 'btn-warning' } %></td>
+      <td><%= link_to 'Delete All Sends', remove_climb_send_path(send), class: "btn btn-xs btn-danger", method: :put, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete All Sends of This Climb', button: 'btn-danger' } %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
