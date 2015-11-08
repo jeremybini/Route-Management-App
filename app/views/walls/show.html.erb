@@ -1,5 +1,17 @@
 <% provide(:title, "The "+@wall.name) %>
 
+<% content_for :instructions do %>
+  <h3>The <%= @wall.name %></h3>___________________<br><br>
+  <ul>
+    <li>Here is a list of all of the different routes on this wall. Click on the 'Edit Wall' button to add routes, strip all of the routes, or edit the target grade spread.</li>
+    <br>
+    <li>You may also edit or strip routes (this marks the routes as inactive and removes them from the wall).</li>
+    <br>
+    <li>You can mark climbs you have completed by clicking the 'Tick Climb' button. This will log the sends in your climber profile. To view your ascents, visit your <%= link_to "climber profile", profile_user_path(current_user) %></li>
+    <br>
+    <li>You can also visit the <%= link_to 'admin dashboard', admin_user_path %> for information about gym employees and users.</li>
+<% end %>
+
 <div class="jumbotron">
   <div class="container">
     <div id="wall-jumbotron"><%= render partial: 'jumbotron', locals: { wall: @wall } %></div>
@@ -29,7 +41,7 @@
         <div id="image_div" class="col-sm-4">
           <div id="wall_display_image" style="background-image: url(<%= @wall.image.url(:large) %>)"></div>
         </div>
-        <div id="chart_div" class="col-sm-5">
+        <div id="chart_div" class="col-sm-8">
       <% end %>
     <% else %>
       <div id="chart_div" class="col-md-12">

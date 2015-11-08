@@ -11,16 +11,22 @@
     </div>
   <% end %>
 
+  <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
   <div class="field">
-    <%= f.label :image %><br>
-    <%= f.file_field :image %>
+    <%= f.label :image, class: "control-label" %><br>
+    <%= image_tag @gym.image.url(:thumb) if @gym.image.present? %>
+    <div class="controls">
+      <%= f.file_field :image %>
+    </div>
     <% if @gym.image.present? %>
       <%= image_tag @gym.image.url(:thumb) %><br><br>
-      <% if admin %>
-        <%= link_to "Delete attached image", remove_image_gym_path(@gym), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.' } %><br>
+      <% if routesetter %>
+        <%= link_to "Delete attached image", remove_image_gym_path(@gym), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.', title: "Delete Wall Image", button: "btn-danger" } %><br>
       <% end %>
     <% end %>
   </div>
+  
   <div class="field">
     <%= f.label :name %><br>
     <%= f.text_field :name %>

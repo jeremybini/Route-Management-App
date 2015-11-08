@@ -1,24 +1,4 @@
 <% provide(:title, "Contact") %>
 
-<h1>Pages#contact</h1>
-<p>Find me in app/views/pages/contact.html.erb</p>
-<h1>Climbs</h1>
-<% @climbs.each_with_index do |climb, index| %>
-<hr>
-<h5><%= index %></h5>
-<p>active: <%= climb.active.to_s %></p>
-<p>wall: <%= climb.try(:wall).try(:name) %></p>
-<p>gym: <%= climb.try(:wall).try(:gym).try(:name) %></p>
-<%= link_to 'Delete', climb_path(climb), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
-<hr>
-<% end %>
-
-<h1>Walls</h1>
-<% @walls.each_with_index do |wall, index| %>
-<hr>
-<h5><%= index %></h5>
-<p>wall: <%= wall.name %></p>
-<p>gym: <%= wall.try(:gym) %></p>
-<%= link_to 'Delete', wall_path(wall), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently the route without archiving it.' } %>
-<hr>
-<% end %>
+<h1>Contact</h1>
+<p>For more info or issues with the site, contact me at jeremybini@gmail.com</p>

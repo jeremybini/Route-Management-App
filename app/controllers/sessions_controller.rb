@@ -10,10 +10,10 @@ class SessionsController < ApplicationController
       else
         cookies[:auth_token] = user.auth_token
       end
-  		redirect_to gyms_path, notice: "Welcome back!"
+  		redirect_to gyms_path, success: "Welcome back!"
   	else
   		flash[:alert] = "Email or password is invalid"
-  		render 'new'
+  		render partial: 'new'
   	end
   end
 

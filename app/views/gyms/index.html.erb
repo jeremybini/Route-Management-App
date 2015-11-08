@@ -1,5 +1,9 @@
 <% provide(:title, "Gym List") %>
 
+<% content_for :instructions do %>
+  <h3>Click on a gym to check it out!</h3>
+<% end %>
+
 <div class="jumbotron">
   <div class="container">
     <div class="col-md-6 col-md-offset-3 text-center">
@@ -7,22 +11,27 @@
       <hr>
     </div>
   </div>
-</div>  
+</div> 
 
 <div class="container">
   <div class="row">
-    <% @gyms.each do |gym| %>
-      <div class="col-md-4">
-        <div class="thumbnail">
-          <div class="caption text-center">
-            <h3><%= link_to gym.name, gym %></h3>
-            <p><%= gym.location %></p>
+    <% gyms.each do |gym| %>
+      <div class="col-sm-6 col-md-4">
+        <%= link_to gym_path(gym) do %>
+          <div class="thumbnail">
+            <div class="caption text-center">
+              <h3><%= gym.name.upcase %></h3>
+              <h5><%= gym.location %></h5>
+            </div>
+            <% if gym.image.present? %>
+              <div class="gyms_thumbnails" style="background-image: url(<%=gym.image.url(:medium) %>)"></div>
+            <% end %>
           </div>
-          <br>
-        </div>
+        <% end %>
       </div>
     <% end %>
   </div>
+
 
   <br>
 

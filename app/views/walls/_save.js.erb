@@ -9,10 +9,10 @@ $("#error-explanation").removeClass("alert alert-danger")
   <% if @new %>
   	<% if @wall.wall_type === "Boulder" %>
   		$(".boulder-index").html("<%=j (render partial: 'gyms/wall_index', locals: { walls: @updated_walls }) %>")
-      <%= high_chart("chart", @chart) %>
+      
   	<% else %>
   		$(".route-index").html("<%=j (render partial: 'gyms/wall_index', locals: { walls: @updated_walls }) %>")
-      <%= high_chart("chart", @chart) %>
+      
   	<% end %>
   <% else %>
   	$("#wall-jumbotron").html("<%=j (render partial: 'walls/jumbotron', locals: { wall: @wall }) %>")

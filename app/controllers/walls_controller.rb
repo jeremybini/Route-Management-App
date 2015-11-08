@@ -35,7 +35,7 @@ class WallsController < ApplicationController
     @updated_walls = @wall.gym.walls.where(wall_type: @wall.wall_type)
     respond_to do |format|
       if @wall.save
-        format.html { redirect_to @wall, notice: "The "+@wall.name.titleize+" was successfully created." }
+        format.html { redirect_to @wall.gym, notice: "The "+@wall.name.titleize+" was successfully created." }
         format.json { render :show, status: :created, location: @wall }
         format.js { flash.now[:notice] = "The "+@wall.name+" was successfully created." }
       else
@@ -52,7 +52,7 @@ class WallsController < ApplicationController
   def update
     respond_to do |format|
       if @wall.update(wall_params)
-        format.html { redirect_to @wall.gym, info: @wall.name.titleize+' was successfully updated.' }
+        format.html { redirect_to @wall, info: @wall.name.titleize+' was successfully updated.' }
         format.json { render :show, status: :ok, location: @wall }
         format.js { flash.now[:notice] = @wall.name+' was successfully updated.' }
       else

@@ -23,10 +23,14 @@ class User < ActiveRecord::Base
 	end
 
 	def routesetter?
-		self.role === 'Routesetter' || self.role === 'Admin'
+		self.role === 'Routesetter' || self.role === 'Admin' || self.role === 'Super Admin'
 	end
 
 	def admin?
-		self.role === 'Admin'
+		self.role === 'Admin' || self.role === 'Super Admin'
+	end
+
+	def super_admin?
+		self.role === 'Super Admin'
 	end
 end

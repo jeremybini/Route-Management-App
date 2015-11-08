@@ -26,14 +26,17 @@
       <%= f.text_field :email %>
     </div>
     <% if admin %>
-    <div class="field">
-      <%= f.label :role %>
-      <%= f.select :role, options_for_select(["Admin", "Routesetter", "User"], @user.role) %>
-    </div>
+      <% unless @user.admin? %>
+        <div class="field">
+          <%= f.label :role %>
+          <%= f.select :role, options_for_select(["Admin", "Routesetter", "User"], @user.role) %>
+        </div>
+      <% end %>
     <% end %>
     <hr>
     <div class="actions">
       <%= f.submit "Update Profile", class: "btn btn-success"%>
+      <%= link_to "<Back", :back, class: "btn btn-primary" %>
     </div>
   <% end %>
   <div class="row">

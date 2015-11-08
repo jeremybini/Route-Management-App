@@ -139,10 +139,43 @@ class ClimbsController < ApplicationController
 
   def archive
     @climb.toggle!(:active)
-    @climbs = @climb.wall.climbs.active.order(sort_climbs)
-    @archived_climbs = @climb.wall.climbs.archived
+    @wall = @climb.wall
+    @climbs = @wall.climbs.active.order(sort_climbs)
+    @archived_climbs = @wall.climbs.archived
     respond_to do |format|
       if @climb.active === false
+        @wall_grades = []
+        if @wall.wall_type==='Route'
+          @wall_grades = Climb::ROUTE_GRADES
+        else
+          @wall_grades = Climb::BOULDER_GRADES
+        end
+        
+        @ideal_grade_spread = []
+        @wall_grades.each do |grade|
+          @ideal_grade_spread.push(@wall.wall_spread[grade].to_i)
+        end
+
+        @current_grade_spread = []
+
+        @wall_grades.each do |grade|
+          @current_grade_spread.push(@climbs.active.where(grade: Climb.grades[grade]).count)
+        end
+
+        @chart = LazyHighCharts::HighChart.new('graph') do |f|
+          f.title({ :text => "There are "+@climbs.count.to_s+" active climbs on the "+@wall.name })
+          
+          f.xAxis(:categories => @wall_grades)
+          f.yAxis(:allowDecimals => false)
+          f.series(:name => "Current Amount", :yAxis => 0, :data => @current_grade_spread)
+          if current_user && current_user.routesetter?
+            f.series(:name => "Ideal Amount", :yAxis => 0, :data => @ideal_grade_spread)
+            f.subtitle({ :text => "Ideal total: "+@ideal_grade_spread.reduce(:+).to_s })
+          end
+          f.plotOptions({:series => {:dataLabels => {:enabled => true, :color => 'black'}}})
+          f.legend(:align => 'center', :verticalAlign => 'bottom', :layout => 'horizontal',)
+          f.chart({:defaultSeriesType=>"column"})
+        end
         format.html { redirect_to @climb.wall, warning: @climb.color+" "+@climb.grade+" was successfully archived." }
         format.json { head :no_content }
         format.js { flash.now[:warning] = @climb.color+" "+@climb.grade+" was successfully archived." }

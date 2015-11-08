@@ -1,5 +1,11 @@
 <% provide(:title, "Admin Dashboard") %>
 
+<% content_for :instructions do %>
+  <h3>Admin Dashboard</h3>___________________
+  <br><br>
+  <p>This is very limited at the moment. In the future, managers will be able to use this to generate detailed reports about each employee.</p>
+<% end %>
+
 <div class="container">
   <div class="row">
   	<h3>Admin Dashboard</h3>
@@ -35,7 +41,7 @@
 		      <th>Grade</th>
 		      <th>Color</th>
 		      <th>Date Set</th>
-		      <th>Logged Sends</th>
+		      <th>Logged Ascents</th>
 		    </tr>
 	 
 		    <% setter.set_climbs.active.where(gym_id: gym.id).order("grade").each do |climb| %>

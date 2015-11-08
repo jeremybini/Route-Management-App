@@ -4,6 +4,8 @@
       <ul class="wall-errors"></ul>
     </div>
 
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
     <div class="control-group">
       <%= f.label :image, class: "control-label" %><br>
       <%= image_tag @wall.image.url(:thumb) if @wall.image.present? %>
@@ -13,7 +15,7 @@
       <% if @wall.image.present? %>
       <%= image_tag @wall.image.url(:thumb) %><br><br>
       <% if routesetter %>
-        <%= link_to "Delete attached image", remove_image_wall_path(@wall), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.', title: "Delete Wall Image", button: "btn-danger" }, remote: true %><br>
+        <%= link_to "Delete attached image", remove_image_wall_path(@wall), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.', title: "Delete Wall Image", button: "btn-danger" } %><br>
       <% end %>
     <% end %>
     </div>

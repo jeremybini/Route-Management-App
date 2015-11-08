@@ -1,5 +1,10 @@
 <% provide(:title, @gym.name) %>
 
+<% content_for :instructions do %>
+  <h3>Welcome to <%= @gym.name %></h3>___________________<br><br>
+  <p>Browse through the walls. There are two types, 'Boulder' and 'Route' walls, which contain different types of climbing routes. Feel free to add a wall of your own by clicking on the 'Edit Gym' button.</p>
+<% end %>
+
 <div class="jumbotron">
   <div class="container">
     <h2><%= @gym.name %></h2>
@@ -11,7 +16,7 @@
         Edit Gym <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><%= link_to "<i class='fa fa-pencil fa-fw'></i> Edit Gym Info".html_safe, edit_gym_path(@gym), remote: true %></li>
+        <li><%= link_to "<i class='fa fa-pencil fa-fw'></i> Edit Gym Info".html_safe, edit_gym_path(@gym) %></li>
         <% if admin %>
           <li><%= link_to "<i class='fa fa-plus'></i> Create Wall".html_safe, new_gym_wall_path(@gym), remote: true %></li>
         <% end %>        

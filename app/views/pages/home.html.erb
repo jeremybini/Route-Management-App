@@ -1,22 +1,22 @@
 <% provide(:title, "Welcome") %>
+
+<% content_for :instructions do %>
+	<h1>Hello!</h1>___________________<br><br>
+	<ul>
+	<li>Welcome to the sample version of my climbing route database. The purpose of this website is to log and track indoor climbing routes.</li>
+	<br>
+	<li>You can sign up for an account, or click the 'Log In' button to browse the application as an administrator. This will give you all of the features of a standard user, plus the ability to add, modify, archive, and delete climbing routes.</li>
+	</ul>
+<% end %>
+
 <div class="jumbotron">
 	<div class="container">
 		<div class="col-md-6 col-md-offset-3 text-center">
 			<h1>Welcome!</h1>
 			<hr>
-			<% unless current_user %>
-			  <%= link_to "Sign Up Now", signup_path, class: 'btn btn-lg btn-default' %>
-			  <%= link_to "Log In", login_path, class: 'btn btn-lg btn-info' %>
-			<% end %>
-			<%= link_to "Browse Routes", gyms_path, class: 'btn btn-lg btn-primary' %>
+			<div id="home-page-links">
+				<%= render partial: "links" %>
+			</div>
 		</div>
 	</div>
-</div>
-
-<div>
-	Flatiron School! Welcome to the sample version of my climbing route database. The purpose of this website is to log and track climbing routes in the gyms throughout New York City. Click below to log in and browse the application as either a user or an administrator.
-
-	Browse the site as a user.
-
-	Browse as an administrator.
 </div>

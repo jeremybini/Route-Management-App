@@ -1,0 +1,5 @@
+<% unless current_user %>
+	<%= link_to "Sign Up Now", signup_path, class: 'btn btn-lg btn-default' %>
+	<%= link_to "Log In", login_path, class: 'btn btn-lg btn-info', remote: true %>
+<% end %>
+<%= link_to "Browse Routes", gyms_path, class: 'btn btn-lg btn-primary' %>

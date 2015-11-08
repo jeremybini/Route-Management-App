@@ -6,7 +6,7 @@ class SendsController < ApplicationController
   end
 
   def create
-    sleep 1
+    sleep 0.5
   	@send = Send.new(:climb_id => params[:climb_id], :user_id => params[:user_id])
   	respond_to do |format|
       if @send.save

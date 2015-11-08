@@ -81,7 +81,7 @@
                   </li>
                 </ul>
             <% else %>
-              <li><%= link_to "Log In", login_path %></li>
+              <li><%= link_to "Log In", login_path, remote: true %></li>
             <% end %>
             <li><%= link_to "Home", home_path %></li>
           </ul>
@@ -93,6 +93,26 @@
   <div id="main-flash">
     <%= render partial: "layouts/flash_messages", flash: flash %>
   </div>
+
+  <div id="login-modal" class="modal fade">
+    <div class="modal-dialog">
+      <div id="inner-login-modal" class="modal-content"></div>
+    </div>
+  </div>
+
+  <% if content_for?(:instructions) %>
+    <div id="sample">
+      <div id="sample-instructions" class="row text-center open">
+        <div class="container">
+          <div class="row">
+            <%= yield(:instructions) %> 
+          </div>
+        </div>
+      </div>
+      <div id="sample-toggle" class="sample-toggle-open text-center"><i id="click-icon" class="fa fa-times fa-2x click-icon-open"></i></div>
+    </div>
+  <% end %>
+
 
   <%= yield %>
 
@@ -107,15 +127,21 @@
 </html>
 
 <script>
-  // $("#left-menubutton").click(function() {
-  //   if ($("#left-navbar").hasClass("open")) {
-  //     $("#left-navbar").animate({ "left": "-220px" }, "fast" ).removeClass("open");
-  //     $("#mgmt_icon").removeClass("glyphicon glyphicon-remove-sign").addClass("glyphicon glyphicon-cog");
-  //   } else {
-  //     $("#left-navbar").animate({ "left": "0px" }, "fast" ).addClass("open");
-  //     $("#mgmt_icon").removeClass("glyphicon glyphicon-cog").addClass("glyphicon glyphicon-remove-sign");
-  //   };
-  // });
+  $(document).ready( function() {
+    var height = $('#sample-instructions').css('height');
+
+    $("#sample-toggle").click(function() {
+      if ($("#sample-instructions").hasClass("open")) {
+        $("#sample-instructions").animate({ "height": '0px' }, 350).removeClass("open");
+        $("#click-icon").removeClass('fa-times').removeClass('click-icon-open').addClass('fa-chevron-down');
+        $("#sample-toggle").removeClass('sample-toggle-open').addClass('sample-toggle-closed');
+      } else {
+        $("#sample-instructions").animate({ "height": height }, 350).addClass("open");
+        $("#click-icon").removeClass('fa-chevron-down').addClass('fa-times').addClass('click-icon-open');
+        $("#sample-toggle").removeClass('sample-toggle-closed').addClass('sample-toggle-open');
+      };
+    });
+  });
   
   // $(document).click(function(event) {
   //   if (!$(event.target).closest("#left-menubutton, #left-navbar").length) {
@@ -131,8 +157,8 @@
             opacity: 0,
         }, 700, function() {
             $(this).alert('close');
-    })
-  })
+    });
+  });
 
   $(document).ajaxComplete(function() {
     $('#flash-messages').delay(3000).animate({

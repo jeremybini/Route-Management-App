@@ -1,5 +1,11 @@
 <% provide(:title, "Users") %>
 
+<% content_for :instructions do %>
+  <h3>Admin Dashboard</h3>___________________
+  <br><br>
+  <p>Here is a list of all employees, as well as all users.</p>
+<% end %>
+
 <div class="container">
   <div class="row">
     <h3>User Management</h3>
@@ -30,7 +36,11 @@
             <td><%= employee.email %></td>
             <td><%= employee.role %></td>
             <td><%= link_to "Edit Setter Info", edit_user_path(employee), class: "btn btn-sm btn-info" %></td>
-            <td><%= link_to "Delete Setter", employee, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>
+            <% if employee.admin? %>
+              <% if current_user.super_admin? %>
+                <td><%= link_to "Delete Setter", employee, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>
+              <% end %>
+            <% end %>
           </tr>
         <% end %>
         </table>
@@ -48,7 +58,7 @@
           <tr>
             <td><%= user.full_name %></td>
             <td><%= user.email %></td>
-            <td><%= link_to "Edit User Info", edit_user_path(user), class: "btn btn-info" %></td>
+            <td><%= link_to "Edit User Info", edit_user_path(user), class: "btn btn-sm btn-info" %></td>
             <td><%= link_to "Delete User", user, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>
           </tr>
           <% end %>

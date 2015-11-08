@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <%= link_to climb_path(climb), class: "climb-link" do %>
         <div class="panel-heading clearfix">
-          <h4 class="panel-title" style="padding-top: 7.5px;"><%= climb.grade %><span class="pull-right">Rating</span></h4>
+          <h4 class="panel-title" style="padding-top: 7.5px;"><%= climb.grade %><!-- <span class="pull-right">Rating</span> --></h4>
         </div>
         <div class="panel-color" style="background-color: <%= tape_color(climb.color) %>;"></div>
         <% end %>
