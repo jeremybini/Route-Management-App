@@ -1,0 +1,8 @@
+$("#error-explanation").removeClass("alert alert-danger")
+$("ul.session-errors").html("")
+<% if @error %>
+  $("#error_explanation").addClass("alert alert-danger")
+    $("ul.session-errors").html("<%=j @error %>")
+<% else %>
+  $("#main-flash").html('Welcome Back!');
+<% end %>

@@ -1,1 +1,3 @@
 $('#sends').html("<%=j ( render partial: 'users/sends', object: @user, as: 'user' )%>");
+$('#pie-chart').html("<%=j (render partial: 'users/send_chart', locals: { chart: @grade_chart }) %>");
+$(".modal").modal('hide');

@@ -4,18 +4,23 @@ class SessionsController < ApplicationController
 
   def create
   	user = User.find_by_email(params[:email])
-  	if user && user.authenticate(params[:password])
-      if params[:remember_me]
-  		  cookies.permanent[:auth_token] = user.auth_token
-      else
-        cookies[:auth_token] = user.auth_token
-      end
-      session[:user_id] = user.id
-  		redirect_to gyms_path, success: "Welcome back!"
-  	else
-  		flash[:alert] = "Email or password is invalid"
-  		render partial: 'new'
-  	end
+
+    respond_to do |format|
+    	if user && user.authenticate(params[:password])
+        if params[:remember_me]
+    		  cookies.permanent[:auth_token] = user.auth_token
+        else
+          cookies[:auth_token] = user.auth_token
+        end
+        session[:user_id] = user.id
+        flash.keep[:success]="Welcome back!"
+        format.html { redirect_to :back }
+    	else
+        @error = "Email or password is invalid"
+        format.html { flash.now[:alert] = "Email or password is invalid" }
+        format.js
+    	end
+    end
   end
 
   def destroy

@@ -6,33 +6,43 @@
   <p>This is very limited at the moment. In the future, climbers will able to sort and manage all of the climbs they completes, with the ability to generate detailed reports.</p>
 <% end %>
 
+
+
 <div class="container">
   <div class="row">
 	<h3>Profile</h3>
 	<hr>
-
-	<h5>Name: <%= @user.full_name %></h5>
-	<h5>Email: <%= @user.email %></h5>
-	<% if correct_current_user(@user.id) %>
-		<%= link_to "Edit Profile", edit_user_path, class: "btn btn-sm btn-info" %>
-	<% end %>
-	<% if @user.admin? && admin %>
-	  <%= link_to "Admin Dashboard", admin_user_path(@user), class: "btn btn-sm btn-primary" %>
-	<% elsif @user.admin? && routesetter %>
-	  <%= link_to "Routesetter Dashboard", routesetter_user_path(@user), class: "btn btn-sm btn-primary" %>
-	<% end %>
-	
-	<hr>
-	<div id="sends">
-	  <%= render partial: 'sends', locals: { user: @user } %>
+	<div class="col-sm-12">
+		<h4><%= @user.full_name %></h4>
+		<h5>Email: <%= @user.email %></h5>
+		<% if correct_current_user(@user.id) %>
+			<%= link_to "Edit Profile", edit_user_path, class: "btn btn-sm btn-info" %>
+		<% end %>
+		<% if @user.admin? && admin %>
+		  <%= link_to "Admin Dashboard", admin_user_path(@user), class: "btn btn-sm btn-primary" %>
+		<% elsif @user.admin? && routesetter %>
+		  <%= link_to "Routesetter Dashboard", routesetter_user_path(@user), class: "btn btn-sm btn-primary" %>
+		<% end %>
+		<hr>
 	</div>
-	<hr>
 
-	<% if routesetter %>
-	<div id="set-climbs">
-	  <%= render partial: 'set_climbs', locals: { user: @user } %>
+	<div class="col-md-6">
+		<div id="sends">
+		  <%= render partial: 'sends', locals: { user: @user } %>
+		</div>
+		<hr>
+
+		<% if @user.routesetter? %>
+		<div id="set-climbs">
+		  <%= render partial: 'set_climbs', locals: { user: @user } %>
+		</div>
+		<% end %>
 	</div>
-	<% end %>
-	
+
+	<div id='pie-chart'>
+		<%= render partial: 'send_chart', locals: { chart: @grade_chart } %>
+	</div>
+
+
   </div>
 </div>

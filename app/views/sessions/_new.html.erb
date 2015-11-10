@@ -6,10 +6,10 @@
 
 <div class="modal-body">
 	<div id="error_explanation">
-	  <ul class="wall-errors"></ul>
+	  <ul class="session-errors"></ul>
 	</div>
 
-  <%= form_tag sessions_path do %>
+  <%= form_tag(sessions_path, remote: true) do %>
     <div class="control-group">
       <%= label_tag :email %>
       <div class="controls">

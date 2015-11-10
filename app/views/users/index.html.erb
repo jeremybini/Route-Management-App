@@ -32,7 +32,7 @@
      
         <% @employees.each do |employee| %>
           <tr>
-            <td><%= link_to employee.full_name, routesetter_user_path(employee) %></td>
+            <td><%= link_to employee.full_name, profile_user_path(employee) %></td>
             <td><%= employee.email %></td>
             <td><%= employee.role %></td>
             <td><%= link_to "Edit Setter Info", edit_user_path(employee), class: "btn btn-sm btn-info" %></td>
@@ -56,7 +56,7 @@
          
           <% @users.each do |user| %>
           <tr>
-            <td><%= user.full_name %></td>
+            <td><%= link_to user.full_name, profile_user_path(user) %></td>
             <td><%= user.email %></td>
             <td><%= link_to "Edit User Info", edit_user_path(user), class: "btn btn-sm btn-info" %></td>
             <td><%= link_to "Delete User", user, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>

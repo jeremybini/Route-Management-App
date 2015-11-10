@@ -109,7 +109,7 @@
           </div>
         </div>
       </div>
-      <div id="sample-toggle" class="sample-toggle-open text-center"><i id="click-icon" class="fa fa-times fa-2x click-icon-open"></i></div>
+      <div id="sample-toggle" class="sample-toggle-open text-center"><i id="click-icon" class="fa fa-chevron-up fa-2x click-icon-open"></i></div>
     </div>
   <% end %>
 
@@ -133,11 +133,11 @@
     $("#sample-toggle").click(function() {
       if ($("#sample-instructions").hasClass("open")) {
         $("#sample-instructions").animate({ "height": '0px' }, 350).removeClass("open");
-        $("#click-icon").removeClass('fa-times').removeClass('click-icon-open').addClass('fa-chevron-down');
+        $("#click-icon").removeClass('fa-chevron-up').removeClass('click-icon-open').addClass('fa-chevron-down');
         $("#sample-toggle").removeClass('sample-toggle-open').addClass('sample-toggle-closed');
       } else {
         $("#sample-instructions").animate({ "height": height }, 350).addClass("open");
-        $("#click-icon").removeClass('fa-chevron-down').addClass('fa-times').addClass('click-icon-open');
+        $("#click-icon").removeClass('fa-chevron-down').addClass('fa-chevron-up').addClass('click-icon-open');
         $("#sample-toggle").removeClass('sample-toggle-closed').addClass('sample-toggle-open');
       };
     });

@@ -1,28 +1,36 @@
 <h4>Sends</h4>
 <table class="table table-striped">
   <tr>
+    <% if correct_current_user(user.id) %>
+      <th>&nbsp;</th>
+    <% end %>
     <th>Wall</th>
     <th>Grade</th>
     <th>Color</th>
-    <th>Date Last Climbed</th>
-    <th>Number of times climbed</th>
-    <% if correct_current_user %>
-      <th></th>
-      <th></th>
-    <% end %>
+    <th># of Ascents</th>
   </tr>
 
 <% user.sends.group(:climb_id).each do |send| %>
-  <tr>
+  <!-- add edit button to expand table and access delete buttons, if current user is viewing their profile -->
+  <% if correct_current_user(user.id) %>
+    <tr data-toggle="collapse" data-target="#delete-buttons-<%= send.id %>" class="accordion-toggle">
+      <td><button class="btn btn-default btn-xs"><span class="fa fa-gear"></span></button></td>
+  <% else %>
+    <tr>
+  <% end %>
     <td><%= link_to send.climb.wall.name, wall_path(send.climb.wall) %></td>
     <td><%= link_to send.climb.grade, climb_path(send.climb) %></td>
     <td><%= send.climb.color %></td>
-    <td><%= send.created_at.strftime('%D') %></td>
     <td><%= user.sends.where(:climb_id => send.climb).count %></td>
-    <% if correct_current_user %>
-      <td><%= link_to 'Delete most recent send', send_path(send), class: "btn btn-xs btn-warning", method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete Most Recent Send?', button: 'btn-warning' } %></td>
-      <td><%= link_to 'Delete All Sends', remove_climb_send_path(send), class: "btn btn-xs btn-danger", method: :put, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete All Sends of This Climb', button: 'btn-danger' } %></td>
-    <% end %>
   </tr>
+
+  <% if correct_current_user(user.id) %>
+    <tr>
+      <td colspan="12" class="hiddenRow"><div class="accordian-body collapse text-center" id="delete-buttons-<%= send.id %>"> 
+          <%= link_to 'Delete last ascent', send_path(send), class: "btn btn-sm btn-warning", method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete Most Recent Send?', button: 'btn-warning' } %>
+          <%= link_to 'Delete All', remove_climb_send_path(send), class: "btn btn-sm btn-danger", method: :put, remote: true, data: { confirm: 'Are you sure you want to delete this send?', title: 'Delete All Sends of This Climb', button: 'btn-danger' } %>
+      </td>
+    </tr>
+  <% end %>
 <% end %>
 </table>

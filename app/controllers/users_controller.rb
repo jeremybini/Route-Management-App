@@ -14,6 +14,45 @@ class UsersController < ApplicationController
 	end
 
 	def profile
+		@sends = @user.sends.joins(:climb).order('climbs.grade')
+
+		@send_count = Hash.new(0)
+		@sends.each do |send|
+			@send_count[send.climb.grade]+=1
+		end
+
+		@send_data = []
+		@send_count.map{ |grade, count| @send_data.push([grade, count]) }
+
+		@grade_chart = LazyHighCharts::HighChart.new('pie') do |f|
+	      f.chart({ :defaultSeriesType=>"pie",
+	      	        :margin=> [50, 0, 0, 0] ,
+	      	        :spacingBottom=>0
+	      	      })
+	      series = {
+	               :type=> 'pie',
+	               :name=> 'Ascents by Grade',
+	               :data=> @send_data
+	      }
+	      f.series(series)
+	      f.options[:title][:text] = "Ascents by Grade"
+	      f.legend(:layout=> 'vertical',:style=> {:left=> 'auto', :bottom=> 'auto',:right=> '50px',:top=> '100px'}) 
+	      f.tooltip({
+	        :pointFormat=> '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+	      })
+	      f.plot_options(:pie=>{
+	        :allowPointSelect=>true, 
+	        :cursor=>"pointer" , 
+	        :dataLabels=>{
+	        	:format=> '<b>{point.name}</b>: {point.y} Ascents',
+	          :enabled=>true,
+	          :color=>"black",
+	          :style=>{
+	            :font=>"13px Trebuchet MS, Verdana, sans-serif"
+	          }
+	        }
+	      })
+		end
 	end
 
 	def routesetter
@@ -21,7 +60,7 @@ class UsersController < ApplicationController
 	end
 
 	def admin
-      @setters = User.where(role: ["Routesetter", "Admin"]).order("full_name")
+    @setters = User.where(role: ["Routesetter", "Admin"]).order("full_name")
 	end
 
 	def create
