@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
           cookies[:auth_token] = user.auth_token
         end
         session[:user_id] = user.id
-        flash.keep[:success]="Welcome back!"
+        flash.keep[:notice]="Welcome back!"
         format.html { redirect_to :back }
     	else
         @error = "Email or password is invalid"
