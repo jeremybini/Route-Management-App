@@ -14,10 +14,10 @@ class UsersController < ApplicationController
 	end
 
 	def profile
-		@sends = @user.sends.joins(:climb).order('climbs.grade')
+		@all_sends = @user.sends.joins(:climb).order('climbs.grade')
 
 		@send_count = Hash.new(0)
-		@sends.each do |send|
+		@all_sends.each do |send|
 			@send_count[send.climb.grade]+=1
 		end
 
