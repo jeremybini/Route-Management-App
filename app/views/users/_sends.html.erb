@@ -10,7 +10,7 @@
     <th># of Ascents</th>
   </tr>
 <% if user.sends.first %>
-  <% user.sends.select("DISTINCT(climb_id), *").group(:climb_id).order("climb_id DESC").each do |send| %>
+  <% user.sends.select("sends.*").group(:climb_id).each do |send| %>
     <!-- add edit button to expand table and access delete buttons, if current user is viewing their profile -->
     <% if correct_current_user(user.id) %>
       <tr data-toggle="collapse" data-target="#delete-buttons-<%= send.id %>" class="accordion-toggle">
