@@ -9,6 +9,9 @@
 
     <div class = "col-md-2 col-xs-1">
     	<%= form_for(@wall) do |f| %>
+          <div class="actions">
+            <%= f.submit class: "btn btn-success" %>
+          </div>
       	  <% @wall_grades.each do |grade| %>	
     		    <div class="field">
     	        <%= f.label grade, grade %><br>
