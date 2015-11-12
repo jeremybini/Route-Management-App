@@ -234,7 +234,7 @@ btn-default:hover {
   }
 }
 
-.sample-toggle-closed {
+.instruction-toggle {
   z-index: 5;
   position: absolute;
   left:0;
@@ -243,32 +243,6 @@ btn-default:hover {
   margin-right:auto;
   width: 60px;
   margin: auto;
-  background-color: #eeeeee;
-  border-radius: 0px 0px 10px 10px;
-  background-color: #f7f7f7;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#e7e7e7));
-  background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
-  background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7); 
-  background-image: -ms-linear-gradient(top, #f7f7f7, #e7e7e7); 
-  background-image: -o-linear-gradient(top, #f7f7f7, #e7e7e7); 
-  color: #a7a7a7;
-  box-shadow: 0px 3px 8px #6d6b6b, inset 0px 2px 3px #fff;
-  &:hover {
-    text-decoration: none;
-    color: #555;
-    background: #f5f5f5;
-  }
-}
-
-.sample-toggle-open {
-  z-index: 5;
-  left:0;
-  right:0;
-  position: absolute;
-  margin-left:auto;
-  margin-right:auto;
-  margin: auto;
-  width: 60px;
   background-color: #eeeeee;
   border-radius: 0px 0px 10px 10px;
   background-color: #f7f7f7;

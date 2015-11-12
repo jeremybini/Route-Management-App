@@ -109,7 +109,7 @@
           </div>
         </div>
       </div>
-      <div id="sample-toggle" class="sample-toggle-open text-center"><i id="click-icon" class="fa fa-chevron-up fa-2x click-icon-open"></i></div>
+      <div id="sample-toggle" class="instruction-toggle text-center"><i id="click-icon" class="fa fa-chevron-up fa-2x click-icon-open"></i></div>
     </div>
   <% end %>
 
@@ -134,23 +134,12 @@
       if ($("#sample-instructions").hasClass("open")) {
         $("#sample-instructions").animate({ "height": '0px' }, 350).removeClass("open");
         $("#click-icon").removeClass('fa-chevron-up').removeClass('click-icon-open').addClass('fa-chevron-down');
-        $("#sample-toggle").removeClass('sample-toggle-open').addClass('sample-toggle-closed');
       } else {
         $("#sample-instructions").animate({ "height": height }, 350).addClass("open");
         $("#click-icon").removeClass('fa-chevron-down').addClass('fa-chevron-up').addClass('click-icon-open');
-        $("#sample-toggle").removeClass('sample-toggle-closed').addClass('sample-toggle-open');
       };
     });
   });
-  
-  // $(document).click(function(event) {
-  //   if (!$(event.target).closest("#left-menubutton, #left-navbar").length) {
-  //     if ($("#left-navbar").hasClass("open")) {
-  //       $("#left-navbar").animate({ "left": "-220px" }, "fast" ).removeClass("open");
-  //       $("#mgmt_icon").removeClass("glyphicon glyphicon-remove-sign").addClass("glyphicon glyphicon-cog");
-  //     };
-  //   };
-  // });
 
   $(document).ready( function() {
     $('#flash-messages').delay(3000).animate({
