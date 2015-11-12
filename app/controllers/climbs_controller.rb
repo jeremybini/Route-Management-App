@@ -4,34 +4,19 @@ class ClimbsController < ApplicationController
   before_action :require_routesetter, only: [:new, :edit, :create, :update, :archive, :destroy]
   
   helper_method :sort_climbs
-  # GET wall/:id/routes
-  # or
-  # also visible in /wall/:id
-  # which is better??
-  # GET /routes.json
 
-  # def index
-  #    @climbs = @wall.climbs.active
-  # end
-
-  # GET /routes/1
-  # GET /routes/1.json
   def show
     @wall = @climb.wall
   end
 
-  # GET wall/:id/routes/new
   def new
     @climb = Climb.new
     @wall = Wall.find(params[:wall_id])
   end
 
-  # GET /routes/1/edit
   def edit
   end
 
-  # POST /routes
-  # POST /routes.json
   def create
     sleep 0.5
     @new_climb = Climb.new(climb_params)
@@ -87,8 +72,6 @@ class ClimbsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /routes/1
-  # PATCH/PUT /routes/1.json
   def update
     @wall = @climb.wall
     @climbs = @wall.climbs.active.order(sort_climbs)
@@ -187,8 +170,6 @@ class ClimbsController < ApplicationController
     end
   end
 
-  # DELETE /routes/1
-  # DELETE /routes/1.json
   def destroy
     @wall = @climb.wall
     @climb.destroy

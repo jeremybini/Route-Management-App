@@ -6,29 +6,18 @@ class WallsController < ApplicationController
   before_action :chart, only: [:show, :update]
   
   helper_method :sort_climbs
-  # GET /walls
-  # GET /walls.json
-  # def index
-  #   @walls = Wall.all
-  # end
 
-  # GET /walls/1
-  # GET /walls/1.json
   def show
   end
 
-  # GET /walls/new
   def new
     @wall = Wall.new
     @gym = Gym.find(params[:gym_id])
   end
 
-  # GET /walls/1/edit
   def edit
   end
 
-  # POST /walls
-  # POST /walls.json
   def create
     @wall = Wall.new(wall_params)
     @new = true
@@ -47,8 +36,6 @@ class WallsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /walls/1
-  # PATCH/PUT /walls/1.json
   def update
     respond_to do |format|
       if @wall.update(wall_params)
@@ -103,8 +90,6 @@ class WallsController < ApplicationController
     end
   end
 
-  # DELETE /walls/1
-  # DELETE /walls/1.json
   def destroy
     @gym = @wall.gym
     @wall.destroy
@@ -115,12 +100,10 @@ class WallsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_wall
       @wall = Wall.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def wall_params
       params.require(:wall).permit(:name, :image, :wall_type, :gym_id, :wall_spread, Climb::ALL_GRADES)
     end

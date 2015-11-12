@@ -2,7 +2,7 @@ class SendsController < ApplicationController
   before_action :set_send, only: [:destroy, :remove_climb]
   
   def new
-  	#function to log previously sent routes..maybe should be directed here from the climb#show view, with an option to "Add previous sends"
+  	#function to log previously sent routes..maybe should be directed here from climb#show view, with an option to "Add previous sends"
   end
 
   def create

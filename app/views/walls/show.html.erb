@@ -7,9 +7,10 @@
     <br>
     <li>You may also edit or strip routes (this marks the routes as inactive and removes them from the wall).</li>
     <br>
-    <li>You can mark climbs you have completed by clicking the 'Tick Climb' button. This will log the sends in your climber profile. To view your ascents, visit your <% if current_user %> <%= link_to "climber profile", profile_user_path(current_user) %> <% end %></li>
+    <li>You can mark climbs you have completed by clicking the 'Tick Climb' button. This will log the sends in your climber profile. To view your ascents, visit your <% if current_user %> <%= link_to "climber profile", profile_user_path(current_user) %><% end %>.</li>
     <br>
     <li>You can also visit the <%= link_to_if admin, 'admin dashboard', admin_user_path %> for information about gym employees and users.</li>
+    <br>
 <% end %>
 
 <div class="jumbotron">
