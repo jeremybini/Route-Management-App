@@ -25,6 +25,17 @@
       <%= f.label :email %><br>
       <%= f.text_field :email %>
     </div>
+    <% if specific_user(@user.id) && super_admin %>
+      <div class="field">
+        <%= f.label :password %><br>
+        <%= f.password_field :password %>
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation %><br>
+        <%= f.password_field :password_confirmation %>
+      </div>
+    <% end %>
+
     <% if admin %>
       <% unless @user.admin? %>
         <div class="field">

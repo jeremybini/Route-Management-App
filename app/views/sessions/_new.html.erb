@@ -9,7 +9,7 @@
 	  <ul class="session-errors"></ul>
 	</div>
 
-  <%= form_tag(sessions_path, remote: true) do %>
+  <%= form_tag(sessions_path, method: :post, remote: true) do %>
     <div class="control-group">
       <%= label_tag :email %>
       <div class="controls">
@@ -29,6 +29,6 @@
     </div>
     <hr>
     <%= submit_tag "Log in", class: "btn btn-success" %>
-    <%= link_to "Click here to log in and explore as a manager", sessions_path(:email => "manager@email.com", :password => "manager1234"),  method: :post, class: "btn btn-primary pull-right" %>
+    <%= link_to "Click here to log in and explore as a manager", sessions_path(:email => "manager@email.com", :password => "manager1234"),  method: :post, remote: true, class: "btn btn-primary pull-right" %>
   <% end %>
 </div>

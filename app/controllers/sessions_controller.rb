@@ -13,12 +13,13 @@ class SessionsController < ApplicationController
           cookies[:auth_token] = user.auth_token
         end
         session[:user_id] = user.id
-        flash.keep[:notice]="Welcome back!"
-        format.html { redirect_to :back }
+        flash.now[:notice]="Welcome back!"
+        format.html { redirect_to root_path }
+        format.js { render :js => "window.location.reload()" }
     	else
         @error = "Email or password is invalid"
         format.html { flash.now[:alert] = "Email or password is invalid" }
-        format.js
+        format.js { render 'create.js.erb' }
     	end
     end
   end
