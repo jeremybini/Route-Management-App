@@ -23,6 +23,10 @@ module ApplicationHelper
     current_user && current_user.admin?
   end
 
+  def super_admin
+    current_user && current_user.super_admin?
+  end
+
   def correct_current_user(user_id = nil)
     User.find_by(:id=>user_id) == current_user || current_user.admin?
   end

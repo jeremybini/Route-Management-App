@@ -5,6 +5,6 @@
   <hr>
   <%= render 'form' %>
   <hr>
-  <%= link_to 'Back', gym_path, class: "btn btn-primary" %>  
-  <%= link_to 'Delete', @gym, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently delete this gym.' } if admin %>
+  <%= link_to 'Back', gym_path, class: "btn btn-primary" %>
+  <%= link_to 'Delete', @gym, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure? This will permanently delete this gym.' } if super_admin %>
 </div>

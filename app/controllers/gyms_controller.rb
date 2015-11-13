@@ -1,9 +1,10 @@
 class GymsController < ApplicationController
   before_action :set_gym, only: [:show, :edit, :update, :destroy, :remove_image]
   before_action :require_routesetter, only: [:edit, :update]
-  before_action :require_admin, only: [:new, :create, :destroy, :remove_image]
+  before_action :require_admin, only: [:new, :create, :remove_image]
   before_action :route_chart, only: [:show, :update]
   before_action :boulder_chart, only: [:show, :update]
+  before_action :require_super_admin, only: [:destroy]
 
   def index
     @gyms = Gym.all

@@ -4,21 +4,21 @@
       <ul class="wall-errors"></ul>
     </div>
 
-    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
-
-    <div class="control-group">
-      <%= f.label :image, class: "control-label" %><br>
-      <%= image_tag @wall.image.url(:thumb) if @wall.image.present? %>
-      <div class="controls">
-        <%= f.file_field :image %>
+    <% if super_admin %>
+      <div class="control-group">
+        <%= f.label :image, class: "control-label" %><br>
+        <%= image_tag @wall.image.url(:thumb) if @wall.image.present? %>
+        <div class="controls">
+          <%= f.file_field :image %>
+        </div>
+        <% if @wall.image.present? %>
+          <%= image_tag @wall.image.url(:thumb) %><br><br>
+          <% if routesetter %>
+            <%= link_to "Delete attached image", remove_image_wall_path(@wall), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.', title: "Delete Wall Image", button: "btn-danger" } %><br>
+          <% end %>
+        <% end %>
       </div>
-      <% if @wall.image.present? %>
-      <%= image_tag @wall.image.url(:thumb) %><br><br>
-      <% if routesetter %>
-        <%= link_to "Delete attached image", remove_image_wall_path(@wall), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure? This will permanently remove this image.', title: "Delete Wall Image", button: "btn-danger" } %><br>
-      <% end %>
     <% end %>
-    </div>
 
     <div class="control-group">
       <%= f.label :name %><br>
@@ -43,7 +43,7 @@
     <div class="modal-footer">
       <%= f.button "Update Wall", class: "btn btn-success pull-left", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Updating wall..."} %>
       <%= link_to "Cancel", "#", class: "btn btn-default pull-right", data: {dismiss: "modal"} %>
-      <% if admin %>
+      <% if super_admin %>
         <%= link_to '<i class="fa fa-trash-o"></i> Delete'.html_safe, wall_path(@wall), method: :delete, data: { confirm: 'Are you sure? This will permanently delete this wall.', title: 'Delete Wall?', button: 'btn-danger'}, class: "btn btn-danger pull-right" %>
       <% end %>
     </div>

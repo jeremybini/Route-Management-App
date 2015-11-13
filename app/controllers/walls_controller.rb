@@ -2,8 +2,9 @@ class WallsController < ApplicationController
   before_action :set_wall, only: [:show, :edit, :update, :archive, :destroy, :change_spread, :remove_image]
   before_action :wall_type, only: [:show, :edit, :update, :change_spread]
   before_action :require_routesetter, only: [:archive, :edit, :create, :update, :change_spread, :remove_image]
-  before_action :require_admin, only: [:new, :destroy]
+  before_action :require_admin, only: [:new]
   before_action :chart, only: [:show, :update]
+  before_action :require_super_admin, only: [:destroy]
   
   helper_method :sort_climbs
 

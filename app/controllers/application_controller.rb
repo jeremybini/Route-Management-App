@@ -18,18 +18,22 @@ private
 	end
 
 	def setters
-		@setters = User.where(role: ["Routesetter", "Admin"]).order("full_name")
+		@setters = User.where(role: ["Routesetter", "Admin", "Super Admin"]).order("full_name")
 	end
 
 	def require_user 
-  		redirect_to login_path unless current_user
+  		redirect_to root_path unless current_user
+	end
+
+	def require_super_admin
+		redirect_to root_path unless current_user && current_user.super_admin?
 	end
 
 	def require_admin
-		redirect_to login_path unless current_user && current_user.admin?
+		redirect_to root_path unless current_user && current_user.admin?
 	end
 
 	def require_routesetter
-		redirect_to login_path unless current_user && (current_user.routesetter? || current_user.admin?)
+		redirect_to root_path unless current_user && current_user.routesetter?
 	end
 end
