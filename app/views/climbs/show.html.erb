@@ -25,7 +25,11 @@
 
     <p>
       <strong>Setter:</strong>
-      <%= @climb.setter.full_name %>
+      <% if climb.setter %>
+        <%= climb.setter.full_name %>
+      <% else %>
+        <%= climb.setter_name %>
+      <% end %>
     </p>
 
     <p>

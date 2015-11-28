@@ -34,9 +34,15 @@
           <tr>
             <td><%= link_to employee.full_name, profile_user_path(employee) %></td>
             <td><%= employee.email %></td>
-            <td><%= employee.role %></td>
-            <td><%= link_to "Edit Setter Info", edit_user_path(employee), class: "btn btn-sm btn-info" %></td>
-            <% if employee.admin? %>
+            <% if employee.super_admin? %>
+              <td>Admin</td>
+            <% else %>
+              <td><%= employee.role %></td>
+            <% end %>
+            <% unless employee.super_admin? && !current_user.super_admin? %>
+              <td><%= link_to "Edit Setter Info", edit_user_path(employee), class: "btn btn-sm btn-info" %></td>
+            <% end %>
+            <% unless employee.super_admin? %>
               <% if current_user.super_admin? %>
                 <td><%= link_to "Delete Setter", employee, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %></td>
               <% end %>

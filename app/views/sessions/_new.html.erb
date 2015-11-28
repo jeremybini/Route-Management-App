@@ -1,7 +1,6 @@
 <div class="modal-header">
   <a class="close" data-dismiss="modal">×</a>
   <h1>Log In</h1>
-  
 </div>
 
 <div class="modal-body">
@@ -27,8 +26,10 @@
       <%= check_box_tag :remember_me, 1, params[:remember_me] %>
       <%= label_tag :remember_me %>
     </div>
-    <hr>
-    <%= submit_tag "Log in", class: "btn btn-success" %>
-    <%= link_to "Click here to log in and explore as a manager", sessions_path(:email => "manager@email.com", :password => "manager1234"),  method: :post, remote: true, class: "btn btn-primary pull-right" %>
+    <br>
+    <div class="modal-footer">
+      <%= submit_tag "Log in", class: "btn btn-success pull-left" %>
+      <%= link_to "Click here to log in and explore as a manager", sessions_path(:email => "manager@email.com", :password => "manager1234"),  method: :post, remote: true, class: "btn btn-primary pull-right" %>
+    </div>
   <% end %>
 </div>

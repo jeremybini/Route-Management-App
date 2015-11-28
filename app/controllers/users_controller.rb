@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 	before_action :set_user, only: [:edit, :update, :profile, :destroy]
   
 	def index
-		@employees = User.where(role: ["Routesetter", "Admin"]).order("role")
+		@employees = User.where(role: ["Routesetter", "Admin", "Super Admin"]).order("role")
 		@users = User.where(role: "User").order("full_name")
 	end
 

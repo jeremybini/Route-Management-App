@@ -1,1 +1,1 @@
-json.extract! @wall, :id, :name, :wall_image, :gym, :created_at, :updated_at
+json.extract! @wall, :id, :name, :gym, :created_at, :updated_at
